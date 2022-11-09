@@ -1,24 +1,38 @@
-import logo from './logo.svg';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+
+import {Home} from './Home'
+import {Users} from './Users'
+import {Forum} from './Forum'
+import {Navigation} from './Navigation'
+
+import {Link, BrowserRouter, Route, Routes} from 'react-router-dom'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <BrowserRouter>
+    <div className="container">
+      <div className="titleheader">
+        <h1>NiceDice
+          <span>
+            RPG Online
+          </span>
+        </h1>
+      </div>
+
+      <h3 className="m-3 d-flex justify-content-center">
+        
+        </h3>
+
+        <Navigation/>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/users' element={<Users/>}/>
+          <Route path='/forum' element={<Forum/>}/>
+        </Routes>
     </div>
+    <footer>&copy;2022 Bok&Akahori</footer>
+    </BrowserRouter>
   );
 }
 
