@@ -10,3 +10,25 @@ export function getUsers() {
     }
     return fetch(RPGONLINE_API+'Users', options);
 }
+
+export function getUsersAbout(id) {
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+            //'Authorization': 'Bearer ' + token
+        }
+    }
+    return fetch(RPGONLINE_API+'Users/'+id, options);
+}
+
+export function addUser() {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+            //'Authorization': 'Bearer ' + token
+        }
+    }
+    return fetch(RPGONLINE_API+'Users', options);
+}

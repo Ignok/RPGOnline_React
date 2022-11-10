@@ -2,9 +2,13 @@
 import './App.css';
 
 import {Home} from './Home'
-import {Users} from './Users'
+import {Users} from './User/Users'
 import {Forum} from './Forum'
-import {Navigation} from './Navigation'
+import { AboutMe } from './User/Profile/AboutMe';
+
+import {Navigation} from './Helpers/Navigation';
+
+import {Footer} from './Helpers/Footer';
 
 import {Link, BrowserRouter, Route, Routes} from 'react-router-dom'
 
@@ -13,25 +17,25 @@ function App() {
     <BrowserRouter>
     <div className="container">
       <div className="titleheader">
-        <h1>NiceDice
+        <h1>Nice Dice
           <span>
-            RPG Online
+            PLAY RPG ONLINE
           </span>
         </h1>
       </div>
 
-      <h3 className="m-3 d-flex justify-content-center">
-        
-        </h3>
-
         <Navigation/>
+
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/users' element={<Users/>}/>
           <Route path='/forum' element={<Forum/>}/>
+          <Route path='/aboutme' element={<AboutMe/>}/>
         </Routes>
+
+        
     </div>
-    <footer>&copy;2022 Bok&Akahori</footer>
+    <Footer/>
     </BrowserRouter>
   );
 }
