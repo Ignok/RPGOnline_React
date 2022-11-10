@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import { ButtonToolbar } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import { getUsers } from './Api_RPGOnline';
+import { getUsers } from '../Api_RPGOnline';
 
 
 
@@ -25,12 +26,12 @@ export class Users extends Component{
     componentDidMount(){
         this.refreshList();
     }
+    
 
     render(){
         const {users}=this.state;
         return(
                 <div>
-                    <img src="/Pictures/anonymous_user.png" alt="anonymous_user" width="50" height="50" loading="lazy"/>
                     {/* <Table className='mt-4' striped bordered hover size='sm'> */}
                     <table>
                         <thead>
@@ -46,21 +47,19 @@ export class Users extends Component{
                                 <tr key={users.uId}>
                                     <td>{users.uId}</td>
                                     <td>{users.username}</td>
-                                    <td>{(users.picture === null ? <img src="./Pictures/anonymous_user.png" alt="anonymous_user" width="50" height="50" loading="lazy"/> : users.picture)}</td>
+                                    <td>{(users.picture === null ? <img src={require("../Pictures/anonymous_user.png")} alt="anonymous_user" width="50" height="50" loading="lazy"/> : users.picture)}</td>
                                     <td>
-                                        <ButtonToolbar>
-                                            <Button variant='info'
-                                            onClick={() => this.setState({addModalShow:true})}>
-                                                Show Details
-                                            </Button>
-                                        </ButtonToolbar>
+                                        <div>
+                                            <Link to={{ pathname: "/aboutme", state: 1 }}>
+                                                <button className='button-show-details' type="button">Details</button>
+                                            </Link>
+                                        </div>
                                     </td>
                                 </tr>
                                 )}
                         </tbody>
                     </table>
-                    <button className='button-add' type="button"
-                        onClick={() => this.setState({addModalShow:true})}>
+                    <button className='button-add' type="button">
                         Add new user
                     </button>
                     {/* </Table> */}

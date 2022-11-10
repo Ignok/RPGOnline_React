@@ -37,6 +37,16 @@
   }
 } */
 
+@font-face {
+  font-family: 'quinque';
+  src: url(Helpers/Fonts/QuinqueFive.ttf);
+}
+
+@font-face {
+  font-family: 'pinyon-script';
+  src: url(Helpers/Fonts/PinyonScript-Regular.ttf);
+}
+
 /* Set the global variables for everything. Change these to use your own fonts and colours. */
 :root {
   /* Set sans-serif & mono fonts */
@@ -59,12 +69,12 @@
   --accent-bg: #f5f7ff;
   --text: #212121;
   --text-light: #585858;
-  --border: #d8dae1;
-  --accent: #0d47a1;
-  --accent-light: #90caf9;
+  --border: #afafaffd;
+  --accent: #dd54ae;
+  --accent-light: #f181a3;
   --code: #d81b60;
   --preformatted: #444;
-  --marked: #ffdd33;
+  --marked: #8db4df;
   --disabled: #efefef;
 }
 
@@ -76,8 +86,8 @@
     --text: #dcdcdc;
     --text-light: #ababab;
     --border: #666;
-    --accent: #ffb300;
-    --accent-light: #ffecb3;
+    --accent: #f37653;
+    --accent-light: #f49b63;
     --code: #f06292;
     --preformatted: #ccc;
     --disabled: #111;
@@ -115,10 +125,9 @@ body {
 /* Header*/
 .titleheader {
   /* The image used */
-  background-image: url("https://thumbs.dreamstime.com/z/tabletop-roleplaying-flat-lay-colorful-rpg-game-dices-character-sheet-rule-book-treasure-chest-wooden-desk-161261800.jpg");
-
-  /* Full height */
-  height: 100%;
+  /* background-image: url("https://thumbs.dreamstime.com/z/tabletop-roleplaying-flat-lay-colorful-rpg-game-dices-character-sheet-rule-book-treasure-chest-wooden-desk-161261800.jpg"); */
+  background-image: url(Pictures/banner.png);
+  height: 50%;
   width: 100%;
 
   /* Center and scale the image nicely */
@@ -127,13 +136,13 @@ body {
   background-size: cover;
 }
 .titleheader h1 {
-  text-align:center; font-size:50px; text-transform:uppercase; color:rgb(132, 0, 255); letter-spacing:1px;
+  text-align:center; font-size:50px; text-transform:uppercase; color:#21201f; letter-spacing:1px;
   font-family:"Playfair Display", serif; font-weight:400;
 }
 .titleheader h1 span {
   margin-top: 5px;
-    font-size:15px; color: rgb(132, 0, 255);; word-spacing:1px; font-weight:normal; letter-spacing:2px;
-    text-transform: uppercase; font-family:"Raleway", sans-serif; font-weight:500;
+    font-size:10px; color: rgb(16, 7, 26); word-spacing:1px; letter-spacing:2px;
+    text-transform: uppercase; font-family:'quinque', serif; font-weight:bold;
 
     display: grid;
     grid-template-columns: 1fr max-content 1fr;
@@ -145,11 +154,24 @@ body {
 .titleheader h1 span:after,.titleheader h1 span:before {
     content: " ";
     display: block;
-    border-bottom: 1px solid rgb(132, 0, 255);
-    border-top: 1px solid rgb(132, 0, 255);
+    border-bottom: 1px solid #ecdbc8;
+    border-top: 1px solid #ecdbc8;
     height: 5px;
   background-color:transparent;
 }
+
+.scalable-photo {
+  max-width: 100%;
+  max-height: 100%;
+  padding: 2rem 0.5rem;
+}
+
+/* Navigation */
+.navigation-button{
+    background-image: linear-gradient(to right, #efdec6, #f7d1c2);
+    border: none;
+}
+
 
 /* Make the header bg full width, but the content inline with body */
 header {
@@ -172,6 +194,12 @@ header p {
   margin: 0;
 }
 
+.subheader {
+  text-align: right;
+  font-family: 'quinque';
+  font-size: 12px;
+}
+
 /* Add a little padding to ensure spacing is correct between content and nav */
 main {
   padding-top: 1.5rem;
@@ -186,8 +214,10 @@ h3 {
 
 /* Format navigation */
 nav {
-  font-size: 1rem;
-  line-height: 2;
+  font-family: 'quinque';
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 3;
   padding: 1rem 0;
 }
 
@@ -317,10 +347,13 @@ input[type="range"] {
   background-color: rgb(163, 163, 163);
 }
 
-.button-add:hover{
-  background-color: rgb(218, 218, 218);
+/* Show details button */
+.button-show-details{
+  width: 100%;
+  border-radius: 5px;
+  background-color: #be6cd1;
+  color: #ffffff;
 }
-
 
 /* Set the cursor to '?' while hovering over an abbreviation */
 abbr {
