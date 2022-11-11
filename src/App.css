@@ -126,6 +126,14 @@ body {
   overflow-wrap: break-word;
 }
 
+.block{
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 auto;
+}
+
 /* Header*/
 .titleheader {
   /* The image used */

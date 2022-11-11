@@ -42,7 +42,7 @@ export class Users extends Component{
         const {users}=this.state;
         return(
             <div>
-                <body>
+                <div className='block'>
                     {/* <Table className='mt-4' striped bordered hover size='sm'> */}
                     <table>
                         <thead>
@@ -74,7 +74,7 @@ export class Users extends Component{
                         Add new user
                     </button>
                     {/* </Table> */}
-                </body>
+                </div>
             </div>
         )
     }

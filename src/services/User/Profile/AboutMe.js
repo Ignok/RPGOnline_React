@@ -66,7 +66,7 @@ class AboutMe extends React.Component{
         const {user}=this.state;
         return(
             <div>
-                <body>
+                <div className='block'>
                     {/* <Table className='mt-4' striped bordered hover size='sm'> */}
                     <table>
                         <thead>
@@ -96,7 +96,7 @@ class AboutMe extends React.Component{
                     <Link to='/users'>
                         <button className='button-back' type="button">Back</button>
                     </Link>
-                </body>
+                </div>
             </div>
         )
     }
