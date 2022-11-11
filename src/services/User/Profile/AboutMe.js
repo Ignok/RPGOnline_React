@@ -2,8 +2,8 @@ import React from 'react';
 import { useParams, Link} from "react-router-dom";
 
 
-import { getUsersAbout } from '../../Api_RPGOnline';
-import { DatetimeToLocaleDateString } from '../../Helpers/Functions/DateTimeConverter';
+import { getUsersAbout } from '../../../Api_RPGOnline';
+import { DatetimeToLocaleDateString } from '../../../helpers/functions/DateTimeConverter';
 
 
 const withRouter = WrappedComponent => props => {
@@ -65,7 +65,8 @@ class AboutMe extends React.Component{
     render(){
         const {user}=this.state;
         return(
-                <div>
+            <div>
+                <body>
                     {/* <Table className='mt-4' striped bordered hover size='sm'> */}
                     <table>
                         <thead>
@@ -95,7 +96,8 @@ class AboutMe extends React.Component{
                     <Link to='/users'>
                         <button className='button-back' type="button">Back</button>
                     </Link>
-                </div>
+                </body>
+            </div>
         )
     }
 }

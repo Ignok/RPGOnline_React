@@ -39,12 +39,12 @@
 
 @font-face {
   font-family: 'quinque';
-  src: url(Helpers/Fonts/QuinqueFive.ttf);
+  src: url(helpers/fonts/QuinqueFive.ttf);
 }
 
 @font-face {
   font-family: 'pinyon-script';
-  src: url(Helpers/Fonts/PinyonScript-Regular.ttf);
+  src: url(helpers/fonts/PinyonScript-Regular.ttf);
 }
 
 /* Set the global variables for everything. Change these to use your own fonts and colours. */
@@ -70,8 +70,10 @@
   --text: #212121;
   --text-light: #585858;
   --border: #afafaffd;
-  --accent: #dd54ae;
+  --accent: #da57b3;
   --accent-light: #f181a3;
+  --light-left: #efdec6;
+  --light-right: #f7d1c2;
   --code: #d81b60;
   --preformatted: #444;
   --marked: #8db4df;
@@ -88,6 +90,8 @@
     --border: #666;
     --accent: #f37653;
     --accent-light: #f49b63;
+    --light-left: #cd89a4;
+    --light-right: #f385a8;
     --code: #f06292;
     --preformatted: #ccc;
     --disabled: #111;
@@ -101,7 +105,7 @@
 
 html {
   /* Set the font globally */
-  font-family: var(--sans-font);
+  font-family: 'Nunito', sans-serif;
 }
 
 /* Make the body a nice central block */
@@ -116,7 +120,7 @@ body {
   flex: 1;
   margin: 0 auto;
   /*max-width: 45rem;*/
-  padding: 0 0.5rem;
+  padding: 0 0 0 0rem;
   overflow-x: hidden;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -126,7 +130,7 @@ body {
 .titleheader {
   /* The image used */
   /* background-image: url("https://thumbs.dreamstime.com/z/tabletop-roleplaying-flat-lay-colorful-rpg-game-dices-character-sheet-rule-book-treasure-chest-wooden-desk-161261800.jpg"); */
-  background-image: url(Pictures/banner.png);
+  background-image: url(helpers/pictures/banner.png);
   height: 50%;
   width: 100%;
 
@@ -135,29 +139,42 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .titleheader h1 {
-  text-align:center; font-size:50px; text-transform:uppercase; color:#21201f; letter-spacing:1px;
-  font-family:"Playfair Display", serif; font-weight:400;
+  text-align: center;
+  font-size: 50px;
+  text-transform: uppercase;
+  color: #21201f;
+  letter-spacing: 1px;
+  font-family: "Playfair Display", serif;
+  font-weight: 400;
 }
+
 .titleheader h1 span {
   margin-top: 5px;
-    font-size:10px; color: rgb(16, 7, 26); word-spacing:1px; letter-spacing:2px;
-    text-transform: uppercase; font-family:'quinque', serif; font-weight:bold;
+  font-size: 10px;
+  color: rgb(16, 7, 26);
+  word-spacing: 1px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'quinque', serif;
+  font-weight: bold;
 
-    display: grid;
-    grid-template-columns: 1fr max-content 1fr;
-    grid-template-rows: 27px 0;
-    grid-gap: 20px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 1fr max-content 1fr;
+  grid-template-rows: 27px 0;
+  grid-gap: 20px;
+  align-items: center;
 }
 
-.titleheader h1 span:after,.titleheader h1 span:before {
-    content: " ";
-    display: block;
-    border-bottom: 1px solid #ecdbc8;
-    border-top: 1px solid #ecdbc8;
-    height: 5px;
-  background-color:transparent;
+.titleheader h1 span:after,
+.titleheader h1 span:before {
+  content: " ";
+  display: block;
+  border-bottom: 1px solid #ecdbc8;
+  border-top: 1px solid #ecdbc8;
+  height: 5px;
+  background-color: transparent;
 }
 
 .scalable-photo {
@@ -167,9 +184,9 @@ body {
 }
 
 /* Navigation */
-.navigation-button{
-    background-image: linear-gradient(to right, #efdec6, #f7d1c2);
-    border: none;
+.navigation-button {
+  background-image: linear-gradient(to right, var(--light-left), var(--light-right));
+  border: none;
 }
 
 
@@ -194,6 +211,13 @@ header p {
   margin: 0;
 }
 
+.header {
+  font-family: 'quinque';
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 50px;
+}
+
 .subheader {
   text-align: right;
   font-family: 'quinque';
@@ -203,6 +227,7 @@ header p {
 /* Add a little padding to ensure spacing is correct between content and nav */
 main {
   padding-top: 1.5rem;
+  flex-grow: 1;
 }
 
 /* Fix line height when title wraps */
@@ -233,7 +258,7 @@ nav a {
 }
 
 nav a:hover {
-  color: var(--accent) !important;
+  color: var(--accent);
   border-color: var(--accent);
 }
 
@@ -252,25 +277,17 @@ footer {
 
 /* Format headers */
 h1 {
-  font-size: calc(
-    var(--base-fontsize) * var(--header-scale) * var(--header-scale) *
-      var(--header-scale) * var(--header-scale)
-  );
+  font-size: calc(var(--base-fontsize) * var(--header-scale) * var(--header-scale) * var(--header-scale) * var(--header-scale));
   margin-top: calc(var(--line-height) * 1.5rem);
 }
 
 h2 {
-  font-size: calc(
-    var(--base-fontsize) * var(--header-scale) * var(--header-scale) *
-      var(--header-scale)
-  );
+  font-size: calc(var(--base-fontsize) * var(--header-scale) * var(--header-scale) * var(--header-scale));
   margin-top: calc(var(--line-height) * 1.5rem);
 }
 
 h3 {
-  font-size: calc(
-    var(--base-fontsize) * var(--header-scale) * var(--header-scale)
-  );
+  font-size: calc(var(--base-fontsize) * var(--header-scale) * var(--header-scale));
   margin-top: calc(var(--line-height) * 1.5rem);
 }
 
@@ -290,10 +307,10 @@ h6 {
 }
 
 /* Format links & buttons */
-a,
+/* a,
 a:visited {
   color: var(--accent);
-}
+} */
 
 a:hover {
   text-decoration: none;
@@ -342,16 +359,16 @@ input[type="range"] {
 
 /* Add record button*/
 
-.button-add{
+.button-add {
   border-radius: 5px;
   background-color: rgb(163, 163, 163);
 }
 
 /* Show details button */
-.button-show-details{
+.button-show-details {
   width: 100%;
   border-radius: 5px;
-  background-color: #be6cd1;
+  background-color: var(--accent);
   color: #ffffff;
 }
 
@@ -401,7 +418,7 @@ details[open] summary {
   padding: 0;
 }
 
-details[open] > *:last-child {
+details[open]>*:last-child {
   margin-bottom: 0;
 }
 
@@ -504,6 +521,7 @@ input[type="checkbox"]:checked::after {
   font-size: 1.8em;
   transform: rotate(45deg);
 }
+
 input[type="radio"]:checked::after {
   /* creates a colored circle for the checked radio button  */
   content: " ";
@@ -524,6 +542,7 @@ textarea {
 
 /* Makes input fields wider on smaller screens */
 @media only screen and (max-width: 720px) {
+
   textarea,
   select,
   input {

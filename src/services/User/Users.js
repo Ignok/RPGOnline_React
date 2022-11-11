@@ -3,7 +3,7 @@ import { ButtonToolbar } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 
-import { getUsers } from '../Api_RPGOnline';
+import { getUsers } from '../../Api_RPGOnline';
 
 // const withRouter = WrappedComponent => props => {
 //     const pathname = useLocation();
@@ -41,7 +41,8 @@ export class Users extends Component{
     render(){
         const {users}=this.state;
         return(
-                <div>
+            <div>
+                <body>
                     {/* <Table className='mt-4' striped bordered hover size='sm'> */}
                     <table>
                         <thead>
@@ -57,7 +58,7 @@ export class Users extends Component{
                                 <tr key={users.uId}>
                                     <td>{users.uId}</td>
                                     <td>{users.username}</td>
-                                    <td>{(users.picture === null ? <img src={require("../Pictures/anonymous_user.png")} alt="anonymous_user" width="50" height="50" loading="lazy"/> : users.picture)}</td>
+                                    <td>{(users.picture === null ? <img src={require("../../pictures/anonymous_user.png")} alt="anonymous_user" width="50" height="50" loading="lazy"/> : users.picture)}</td>
                                     <td>
                                         <div>
                                             <Link to={`/aboutme/${users.uId}`}>
@@ -73,7 +74,8 @@ export class Users extends Component{
                         Add new user
                     </button>
                     {/* </Table> */}
-                </div>
+                </body>
+            </div>
         )
     }
 }
