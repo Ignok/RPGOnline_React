@@ -1,31 +1,69 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { useParams, Link} from "react-router-dom";
+
 
 import { getUsersAbout } from '../../Api_RPGOnline';
+import { DatetimeToLocaleDateString } from '../../Helpers/Functions/DateTimeConverter';
 
-export class AboutMe extends Component{
+
+const withRouter = WrappedComponent => props => {
+    const params = useParams();
+
+    return (
+        <WrappedComponent
+            {...props}
+            params={params}
+        />
+    );
+};
+
+class AboutMe extends React.Component{
+
+    
     constructor(props){
         super(props);
-        this.state={
-            uId: props.uId
+
+        const uId = this.props.params.uId;
+
+        console.log(uId);
+
+        this.state = {
+            uId: uId,
+            user: [],
+            error: null,
+            isLoaded: false,
+            message: null
         }
     }
 
+
     refreshPage(){
-        getUsersAbout(1)
+        getUsersAbout(this.state.uId)
         .then(response=>response.json())
-        .then(data=>{
-            this.setState({user:data});
-            console.log(data);
-        });
+        .then(
+            (data)=>{
+            this.setState({
+                user:data,
+                isLoaded: true
+            });
+        },
+        (error) => {
+            this.setState({
+                isLoaded: true,
+                error
+            })
+        }
+        );
     }
 
     componentDidMount(){
         this.refreshPage();
     }
 
+    
+
     render(){
         const {user}=this.state;
-        console.log(user);
         return(
                 <div>
                     {/* <Table className='mt-4' striped bordered hover size='sm'> */}
@@ -42,24 +80,27 @@ export class AboutMe extends Component{
                             </tr>
                         </thead>
                         <tbody>
-                            {user=>
-                                <tr>
-                                    <td>{user.uId}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.country}</td>
-                                    <td>{user.city}</td>
-                                    <td>{user.aboutMe}</td>
-                                    <td>{user.attitude}</td>
-                                    <td>{user.creationDate}</td>
-                                </tr>
-                                }
+                            <tr key={user.uId}>
+                                <td>{user.uId}</td>
+                                <td>{user.email}</td>
+                                <td>{user.country}</td>
+                                <td>{user.city}</td>
+                                <td>{user.aboutMe}</td>
+                                <td>{user.attitude}</td>
+                                <td>{DatetimeToLocaleDateString(user.creationDate)}</td>
+                            </tr>        
                         </tbody>
                     </table>        
                     {/* </Table> */}
+                    <Link to='/users'>
+                        <button className='button-back' type="button">Back</button>
+                    </Link>
                 </div>
         )
     }
 }
+
+export default withRouter(AboutMe);
 
 // import * as React from 'react';
 // import { styled } from '@mui/material/styles';

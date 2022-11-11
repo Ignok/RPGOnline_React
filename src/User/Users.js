@@ -1,11 +1,21 @@
 import React, {Component} from 'react';
 import { ButtonToolbar } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { getUsers } from '../Api_RPGOnline';
 
+// const withRouter = WrappedComponent => props => {
+//     const pathname = useLocation();
 
+//     return (
+//         <WrappedComponent
+//             {...props}
+//             pathname={pathname}
+//             //notice={props.notice}
+//         />
+//     );
+// }
 
 export class Users extends Component{
 
@@ -50,7 +60,7 @@ export class Users extends Component{
                                     <td>{(users.picture === null ? <img src={require("../Pictures/anonymous_user.png")} alt="anonymous_user" width="50" height="50" loading="lazy"/> : users.picture)}</td>
                                     <td>
                                         <div>
-                                            <Link to={{ pathname: "/aboutme", state: 1 }}>
+                                            <Link to={`/aboutme/${users.uId}`}>
                                                 <button className='button-show-details' type="button">Details</button>
                                             </Link>
                                         </div>
