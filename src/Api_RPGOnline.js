@@ -32,3 +32,15 @@ export function addUser() {
     }
     return fetch(RPGONLINE_API+'Users', options);
 }
+
+export function login(data){
+    const jsonLogin = JSON.stringify(data);
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: jsonLogin
+    }
+    return fetch(RPGONLINE_API+'Account', options);
+}

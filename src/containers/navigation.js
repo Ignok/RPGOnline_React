@@ -19,6 +19,9 @@ export class Navigation extends Component{
                         <NavLink className='navigation-button' to='/forum'>
                             Forum
                         </NavLink>
+                        <NavLink className='navigation-button' to='/login'>
+                            Login
+                        </NavLink>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
