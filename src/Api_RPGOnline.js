@@ -44,3 +44,15 @@ export function login(data){
     }
     return fetch(RPGONLINE_API+'Account', options);
 }
+
+export function register(data){
+    const jsonRegister = JSON.stringify(data);
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: jsonRegister
+    }
+    return fetch(RPGONLINE_API+'Account/register', options);
+}

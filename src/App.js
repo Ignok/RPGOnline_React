@@ -5,6 +5,8 @@ import { Home } from './services/Home'
 import { Users } from './services/User/Users'
 import { Forum } from './services/Forum'
 import AboutMe from './services/User/Profile/AboutMe';
+import Register from './services/User/Profile/Register';
+import Login from './services/User/Profile/Login'
 
 import { Navigation } from './containers/navigation';
 
@@ -12,7 +14,6 @@ import { FooterContainer } from './containers/footer'
 
 import { Link, BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import { LoginPage } from './services/LoginPage';
 
 class App extends React.Component {
 
@@ -39,7 +40,8 @@ class App extends React.Component {
               <Route path='/users' element={<Users />} />
               <Route path='/forum' element={<Forum />} />
               <Route path='/aboutme/:uId' element={<AboutMe />} />
-              <Route path='/login' element={<LoginPage />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
             </Routes>
           </main>
 

@@ -22,6 +22,9 @@ export class Navigation extends Component{
                         <NavLink className='navigation-button' to='/login'>
                             Login
                         </NavLink>
+                        <NavLink className='navigation-button' to='/register'>
+                            Register
+                        </NavLink>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
