@@ -50,10 +50,10 @@ export const Link = styled.a`
 `;
 
 export const Title = styled.p`
-    font-size: 22px;
-    color: #fff;
-    margin-bottom: 15px;
-    font-weight: bold;
+  font-size: 22px;
+  color: var(--bg);
+  margin-bottom: 15px;
+  font-weight: bold;
 `;
 
 

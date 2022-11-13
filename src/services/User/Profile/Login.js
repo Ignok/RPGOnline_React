@@ -100,8 +100,8 @@ export default function Login() {
     }
 
     return (
-        <div className="App">
-            <header className="App-header">
+        <div className="">
+            <header className="">
                 <h1 className=""> {/* Do uzupełnienia className */}
                     Login
                 </h1>

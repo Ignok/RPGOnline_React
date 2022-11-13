@@ -15,7 +15,6 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,8 +142,8 @@ body {
   /* The image used */
   /* background-image: url("https://thumbs.dreamstime.com/z/tabletop-roleplaying-flat-lay-colorful-rpg-game-dices-character-sheet-rule-book-treasure-chest-wooden-desk-161261800.jpg"); */
   background-image: url(helpers/pictures/banner.png);
-  height: 50%;
-  width: 100%;
+  /* height: 50%;
+  width: 100%; */
 
   /* Center and scale the image nicely */
   background-position: center;
@@ -204,17 +203,18 @@ body {
 
 /* Make the header bg full width, but the content inline with body */
 header {
-  background: var(--accent-bg);
+  /* background: var(--accent-bg); */
+  background: transparent;
   border-bottom: 1px solid var(--border);
   text-align: center;
   padding: 2rem 0.5rem;
-  width: 100vw;
+  /* width: 100vw; */
   position: relative;
   box-sizing: border-box;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  /* left: 50%;
+  right: 50%; */
+  /* margin-left: -50vw;
+  margin-right: -50vw; */
 }
 
 /* Remove margins for header text */
@@ -227,7 +227,7 @@ header p {
   font-family: 'quinque';
   font-size: 20px;
   font-weight: bold;
-  margin-left: 50px;
+  /* margin-left: 50px; */
 }
 
 /* .subheader {

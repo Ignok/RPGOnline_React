@@ -1,9 +1,9 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { Component } from 'react';
-import { Home } from './services/Home'
+import { Home } from "./pages/Home";
 import { Users } from './services/User/Users'
-import { Forum } from './services/Forum'
+import { Forum } from './pages/Forum'
 import AboutMe from './services/User/Profile/AboutMe';
 import Register from './services/User/Profile/Register';
 import Login from './services/User/Profile/Login'

@@ -123,8 +123,8 @@ export default function Register() {
     }
 
     return (
-        <div className="App">
-            <header className="App-header">
+        <div className="pp">
+            <header className="">
             <h1 className=""> {/* Do uzupełnienia className */}
                     Register
                 </h1>

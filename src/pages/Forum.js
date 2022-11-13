@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Cards from '../containers/cards/cards';
 
 export class Forum extends Component{
 
@@ -6,7 +7,8 @@ export class Forum extends Component{
         return(
             <div>
                 <div>
-                    <h5>Coming soon...</h5>
+                    {/* <h5>Coming soon...</h5> */}
+                    <Cards />
                 </div>
             </div>
         )
