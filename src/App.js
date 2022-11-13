@@ -1,7 +1,7 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { Component } from 'react';
-import { Home } from './Home'
+import { Home } from './services/Home'
 import { Users } from './services/User/Users'
 import { Forum } from './services/Forum'
 import AboutMe from './services/User/Profile/AboutMe';
@@ -12,7 +12,7 @@ import { FooterContainer } from './containers/footer'
 
 import { Link, BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import { LoginPage } from './User/LoginPage';
+import { LoginPage } from './services/LoginPage';
 
 class App extends React.Component {
 

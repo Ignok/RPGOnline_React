@@ -55,6 +55,9 @@
     "Helvetica Neue", sans-serif;
   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 
+  /*Main font?*/
+  --main-font: 'quinque';
+
   /* Body font size. By default, effectively 18.4px, based on 16px as 'root em' */
   --base-fontsize: 1.15rem;
 
@@ -126,12 +129,13 @@ body {
   overflow-wrap: break-word;
 }
 
-.block{
+/*full body - page as a whole - essential for the footer*/
+.fbody{
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  flex: 1;
-  margin: 0 auto;
+  /* flex: 1;
+  margin: 0 auto; */
 }
 
 /* Header*/
@@ -226,11 +230,11 @@ header p {
   margin-left: 50px;
 }
 
-.subheader {
+/* .subheader {
   text-align: right;
   font-family: 'quinque';
   font-size: 12px;
-}
+} */
 
 /* Add a little padding to ensure spacing is correct between content and nav */
 main {
@@ -285,8 +289,9 @@ footer {
 
 /* Format headers */
 h1 {
-  font-size: calc(var(--base-fontsize) * var(--header-scale) * var(--header-scale) * var(--header-scale) * var(--header-scale));
-  margin-top: calc(var(--line-height) * 1.5rem);
+  font-size: calc(var(--base-fontsize) * var(--header-scale) * var(--header-scale));
+  margin-top: calc(var(--line-height) * 0.5rem);
+  font-family: var(--main-font);
 }
 
 h2 {
@@ -295,7 +300,7 @@ h2 {
 }
 
 h3 {
-  font-size: calc(var(--base-fontsize) * var(--header-scale) * var(--header-scale));
+  font-size: calc((var(--base-fontsize) * var(--header-scale) * var(--header-scale)));
   margin-top: calc(var(--line-height) * 1.5rem);
 }
 
@@ -305,8 +310,11 @@ h4 {
 }
 
 h5 {
-  font-size: var(--base-fontsize);
-  margin-top: calc(var(--line-height) * 1.5rem);
+  font-size: calc(var(--base-fontsize)*0.8);
+  margin-top: calc(var(--line-height) * 0.5rem);
+  margin-bottom: calc(var(--line-height) * 1.5rem);
+  text-align: right;
+  font-family: var(--main-font);
 }
 
 h6 {

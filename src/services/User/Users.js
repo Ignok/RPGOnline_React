@@ -40,42 +40,57 @@ export class Users extends Component{
 
     render(){
         const {users}=this.state;
-        return(
-            <div>
-                <div className='block'>
-                    {/* <Table className='mt-4' striped bordered hover size='sm'> */}
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>User ID</th>
-                                <th>Username</th>
-                                <th>Picture</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map(users=>
-                                <tr key={users.uId}>
-                                    <td>{users.uId}</td>
-                                    <td>{users.username}</td>
-                                    <td>{(users.picture === null ? <img src={require("../../pictures/anonymous_user.png")} alt="anonymous_user" width="50" height="50" loading="lazy"/> : users.picture)}</td>
-                                    <td>
-                                        <div>
-                                            <Link to={`/aboutme/${users.uId}`}>
-                                                <button className='button-show-details' type="button">Details</button>
-                                            </Link>
-                                        </div>
-                                    </td>
-                                </tr>
-                                )}
-                        </tbody>
-                    </table>
-                    <button className='button-add' type="button">
-                        Add new user
-                    </button>
-                    {/* </Table> */}
-                </div>
-            </div>
-        )
+        return (
+          <div>
+              {/* <Table className='mt-4' striped bordered hover size='sm'> */}
+              <table>
+                <thead>
+                  <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Picture</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((users) => (
+                    <tr key={users.uId}>
+                      <td>{users.uId}</td>
+                      <td>{users.username}</td>
+                      <td>
+                        {users.picture === null ? (
+                          <img
+                            src={require("../../helpers/pictures/anonymous_user.png")}
+                            alt="anonymous_user"
+                            width="50"
+                            height="50"
+                            loading="lazy"
+                          />
+                        ) : (
+                          users.picture
+                        )}
+                      </td>
+                      <td>
+                        <div>
+                          <Link to={`/aboutme/${users.uId}`}>
+                            <button
+                              className="button-show-details"
+                              type="button"
+                            >
+                              Details
+                            </button>
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button className="button-add" type="button">
+                Add new user
+              </button>
+              {/* </Table> */}
+          </div>
+        );
     }
 }

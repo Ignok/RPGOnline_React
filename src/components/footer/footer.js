@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import '../../App.css'
 
 export const Container = styled.div`
-    padding: 80px 60px;
-    margin-top: 20px;
+    padding: 60px 60px;
+    margin-top: auto;
     background: radial-gradient(circle, #b172e1  0%, #a877e9 100%);
 
     @media (max-width: 1000px) {

@@ -3,7 +3,7 @@ import { useParams, Link} from "react-router-dom";
 
 
 import { getUsersAbout } from '../../../Api_RPGOnline';
-import { DatetimeToLocaleDateString } from '../../../Helpers/functions/DateTimeConverter';
+import { DatetimeToLocaleDateString } from '../../../helpers/functions/DateTimeConverter';
 
 
 const withRouter = WrappedComponent => props => {
