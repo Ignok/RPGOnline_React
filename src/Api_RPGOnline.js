@@ -42,7 +42,7 @@ export function login(data){
         },
         body: jsonLogin
     }
-    return fetch(RPGONLINE_API+'Account', options);
+    return fetch(RPGONLINE_API+'Account/login', options);
 }
 
 export function register(data){
