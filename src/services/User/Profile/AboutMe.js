@@ -106,7 +106,7 @@ class AboutMe extends React.Component {
 
                             <UserProfile.RightColumn>
                                 {/* <UserProfile.Row> */}
-                                <UserProfile.Username>ToJestNazwaUżytkownika{user.username}</UserProfile.Username>
+                                <UserProfile.Username>{user.username}</UserProfile.Username>
                                 <UserProfile.CreationDate>User since: {DatetimeToLocaleDateString(user.creationDate)}</UserProfile.CreationDate>
                                 {/* </UserProfile.Row> */}
                                 {/* <UserProfile.Row> */}

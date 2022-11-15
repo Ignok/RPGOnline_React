@@ -20,12 +20,16 @@
   flex-flow: column;
   background-color: rebeccapurple;
   margin-bottom: 30px;
+  min-width: auto;
+  min-height: auto;
 }
 
 .cards__item__img {
   background-color: yellow;
-    width: 30vw;
-    height: 30vh;
+    width: 40vw;
+    height: 37vh;
+    min-width: auto;
+    min-height: auto;
     object-fit:contain;
   /* transition: all 0.2s linear; */
 }
