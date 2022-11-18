@@ -13,6 +13,7 @@ import { Navigation } from './containers/navigation';
 import { FooterContainer } from './containers/footer'
 
 import { Link, BrowserRouter, Route, Routes } from 'react-router-dom'
+import AboutMeDetails from './services/User/Profile/AboutMeDetails';
 
 
 class App extends React.Component {
@@ -40,6 +41,7 @@ class App extends React.Component {
               <Route path='/users' element={<Users />} />
               <Route path='/forum' element={<Forum />} />
               <Route path='/aboutme/:uId' element={<AboutMe />} />
+              <Route path='/aboutme/details/:uId' element={<AboutMeDetails />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
             </Routes>

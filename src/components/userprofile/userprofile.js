@@ -15,18 +15,18 @@ export const Container = styled.div`
 export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: stretch;
     max-width: 100%;
     margin: 0 auto;
 `;
 
 export const Row = styled.div`
-    display: flex;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    display: grid;
     grid-gap: 20px;
-
+    grid-template-columns: auto auto;
     @media (max-width: 1000px) {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      //display: flex;
+      grid-template-columns: auto;
     }
 `;
 
@@ -35,18 +35,18 @@ export const LeftColumn = styled.div`
     flex-direction: column;
     text-align: left;
     margin-left: 10px;
+    margin-right: 10px;
 `;
 
 export const RightColumn = styled.div`
-background-color:red;
-width: 100%;
+  background-color:red;
+    width: 100%;
     display: flex;
     flex-direction: column;
     text-align: left;
-    margin-left: 100px;
+    margin-left: 10px;
     margin-right: 10px;
     width: auto;
-    //grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
 
 `;
 
