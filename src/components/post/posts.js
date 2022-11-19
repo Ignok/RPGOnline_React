@@ -20,6 +20,8 @@ export default function Posts() {
           text="Jaki śliczny ślimaczek! ijsdhufbsudhbfiusbdujfgbusgbdfusgbudfbsuibfusdbfusdb"
           imgSrc={src1}
           imgAlt="slimak"
+          tag1="fanart"
+          tag2="NPC"
           likes="12.k"
           comments="201"
         />
@@ -29,9 +31,10 @@ export default function Posts() {
           avatarAlt="bocz"
           title="cosplay"
           date="November 19, 2022"
-          text="Jeszcze jakoś trzeba dodać tagi i przekierowanie do post details"
+          text="Jeszcze przekierowanie do post details + posty ktore maja TYLKO tekst?"
           imgSrc={src2}
           imgAlt="bard"
+          tag1="fanart"
           likes="666"
           comments="0"
         />
@@ -41,9 +44,9 @@ export default function Posts() {
           avatarAlt="bocz"
           title="kitku"
           date="November 19, 2022"
-          text="test"
+          text="w przyszlosci wypadaloby rozszerzyc styl o np zmiane koloru przy like'u"
           imgSrc={gif1}
-          imgAlt="bard"
+          imgAlt="kitku"
           likes="0"
           comments="0"
         />
