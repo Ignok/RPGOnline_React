@@ -74,6 +74,7 @@
   --border: #afafaffd;
   --accent: #da57b3;
   --accent-light: #f181a3;
+  --accent-dark: #a976e8;
   --light-left: #efdec6;
   --light-right: #f7d1c2;
   --code: #d81b60;
@@ -92,6 +93,7 @@
     --border: #666;
     --accent: #f37653;
     --accent-light: #f49b63;
+    --accent-dark: #dd54ae;
     --light-left: #cd89a4;
     --light-right: #f385a8;
     --code: #f06292;
