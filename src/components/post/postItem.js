@@ -14,8 +14,8 @@ import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import { PersonAddAlt1 } from "@mui/icons-material";
-import { Link } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Link, Chip } from "@mui/material";
+
 
 import "../../App.css";
 
@@ -67,29 +67,15 @@ export default function PostItem(props) {
       </CardContent>
       <CardActions sx={{ bgcolor: "var(--accent)", maxHeight: 10, pl: 2}}>
         {props.tag1 ? (
-          <Link
-            href="#"
-            variant="body2"
-            color="text.secondary"
-            fontSize="medium"
-          >
-            #{props.tag1}
-          </Link>
+          <Chip label={"#" + props.tag1} component="a" href="#" clickable />
         ) : null}
         {props.tag2 ? (
-          <Link
-            href="#"
-            variant="body2"
-            color="text.secondary"
-            fontSize="medium"
-          >
-            #{props.tag2}
-          </Link>
+          <Chip label={"#" + props.tag2} component="a" href="#" clickable />
         ) : null}
       </CardActions>
       <CardActions
         disableSpacing
-        sx={{ bgcolor: "var(--accent)", justifyContent: "center", px: 6 }}
+        sx={{ bgcolor: "var(--accent)", justifyContent: "right", px: 12 }}
       >
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />

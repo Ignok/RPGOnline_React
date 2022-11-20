@@ -1,6 +1,9 @@
 import React from "react";
 import PostItem from "./postItem";
 
+import ForumSearch from "../forum/forumSearch";
+import ForumMenu from "../forum/forumMenu";
+
 import src1 from "../../helpers/pictures/test-img.jpg";
 import src2 from "../../helpers/pictures/test-img-3.jpg";
 import gif1 from "../../helpers/pictures/test.gif";
@@ -9,9 +12,16 @@ import { Container, Stack } from "@mui/material";
 
 export default function Posts() {
   return (
-    <Container maxWidth="sm" sx={{ pb: 5 }}>
+    <Container maxWidth="md" sx={{ pb: 5 }}>
+      <ForumSearch />
+      <ForumMenu />
+
       {/* inside we pass the actual post component */}
-      <Stack spacing={4}>
+      <Stack
+        spacing={3}
+        direction="column"
+        justifyContent="center"
+      >
         <PostItem
           avatarSrc=""
           avatarAlt="julec"
