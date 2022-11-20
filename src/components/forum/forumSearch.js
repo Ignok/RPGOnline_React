@@ -30,7 +30,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "black",
+  color: "var(--accent)",
   "& .MuiInputBase-input": {
     padding: theme.spacing(0.5, 1, 0.5, 1),
     // vertical padding + font size from searchIcon
@@ -40,7 +40,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function DenseAppBar() {
+export default function SearchBar() {
   return (
     <Box
       sx={{

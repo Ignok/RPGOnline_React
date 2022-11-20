@@ -21,7 +21,7 @@ import "../../App.css";
 
 export default function PostItem(props) {
   return (
-    <Card sx={{ maxWidth: 600, maxHeight: 500 }}>
+    <Card sx={{ maxWidth: "md", maxHeight: "md" }}>
       <CardHeader
         sx={{ bgcolor: "var(--accent)", borderBottom: 1 }}
         avatar={

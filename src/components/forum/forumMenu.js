@@ -14,27 +14,42 @@ const ColorButton = styled(Button)((theme) => ({
   color: "white",
   "&:hover": {
     color: "#f37653",
+    backgroundColor: "transparent",
   },
 }));
 
-export default function ResponsiveStack() {
+export default function ForumMenu() {
   return (
-    <Box sx={{ mb: 2.5 }}>
+    <Box
+      sx={{
+        display: {
+          xs: "none",
+          sm: "none",
+          md: "inline",
+          lg: "inline",
+          lx: "inline",
+        },
+      }}
+    >
       <Box
         position="static"
-        sx={{ bgcolor: "#da57b3", borderRadius: 1, boxShadow: 0 }}
+        sx={{
+          bgcolor: "var(--accent)",
+          borderRadius: 1,
+          boxShadow: 0,
+          mb: 3,
+        }}
       >
         <Stack
           direction="row"
           justifyContent="center"
           alignItems="center"
-          spacing={4}
+          spacing={3}
           sx={{ bgColor: "#da57b3" }}
           divider={<Divider orientation="vertical" flexItem />}
         >
           <Typography
             color="inherit"
-            component="div"
             sx={{
               letterSpacing: ".1rem",
               color: "white",
@@ -47,7 +62,9 @@ export default function ResponsiveStack() {
           </Typography>
           {pages.map((page) => (
             <ColorButton>
-              <Typography textAlign="center">{page}</Typography>
+              <Typography textAlign="center" variant="h6" noWrap="true">
+                {page}
+              </Typography>
             </ColorButton>
           ))}
         </Stack>
