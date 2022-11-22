@@ -17,14 +17,14 @@ export default function Posts() {
     <Box
       maxWidth="100%"
       display="flex"
-      sx={{ flexWrap: "wrap", alignItems: "baseline" }}
+      sx={{ flexWrap: "wrap", alignItems: "baseline",}}
     >
       <ForumNavbar/>
       <Container maxWidth="md" sx={{ pb: 5 }}>
         <ForumSearch />
         <ForumMenu />
         {/* inside we pass the actual post component */}
-        <Stack spacing={3} direction="column" justifyContent="center">
+        <Stack spacing={3} direction="column" justifyContent="center" sx={{flexGrow: 1}}>
           <PostItem
             avatarSrc=""
             avatarAlt="julec"

@@ -12,6 +12,7 @@ import * as ReactDOMClient from 'react-dom/client';
 
 import AboutMeDetails from './AboutMeDetails';
 
+import UserMenu from '../../../components/userprofile/userMenu';
 
 const withRouter = WrappedComponent => props => {
     const params = useParams();
@@ -109,13 +110,16 @@ class AboutMe extends React.Component {
                                 {/* </UserProfile.Row> */}
                             </UserProfile.LeftColumn>
 
+
                             <UserProfile.RightColumn>
                                 {/* <UserProfile.Row> */}
                                 <UserProfile.Username>{user.username}</UserProfile.Username>
                                 <UserProfile.CreationDate>User since: {DatetimeToLocaleDateString(user.creationDate)}</UserProfile.CreationDate>
                                 {/* </UserProfile.Row> */}
                                 {/* <UserProfile.Row> */}
-                                Tytuł nawigacji
+                                
+                                <UserMenu/>
+
                                 {/* </UserProfile.Row> */}
                                 {/* <UserProfile.Row> */}
                                 {/* <div id="profile-option">
