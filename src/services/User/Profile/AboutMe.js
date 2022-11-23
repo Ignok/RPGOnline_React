@@ -14,6 +14,11 @@ import AboutMeDetails from './AboutMeDetails';
 
 import UserMenu from '../../../components/userprofile/userMenu';
 import UserHeading from '../../../components/userprofile/userHeading';
+import {
+  SelectCountry,
+  SelectAttitude,
+} from "../../../components/userprofile/aboutme/selects";
+import CityAboutmeTextField from '../../../components/userprofile/aboutme/inputs';
 
 const withRouter = WrappedComponent => props => {
     const params = useParams();
@@ -154,14 +159,11 @@ class AboutMe extends React.Component {
                   <UserProfile.RightColumn>
                     {/* <UserProfile.Username>{user.username}</UserProfile.Username>
                                 <UserProfile.CreationDate>User since: {DatetimeToLocaleDateString(user.creationDate)}</UserProfile.CreationDate> */}
-
                     <UserHeading
                       username={user.username}
                       date={DatetimeToLocaleDateString(user.creationDate)}
                     />
-
                     <UserMenu />
-
                     {/* </UserProfile.Row> */}
                     {/* <UserProfile.Row> */}
                     {/* <div id="profile-option">
@@ -192,6 +194,9 @@ class AboutMe extends React.Component {
                       </tbody>
                     </table>
                     {/* </UserProfile.Row> */}
+                    <SelectCountry />
+                    <CityAboutmeTextField/>
+                    <SelectAttitude />
                   </UserProfile.RightColumn>
                 </UserProfile.Row>
               </UserProfile.Wrapper>
