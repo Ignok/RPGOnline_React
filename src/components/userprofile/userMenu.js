@@ -40,7 +40,7 @@ export default function UserMenu() {
           align="center"
           sx={{
             flexGrow: 1,
-            display: { xs: "none", sm: "inline" },
+            display: { xs: "none", sm: "none", md: "inline" },
             color: "white",
             fontStyle: "italic",
             fontWeight: "bold",
@@ -49,7 +49,7 @@ export default function UserMenu() {
           MY PROFILE
         </Typography>
 
-        <ColorButton sx={{ flexGrow: 2, fontWeight: 'bold' }}>
+        <ColorButton sx={{ flexGrow: 2, fontWeight: "bold" }}>
           SAVE CHANGES
         </ColorButton>
         <Box display="flex">

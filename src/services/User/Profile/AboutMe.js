@@ -13,6 +13,7 @@ import * as ReactDOMClient from 'react-dom/client';
 import AboutMeDetails from './AboutMeDetails';
 
 import UserMenu from '../../../components/userprofile/userMenu';
+import UserHeading from '../../../components/userprofile/userHeading';
 
 const withRouter = WrappedComponent => props => {
     const params = useParams();
@@ -74,89 +75,129 @@ class AboutMe extends React.Component {
         const { user } = this.state;
         console.log(user);
         return (
-            <div className="">
-                <UserProfile>
-                    {/* <UserProfile.Title>Profile</UserProfile.Title> */}
-                    <UserProfile.Wrapper>
-                        <UserProfile.Row>
+          <div className="">
+            <UserProfile>
+              {/* <UserProfile.Title>Profile</UserProfile.Title> */}
+              <UserProfile.Wrapper>
+                <UserProfile.Row>
+                  <UserProfile.LeftColumn>
+                    {/* <UserProfile.Row> */}
+                    <UserProfile.ProfilePictureContainer>
+                      <UserProfile.Image
+                        src={require("../../../helpers/pictures/anonymous_user.png")}
+                        alt="anonymous_user"
+                      />
+                      <UserProfile.Flag
+                        src={require("../../../helpers/pictures/poland_flag.png")}
+                        alt="flag"
+                      />
+                    </UserProfile.ProfilePictureContainer>
+                    {/* </UserProfile.Row> */}
+                    {/* <UserProfile.Row> */}
+                    <UserProfile.EmailText>{user.email}</UserProfile.EmailText>
+                    {/* </UserProfile.Row> */}
+                    {/* <UserProfile.Row> */}
+                    <UserProfile.ButtonNavGroup>
+                      <UserProfile.ButtonNav
+                        className="navigation-button"
+                        href={`/aboutme/details/${user.uId}`}
+                      >
+                        <Icon className="fa-solid fa-user" />
+                        About me
+                      </UserProfile.ButtonNav>
+                      <UserProfile.ButtonNav
+                        className="navigation-button"
+                        href="#"
+                      >
+                        <Icon className="fa-solid fa-users" />
+                        Friends
+                      </UserProfile.ButtonNav>
+                      <UserProfile.ButtonNav
+                        className="navigation-button"
+                        href="#"
+                      >
+                        <Icon className="fa-solid fa-trophy" />
+                        Achievements
+                      </UserProfile.ButtonNav>
+                      <UserProfile.ButtonNav
+                        className="navigation-button"
+                        href="#"
+                      >
+                        <Icon className="fa-solid fa-chart-simple" />
+                        Statistics
+                      </UserProfile.ButtonNav>
+                      <UserProfile.ButtonNav
+                        className="navigation-button"
+                        href="#"
+                      >
+                        <Icon className="fa-solid fa-envelope" />
+                        Messages
+                      </UserProfile.ButtonNav>
+                      <UserProfile.ButtonNav
+                        className="navigation-button"
+                        href="#"
+                      >
+                        <Icon className="fa-solid fa-bookmark" />
+                        Saved
+                      </UserProfile.ButtonNav>
+                      <UserProfile.ButtonNav
+                        className="navigation-button"
+                        href="#"
+                      >
+                        <Icon className="fa-solid fa-gear" />
+                        Settings
+                      </UserProfile.ButtonNav>
+                    </UserProfile.ButtonNavGroup>
+                    {/* </UserProfile.Row> */}
+                  </UserProfile.LeftColumn>
 
-                            <UserProfile.LeftColumn>
-                                {/* <UserProfile.Row> */}
-                                <UserProfile.ProfilePictureContainer>
-                                    <UserProfile.Image
-                                        src={require("../../../helpers/pictures/anonymous_user.png")}
-                                        alt="anonymous_user"
-                                    />
-                                    <UserProfile.Flag
-                                        src={require("../../../helpers/pictures/poland_flag.png")}
-                                        alt="flag"
-                                    />
+                  <UserProfile.RightColumn>
+                    {/* <UserProfile.Username>{user.username}</UserProfile.Username>
+                                <UserProfile.CreationDate>User since: {DatetimeToLocaleDateString(user.creationDate)}</UserProfile.CreationDate> */}
 
-                                </UserProfile.ProfilePictureContainer>
-                                {/* </UserProfile.Row> */}
-                                {/* <UserProfile.Row> */}
-                                <UserProfile.EmailText>{user.email}</UserProfile.EmailText>
-                                {/* </UserProfile.Row> */}
-                                {/* <UserProfile.Row> */}
-                                <UserProfile.ButtonNavGroup>
-                                    <UserProfile.ButtonNav className='navigation-button' href={`/aboutme/details/${user.uId}`}><Icon className="fa-solid fa-user" />About me</UserProfile.ButtonNav>
-                                    <UserProfile.ButtonNav className='navigation-button' href='#'><Icon className="fa-solid fa-users" />Friends</UserProfile.ButtonNav>
-                                    <UserProfile.ButtonNav className='navigation-button' href='#'><Icon className="fa-solid fa-trophy" />Achievements</UserProfile.ButtonNav>
-                                    <UserProfile.ButtonNav className='navigation-button' href='#'><Icon className="fa-solid fa-chart-simple" />Statistics</UserProfile.ButtonNav>
-                                    <UserProfile.ButtonNav className='navigation-button' href='#'><Icon className="fa-solid fa-envelope" />Messages</UserProfile.ButtonNav>
-                                    <UserProfile.ButtonNav className='navigation-button' href='#'><Icon className="fa-solid fa-bookmark" />Saved</UserProfile.ButtonNav>
-                                    <UserProfile.ButtonNav className='navigation-button' href='#'><Icon className="fa-solid fa-gear" />Settings</UserProfile.ButtonNav>
-                                </UserProfile.ButtonNavGroup>
-                                {/* </UserProfile.Row> */}
-                            </UserProfile.LeftColumn>
+                    <UserHeading
+                      username={user.username}
+                      date={DatetimeToLocaleDateString(user.creationDate)}
+                    />
 
+                    <UserMenu />
 
-                            <UserProfile.RightColumn>
-                                {/* <UserProfile.Row> */}
-                                <UserProfile.Username>{user.username}</UserProfile.Username>
-                                <UserProfile.CreationDate>User since: {DatetimeToLocaleDateString(user.creationDate)}</UserProfile.CreationDate>
-                                {/* </UserProfile.Row> */}
-                                {/* <UserProfile.Row> */}
-                                
-                                <UserMenu/>
-
-                                {/* </UserProfile.Row> */}
-                                {/* <UserProfile.Row> */}
-                                {/* <div id="profile-option">
+                    {/* </UserProfile.Row> */}
+                    {/* <UserProfile.Row> */}
+                    {/* <div id="profile-option">
                                     <Route path='/aboutme/details/:uId' component={<AboutMeDetails />} />
                                 </div> */}
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>User ID</th>
-                                            <th>E-mail</th>
-                                            <th>Country</th>
-                                            <th>City</th>
-                                            <th>AboutMe</th>
-                                            <th>Attitude</th>
-                                            <th>Creation date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* <tr key={user.uId}> */}
-                                        <td>{user.uId}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.country}</td>
-                                        <td>{user.city}</td>
-                                        <td>{user.aboutMe}</td>
-                                        <td>{user.attitude}</td>
-                                        <td>{DatetimeToLocaleDateString(user.creationDate)}</td>
-                                        {/* </tr>         */}
-                                    </tbody>
-                                </table>
-                                {/* </UserProfile.Row> */}
-                            </UserProfile.RightColumn>
-
-                        </UserProfile.Row>
-                    </UserProfile.Wrapper>
-                </UserProfile>
-            </div>
-        )
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>User ID</th>
+                          <th>E-mail</th>
+                          <th>Country</th>
+                          <th>City</th>
+                          <th>AboutMe</th>
+                          <th>Attitude</th>
+                          <th>Creation date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* <tr key={user.uId}> */}
+                        <td>{user.uId}</td>
+                        <td>{user.email}</td>
+                        <td>{user.country}</td>
+                        <td>{user.city}</td>
+                        <td>{user.aboutMe}</td>
+                        <td>{user.attitude}</td>
+                        <td>{DatetimeToLocaleDateString(user.creationDate)}</td>
+                        {/* </tr>         */}
+                      </tbody>
+                    </table>
+                    {/* </UserProfile.Row> */}
+                  </UserProfile.RightColumn>
+                </UserProfile.Row>
+              </UserProfile.Wrapper>
+            </UserProfile>
+          </div>
+        );
         // const {user}=this.state;
         // return(
         //     <div>
