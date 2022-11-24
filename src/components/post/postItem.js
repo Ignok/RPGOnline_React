@@ -16,15 +16,35 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import { PersonAddAlt1 } from "@mui/icons-material";
 import { Chip, CardActionArea } from "@mui/material";
-
-import { Link, useLocation } from 'react-router-dom';
-
+import Button from "@mui/material/Button";
+import { Link, useLocation } from "react-router-dom";
 
 import "../../App.css";
 
 export default function PostItem(props) {
-  return (
+  
+  const [flag, setFlag] = React.useState(true);
+  const [flagFollow, setFlagFollow] = React.useState(true);
 
+  const handleClick = () => {
+    setFlag(!flag);
+  };
+
+  const handleClickFollow = () => {
+    setFlagFollow(!flagFollow);
+  };
+
+  const FollowButton = styled(Button)(() => ({
+    color: "var(--accent-bg)",
+    backgroundColor: flagFollow ? "#572348" : "#b74a97",
+    borderRadius: 20,
+    "&:hover": {
+      color: "var(accent-light)",
+      backgroundColor: flagFollow ? "#572348" : "#b74a97",
+    },
+  }));
+
+  return (
     <Card sx={{ maxWidth: "md", maxHeight: "md" }}>
       <CardHeader
         sx={{ bgcolor: "var(--accent)", borderBottom: 1 }}
@@ -36,34 +56,43 @@ export default function PostItem(props) {
           />
         }
         action={
-          <IconButton aria-label="follow">
-            <PersonAddAlt1 />
-          </IconButton>
+          <FollowButton
+            variant="contained"
+            disableElevation
+            onClick={handleClickFollow}
+            key={props.id}
+            sx={{ mt: 0.5, mx: 2, width: 110 }}
+          >
+            {flagFollow ? "FOLLOW" : "FOLLOWED"}
+          </FollowButton>
         }
+        // titleTypographyProps={{ variant: "h6" }}
         title={props.username}
         subheader={props.date}
       />
       <CardActionArea>
-        <Link to={`/post/${props.id}`} style={{ textDecoration: 'none' }}>
+        <Link to={`/post/${props.id}`} style={{ textDecoration: "none" }}>
           <CardContent
             sx={{
               bgcolor: "var(--accent)",
               maxHeight: "auto",
             }}
           >
-
             <Typography
               noWrap={true}
-              variant="body2"
               color="text.secondary"
-              sx={{ padding: 1 }}
+              variant="h6"
+              sx={{ mb: 1, fontWeight: "bold" }}
             >
               {props.title}
-              <br />
-              {props.text}
             </Typography>
-            {
-              props.imgSrc && <CardMedia
+            {!props.imgSrc && (
+              <Typography noWrap={true} variant="body2" color="text.secondary">
+                {props.text}
+              </Typography>
+            )}
+            {props.imgSrc && (
+              <CardMedia
                 component="img"
                 image={props.imgSrc}
                 alt={props.imgAlt}
@@ -74,7 +103,7 @@ export default function PostItem(props) {
                   maxHeight: 270,
                 }}
               />
-            }
+            )}
           </CardContent>
         </Link>
       </CardActionArea>
@@ -90,7 +119,11 @@ export default function PostItem(props) {
         disableSpacing
         sx={{ bgcolor: "var(--accent)", justifyContent: "right", px: 12 }}
       >
-        <IconButton aria-label="add to favorites">
+        <IconButton
+          aria-label="add to favorites"
+          onClick={handleClick}
+          sx={{ color: flag ? "#572348" : "#b50c3b" }}
+        >
           <FavoriteIcon />
         </IconButton>
         <div>{props.likes}</div>
@@ -101,4 +134,5 @@ export default function PostItem(props) {
       </CardActions>
     </Card>
   );
+
 }
