@@ -182,7 +182,7 @@ class AboutMe extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {/* <tr key={user.uId}> */}
+                        <tr key={user.uId}>
                         <td>{user.uId}</td>
                         <td>{user.email}</td>
                         <td>{user.country}</td>
@@ -190,7 +190,7 @@ class AboutMe extends React.Component {
                         <td>{user.aboutMe}</td>
                         <td>{user.attitude}</td>
                         <td>{DatetimeToLocaleDateString(user.creationDate)}</td>
-                        {/* </tr>         */}
+                        </tr>        
                       </tbody>
                     </table>
                     {/* </UserProfile.Row> */}

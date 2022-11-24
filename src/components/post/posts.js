@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PostItem from "./postItem";
 
 import ForumSearch from "../forum/forumSearch";
@@ -12,57 +12,48 @@ import { Container, Stack } from "@mui/material";
 import ForumNavbar from "../forum/forumNav";
 import Box from "@mui/material/Box";
 
+import useFetchPosts from "../../helpers/functions/useFetchPosts";
+
+import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
+
 export default function Posts() {
+  const [params, setParams] = useState({})
+  const [page, setPage] = useState(1)
+  const { posts, loading, error } = useFetchPosts(params, page);
+
   return (
     <Box
       maxWidth="100%"
       display="flex"
-      sx={{ flexWrap: "wrap", alignItems: "baseline",}}
+      sx={{ flexWrap: "wrap", alignItems: "baseline", }}
     >
-      <ForumNavbar/>
+      <ForumNavbar />
       <Container maxWidth="md" sx={{ pb: 5 }}>
         <ForumSearch />
         <ForumMenu />
         {/* inside we pass the actual post component */}
-        <Stack spacing={3} direction="column" justifyContent="center" sx={{flexGrow: 1}}>
-          <PostItem
-            avatarSrc=""
-            avatarAlt="julec"
-            title="fanart"
-            date="November 18, 2022"
-            text="Jaki śliczny ślimaczek! ijsdhufbsudhbfiusbdujfgbusgbdfusgbudfbsuibfusdbfusdb"
-            imgSrc={src1}
-            imgAlt="slimak"
-            tag1="fanart"
-            tag2="NPC"
-            likes="12.k"
-            comments="201"
-          />
-
-          <PostItem
-            avatarSrc=""
-            avatarAlt="bocz"
-            title="cosplay"
-            date="November 19, 2022"
-            text="Jeszcze przekierowanie do post details + posty ktore maja TYLKO tekst?"
-            imgSrc={src2}
-            imgAlt="bard"
-            tag1="fanart"
-            likes="666"
-            comments="0"
-          />
-
-          <PostItem
-            avatarSrc=""
-            avatarAlt="bocz"
-            title="kitku"
-            date="November 19, 2022"
-            text="w przyszlosci wypadaloby rozszerzyc styl o np zmiane koloru przy like'u"
-            imgSrc={gif1}
-            imgAlt="kitku"
-            likes="0"
-            comments="0"
-          />
+        <Stack spacing={3} direction="column" justifyContent="center" sx={{ flexGrow: 1 }}>
+          
+            {loading && <h1>Loading...</h1>}
+            {error && <h1>Error. Try Refreshing.</h1>}
+            {posts.map(post => {
+              return <PostItem
+                key={post.postId}
+                id={post.postId}
+                avatarSrc={post.creatorNavigation.picture}
+                avatarAlt="avatar"
+                username={post.creatorNavigation.username}
+                date={DatetimeToLocaleDateString(post.creationDate)}
+                title={post.title}
+                text={post.content}
+                imgSrc={post.postId === 1 ? src1 : post.picture}
+                imgAlt="picture"
+                // tag1="fanart"
+                // tag2="NPC"
+                likes={post.likes}
+                comments={post.comments}
+              />
+            })}
         </Stack>
       </Container>
     </Box>

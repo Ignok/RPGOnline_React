@@ -8,6 +8,8 @@ import AboutMe from './services/User/Profile/AboutMe';
 import Register from './services/User/Profile/Register';
 import Login from './services/User/Profile/Login'
 
+import PostDetails from './components/post/postDetails';
+
 import { Navigation } from './containers/navigation';
 
 import { FooterContainer } from './containers/footer'
@@ -40,6 +42,7 @@ class App extends React.Component {
               <Route path='/' element={<Home />} />
               <Route path='/users' element={<Users />} />
               <Route path='/forum' element={<Forum />} />
+              <Route path='/post/:postId' element={<PostDetails />} />
               <Route path='/aboutme/:uId' element={<AboutMe />} />
               <Route path='/aboutme/details/:uId' element={<AboutMeDetails />} />
               <Route path='/login' element={<Login />} />

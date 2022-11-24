@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Divider from "@mui/material/Divider";
 
+
 import "../../App.css";
 
 const pages = ["Discussion", "Fanart", "Assets"];
@@ -61,8 +62,8 @@ export default function ForumMenu() {
             Share~
           </Typography>
           {pages.map((page) => (
-            <ColorButton>
-              <Typography textAlign="center" variant="h6" noWrap="true">
+            <ColorButton key={pages.indexOf(page)}>
+              <Typography textAlign="center" variant="h6" noWrap={true}>
                 {page}
               </Typography>
             </ColorButton>

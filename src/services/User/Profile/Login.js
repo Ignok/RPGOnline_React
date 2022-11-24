@@ -82,7 +82,8 @@ export default function Login() {
                     .then(
                         (data) => {
                             console.log(data)
-                            if (response.status === 400) {
+                            if (response.status === 401) {
+                                console.log(response);
                                 let errors = {};
                                 errors.Pswd = "Username or password is invalid";
                                 setFormErrors(errors);

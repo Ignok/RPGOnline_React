@@ -22,7 +22,7 @@ export default function UserHeading(props) {
             component="div"
             variant="h4"
                       color="var(--accent)"
-                      noWrap="true"
+                      noWrap={true}
             sx={{
               fontWeight: "bold",
             }}
@@ -33,7 +33,7 @@ export default function UserHeading(props) {
             variant="subtitle1"
             color="var(--accent)"
             component="div"
-            noWrap="true"
+            noWrap={true}
           >
             user since: {props.date}
           </Typography>
