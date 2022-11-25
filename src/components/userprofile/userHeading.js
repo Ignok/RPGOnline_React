@@ -13,16 +13,38 @@ import img1 from "../../helpers/pictures/achievements/ach1.png";
 import img2 from "../../helpers/pictures/achievements/ach2.png";
 import img3 from "../../helpers/pictures/achievements/ach3.png";
 
+const CardMediaAchivement = styled(CardMedia)(({ theme }) => ({
+  height: "100px",
+  width: "100px",
+  padding: 10,
+  [theme.breakpoints.down("md")]: {
+    height: "90px",
+    width: "90px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    height: "100px",
+    width: "100px",
+    padding: 3,
+  },
+}));
+
 export default function UserHeading(props) {
   return (
-    <Card sx={{ display: "flex", borderRadius: 0, boxShadow: 0 }}>
+    <Card
+      sx={{
+        display: "flex",
+        borderRadius: 0,
+        boxShadow: 0,
+        backgroundColor: "transparent",
+      }}
+    >
       <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography
             component="div"
             variant="h4"
-                      color="var(--accent)"
-                      noWrap={true}
+            color="var(--accent)"
+            noWrap={true}
             sx={{
               fontWeight: "bold",
             }}
@@ -42,27 +64,24 @@ export default function UserHeading(props) {
       <Box
         sx={{
           display: "flex",
-                  width: "100%",
+          width: "100%",
           minWidth: "100px",
-                  justifyContent: "space-evenly",
-          mx: 12
+          justifyContent: "space-evenly",
+          mx: 12,
         }}
       >
-        <CardMedia
+        <CardMediaAchivement
           component="img"
-          sx={{ height: "100px", width: "100px", padding: 1 }}
           src={img1}
           alt="like a post"
         />
-        <CardMedia
+        <CardMediaAchivement
           component="img"
-          sx={{ height: "100px", width: "100px", padding: 1 }}
           src={img2}
           alt="create your own character"
         />
-        <CardMedia
+        <CardMediaAchivement
           component="img"
-          sx={{ height: "100px", width: "100px", padding: 1 }}
           src={img3}
           alt="run a campaign as GM"
         />

@@ -3,11 +3,13 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import FormLabel from "@mui/material/FormLabel";
+import { Typography } from "@mui/material";
 
 const CustomDisableInput = styled(TextField)(() => ({
   ".Mui-disabled": {
     WebkitTextFillColor: "#000",
-    color: "black",
+    color: "#000",
+    backgroundColor: "white",
   },
 }));
 
@@ -18,23 +20,26 @@ export default function CityAboutmeTextField() {
       sx={{
         display: "flex",
         flexDirection: "column",
+        mx: 10,
         // maxWidth: "400px"
       }}
       noValidate
       autoComplete="off"
     >
-      <FormLabel sx={{ mx: 0.5 }}>City</FormLabel>
+      <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
+        City
+      </Typography>{" "}
       <CustomDisableInput
         disabled
         id="outlined-basic"
-        label="City-Label"
         variant="outlined"
         size="small"
         margin="dense"
         sx={{ mb: 3 }}
       />
-
-      <FormLabel sx={{ mx: 0.5 }}>About me</FormLabel>
+      <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
+        About me
+      </Typography>
       <CustomDisableInput
         disabled
         value="My journey with tabletop RPGs. Which systems do I play. What are my favorite professions... etc."

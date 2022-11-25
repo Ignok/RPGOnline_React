@@ -1,253 +1,180 @@
-import React from 'react';
-import { useParams, Link, BrowserRouter, Route, Routes } from "react-router-dom";
+import React from "react";
+import { useParams } from "react-router-dom";
+import UserProfile from "../../../components/userprofile";
+import ProfileNav from "./profileNav";
+import { getUsersAbout } from "../../../Api_RPGOnline";
+import { DatetimeToLocaleDateString } from "../../../helpers/functions/DateTimeConverter";
+import ReactDOM from "react-dom";
+import Box from "@mui/material/Box";
+import { Container, Stack, Typography } from "@mui/material";
 
-import Icon from '../../../components/icons';
-import UserProfile from '../../../components/userprofile';
-import { getUsersAbout } from '../../../Api_RPGOnline';
-import { DatetimeToLocaleDateString } from '../../../helpers/functions/DateTimeConverter';
-import { ButtonNav, ButtonNavGroup, EmailText } from '../../../components/userprofile/userprofile';
-import ReactDOM from 'react-dom';
-//import {createRoot} from 'react-dom/client';
-import * as ReactDOMClient from 'react-dom/client';
-
-import AboutMeDetails from './AboutMeDetails';
-
-import UserMenu from '../../../components/userprofile/userMenu';
-import UserHeading from '../../../components/userprofile/userHeading';
+import UserMenu from "../../../components/userprofile/userMenu";
+import UserHeading from "../../../components/userprofile/userHeading";
 import {
   SelectCountry,
   SelectAttitude,
 } from "../../../components/userprofile/aboutme/selects";
-import CityAboutmeTextField from '../../../components/userprofile/aboutme/inputs';
+import CityAboutmeTextField from "../../../components/userprofile/aboutme/inputs";
 
-const withRouter = WrappedComponent => props => {
-    const params = useParams();
+import Badge from "@mui/material/Badge";
+import Avatar from "@mui/material/Avatar";
+import { styled } from "@mui/material/styles";
+import Grid from "@mui/material/Unstable_Grid2";
 
-    return (
-        <WrappedComponent
-            {...props}
-            params={params}
-        />
-    );
+import "../../../App.css";
+import { alpha } from "@mui/material";
+
+const withRouter = (WrappedComponent) => (props) => {
+  const params = useParams();
+
+  return <WrappedComponent {...props} params={params} />;
 };
 
+const SmallAvatar = styled(Avatar)(({ theme }) => ({
+  width: 50,
+  height: 50,
+}));
+
+const GridBox = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(1),
+  [theme.breakpoints.down("md")]: {
+    gridColumn: 1,
+  },
+  [theme.breakpoints.up("md")]: {
+    gridColumn: 2,
+  },
+}));
+
+const Sidebar = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.up("md")]: {
+    maxWidth: 300,
+  },
+}));
+
 class AboutMe extends React.Component {
+  constructor(props) {
+    super(props);
 
+    const uId = this.props.params.uId;
 
-    constructor(props) {
-        super(props);
+    console.log(uId);
 
-        const uId = this.props.params.uId;
+    this.state = {
+      uId: uId,
+      user: [],
+      error: null,
+      isLoaded: false,
+      message: null,
+    };
+  }
 
-        console.log(uId);
-
-        this.state = {
-            uId: uId,
-            user: [],
-            error: null,
-            isLoaded: false,
-            message: null
+  refreshPage() {
+    getUsersAbout(this.state.uId)
+      .then((response) => response.json())
+      .then(
+        (data) => {
+          this.setState({
+            user: data,
+            isLoaded: true,
+          });
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
         }
-    }
+      );
+  }
 
+  componentDidMount() {
+    this.refreshPage();
+  }
 
-    refreshPage() {
-        getUsersAbout(this.state.uId)
-            .then(response => response.json())
-            .then(
-                (data) => {
-                    this.setState({
-                        user: data,
-                        isLoaded: true
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    })
+  render() {
+    const { user } = this.state;
+    console.log(user);
+
+    return (
+      <Grid
+        container
+        display="grid"
+        sx={{
+          gap: 1,
+          padding: 1,
+          gridTemplateColumns: "auto",
+          gridTemplateRows: "auto",
+          background: "transparent",
+          overflow: "hidden",
+          mb: 5,
+          //   gridTemplateAreas: `"sidebar main"`
+        }}
+      >
+        <Sidebar gridColumn={1} sx={{ minWidth: 175 }}>
+          <Box
+            display="flex"
+            sx={{
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Stack direction="row">
+              <Badge
+                overlap="circular"
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                badgeContent={
+                  <SmallAvatar
+                    alt="PL"
+                    src={require("../../../helpers/pictures/poland_flag.png")}
+                  />
                 }
-            );
-    }
+              >
+                <Avatar
+                  alt="Avatar"
+                  src={require("../../../helpers/pictures/anonymous_user.png")}
+                  variant="rounded"
+                  sx={{ width: 150, height: 150 }}
+                />
+              </Badge>
+            </Stack>
+            <Box sx={{ typography: "subtitle2", mt: 1, mb: 2 }}>
+              {user.email}
+            </Box>
+          </Box>
+          <ProfileNav user={user} />
+        </Sidebar>
 
-    componentDidMount() {
-        this.refreshPage();
-    }
+        <GridBox sx={{ backgroundColor: "transparent" }}>
+          <UserHeading
+            username={user.username}
+            date={DatetimeToLocaleDateString(user.creationDate)}
+          />
+          <UserMenu />
 
-
-
-    render() {
-        const { user } = this.state;
-        console.log(user);
-        return (
-          <div className="">
-            <UserProfile>
-              {/* <UserProfile.Title>Profile</UserProfile.Title> */}
-              <UserProfile.Wrapper>
-                <UserProfile.Row>
-                  <UserProfile.LeftColumn>
-                    {/* <UserProfile.Row> */}
-                    <UserProfile.ProfilePictureContainer>
-                      <UserProfile.Image
-                        src={require("../../../helpers/pictures/anonymous_user.png")}
-                        alt="anonymous_user"
-                      />
-                      <UserProfile.Flag
-                        src={require("../../../helpers/pictures/poland_flag.png")}
-                        alt="flag"
-                      />
-                    </UserProfile.ProfilePictureContainer>
-                    {/* </UserProfile.Row> */}
-                    {/* <UserProfile.Row> */}
-                    <UserProfile.EmailText>{user.email}</UserProfile.EmailText>
-                    {/* </UserProfile.Row> */}
-                    {/* <UserProfile.Row> */}
-                    <UserProfile.ButtonNavGroup>
-                      <UserProfile.ButtonNav
-                        className="navigation-button"
-                        href={`/aboutme/details/${user.uId}`}
-                      >
-                        <Icon className="fa-solid fa-user" />
-                        About me
-                      </UserProfile.ButtonNav>
-                      <UserProfile.ButtonNav
-                        className="navigation-button"
-                        href="#"
-                      >
-                        <Icon className="fa-solid fa-users" />
-                        Friends
-                      </UserProfile.ButtonNav>
-                      <UserProfile.ButtonNav
-                        className="navigation-button"
-                        href="#"
-                      >
-                        <Icon className="fa-solid fa-trophy" />
-                        Achievements
-                      </UserProfile.ButtonNav>
-                      <UserProfile.ButtonNav
-                        className="navigation-button"
-                        href="#"
-                      >
-                        <Icon className="fa-solid fa-chart-simple" />
-                        Statistics
-                      </UserProfile.ButtonNav>
-                      <UserProfile.ButtonNav
-                        className="navigation-button"
-                        href="#"
-                      >
-                        <Icon className="fa-solid fa-envelope" />
-                        Messages
-                      </UserProfile.ButtonNav>
-                      <UserProfile.ButtonNav
-                        className="navigation-button"
-                        href="#"
-                      >
-                        <Icon className="fa-solid fa-bookmark" />
-                        Saved
-                      </UserProfile.ButtonNav>
-                      <UserProfile.ButtonNav
-                        className="navigation-button"
-                        href="#"
-                      >
-                        <Icon className="fa-solid fa-gear" />
-                        Settings
-                      </UserProfile.ButtonNav>
-                    </UserProfile.ButtonNavGroup>
-                    {/* </UserProfile.Row> */}
-                  </UserProfile.LeftColumn>
-
-                  <UserProfile.RightColumn>
-                    {/* <UserProfile.Username>{user.username}</UserProfile.Username>
-                                <UserProfile.CreationDate>User since: {DatetimeToLocaleDateString(user.creationDate)}</UserProfile.CreationDate> */}
-                    <UserHeading
-                      username={user.username}
-                      date={DatetimeToLocaleDateString(user.creationDate)}
-                    />
-                    <UserMenu />
-                    {/* </UserProfile.Row> */}
-                    {/* <UserProfile.Row> */}
-                    {/* <div id="profile-option">
-                                    <Route path='/aboutme/details/:uId' component={<AboutMeDetails />} />
-                                </div> */}
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>User ID</th>
-                          <th>E-mail</th>
-                          <th>Country</th>
-                          <th>City</th>
-                          <th>AboutMe</th>
-                          <th>Attitude</th>
-                          <th>Creation date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr key={user.uId}>
-                        <td>{user.uId}</td>
-                        <td>{user.email}</td>
-                        <td>{user.country}</td>
-                        <td>{user.city}</td>
-                        <td>{user.aboutMe}</td>
-                        <td>{user.attitude}</td>
-                        <td>{DatetimeToLocaleDateString(user.creationDate)}</td>
-                        </tr>        
-                      </tbody>
-                    </table>
-                    {/* </UserProfile.Row> */}
-                    <SelectCountry />
-                    <CityAboutmeTextField/>
-                    <SelectAttitude />
-                  </UserProfile.RightColumn>
-                </UserProfile.Row>
-              </UserProfile.Wrapper>
-            </UserProfile>
-          </div>
-        );
-        // const {user}=this.state;
-        // return(
-        //     <div>
-        //         <div className='block'>
-        //             {/* <Table className='mt-4' striped bordered hover size='sm'> */}
-        // <table>
-        //     <thead>
-        //         <tr>
-        //             <th>User ID</th>
-        //             <th>E-mail</th>
-        //             <th>Country</th>
-        //             <th>City</th>
-        //             <th>AboutMe</th>
-        //             <th>Attitude</th>
-        //             <th>Creation date</th>
-        //         </tr>
-        //     </thead>
-        //     <tbody>
-        //         {/* <tr key={user.uId}> */}
-        //             <td>{user.uId}</td>
-        //             <td>{user.email}</td>
-        //             <td>{user.country}</td>
-        //             <td>{user.city}</td>
-        //             <td>{user.aboutMe}</td>
-        //             <td>{user.attitude}</td>
-        //             <td>{DatetimeToLocaleDateString(user.creationDate)}</td>
-        //         {/* </tr>         */}
-        //     </tbody>
-        // </table>
-        //             {/* </Table> */}
-        //             <Link to='/users'>
-        //                 <button className='button-back' type="button">Back</button>
-        //             </Link>
-        //         </div>
-        //     </div>
-        // )
-    }
+          <Box
+            sx={{
+              border: 1,
+              borderRadius: 0,
+              borderColor: "var(--accent)",
+              backgroundColor: "var(--accent-opaque)",
+              mt: 2,
+              padding: 0,
+            }}
+          >
+            <SelectCountry />
+            <CityAboutmeTextField />
+            <SelectAttitude />
+          </Box>
+        </GridBox>
+      </Grid>
+    );
+  }
 }
 
 function changeOption(params) {
-    const field = ReactDOM.createRoot(
-        document.getElementById('profile-option')
-    );
+  const field = ReactDOM.createRoot(document.getElementById("profile-option"));
 
-    field.render(params);
+  field.render(params);
 }
 
 export default withRouter(AboutMe);

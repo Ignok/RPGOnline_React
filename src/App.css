@@ -73,6 +73,7 @@
   --text-light: #585858;
   --border: #afafaffd;
   --accent: #da57b3;
+  --accent-opaque: #f4cce8;
   --accent-light: #f181a3;
   --accent-dark: #a976e8;
   --light-left: #efdec6;
@@ -93,6 +94,7 @@
     --border: #666;
     --accent: #f37653;
     --accent-light: #f49b63;
+    --accent-opaque: #603b30;
     --accent-dark: #dd54ae;
     --light-left: #cd89a4;
     --light-right: #f385a8;

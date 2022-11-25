@@ -4,13 +4,16 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import FormLabel from "@mui/material/FormLabel";
 import { alpha, styled } from "@mui/material/styles";
+import { Typography } from "@mui/material";
 // ...
 
 //ustawianie tego jako disabled do przemyślenia
+//jeśli tak zostaje to można by globalnie nadpisać wsm
 const CustomDisableInput = styled(TextField)(() => ({
   ".Mui-disabled": {
     WebkitTextFillColor: "#000",
-    color: "black",
+    color: "#000",
+    backgroundColor: "white",
   },
 }));
 
@@ -37,8 +40,10 @@ export function SelectCountry() {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <FormLabel sx={{ mx: 0.5 }}>Country</FormLabel>
+    <Box sx={{ display: "flex", flexDirection: "column", mx: 10, mt: 1.5 }}>
+      <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
+        Country
+      </Typography>
       <CustomDisableInput
         select
         disabled
@@ -86,8 +91,10 @@ export function SelectAttitude() {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <FormLabel sx={{ mx: 0.5 }}>Attitude</FormLabel>
+    <Box sx={{ display: "flex", flexDirection: "column", mx: 10 }}>
+      <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
+        Attitude
+      </Typography>
       {/* w przyszlosci pewnie stworzyc custom text field dla obu selectorow */}
       <CustomDisableInput
         select

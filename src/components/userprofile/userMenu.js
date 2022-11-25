@@ -33,7 +33,7 @@ export default function UserMenu() {
         justifyContent="center"
         alignItems="center"
         spacing={4}
-        sx={{ bgColor: "#da57b3", mx: 4 }}
+        sx={{ bgColor: "#da57b3", mx: 2 }}
       >
         <Typography
           variant="h6"

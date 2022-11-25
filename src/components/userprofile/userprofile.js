@@ -115,8 +115,8 @@ export const EmailText = styled.p`
 
 //Przyciski nawigacja
 export const ButtonNavGroup = styled.div`
-  position:relative;
-  min-width: 300px;
+  position: relative;
+  min-width: auto;
   width: auto;
   height: auto;
   margin-top: 10px;
@@ -124,30 +124,34 @@ export const ButtonNavGroup = styled.div`
 `;
 
 export const ButtonNav = styled.a`
-  display:block;
+  display: block;
   border-radius: 0;
-  border: 1px solid #5600FF;
+  border: 1px solid #5600ff;
   width: 100%;
   height: 50hv;
   margin-top: 0;
   margin-bottom: 0;
-  
-  background: #7E7AFF;
+  padding: 1;
+
+  background: #7e7aff;
   color: var(--bg);
 
-&:hover {
+  &:hover {
     color: var(--accent-dark);
     transition: 200ms ease-in;
-}
+  }
 
-//text
+  //text
   text-decoration: none;
-  font-family: 'quinque';
-  font-size: 0.70rem;
+  font-family: "quinque";
+  font-size: 0.7rem;
   font-weight: bold;
   line-height: 1;
   padding: 1rem 1rem;
   text-align: left;
+  @media (max-width: 1000px) and (min-width: 900px) {
+    font-size: 0.45rem;
+  }
 `;
 
 
