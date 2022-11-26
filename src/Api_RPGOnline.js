@@ -56,3 +56,16 @@ export function register(data){
     }
     return fetch(RPGONLINE_API+'Account/register', options);
 }
+
+
+
+export function getPostsDetails(id) {
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      //'Authorization': 'Bearer ' + token
+    },
+  };
+  return fetch(RPGONLINE_API + "Posts/" + id, options);
+}
