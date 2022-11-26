@@ -16,6 +16,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import FanartIcon from "@mui/icons-material/Palette";
 import CosplayIcon from "@mui/icons-material/FaceRetouchingNatural";
+import NoviceLoreHelpIcon from "@mui/icons-material/PsychologyAltOutlined";
 import CharacterIcon from "@mui/icons-material/PsychologyAlt";
 import NPCIcon from "@mui/icons-material/Boy";
 import MonsterIcon from "@mui/icons-material/SmartToy";
@@ -26,14 +27,15 @@ import SpellIcon from "@mui/icons-material/AutoFixNormal";
 
 import { styled } from "@mui/system";
 
-export default function ForumNavbar() {
-  const [open, setOpen] = React.useState(true);
+export default function ForumNavbar({ params, onParamChange }) {
+  const [open, setOpen] = React.useState(false);
 
   const ColorItemIcon = styled(ListItemIcon)((theme) => ({
-    color: "var(--accent)",
+    color: "var(--accent)"
   }));
   const ColorItemIconSub = styled(ListItemIcon)((theme) => ({
     color: "var(--accent-light)",
+    selectable: false
   }));
 
   const handleClick = () => {
@@ -42,10 +44,11 @@ export default function ForumNavbar() {
 
   return (
     <List
+      
       sx={{
         maxWidth: "auto",
         bgcolor: "background.paper",
-              color: "var(--accent)",
+        color: "var(--accent)"
       }}
       component="nav"
     >
@@ -63,20 +66,39 @@ export default function ForumNavbar() {
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
-            <ColorItemIconSub>
+        <List
+          component="div" disablePadding>
+
+          <ListItemButton
+          onClick={onParamChange}
+          value='fanart'
+          name='fanart'
+          id='fanart'
+          component="button"
+            sx={{ pl: 4, color: "var(--accent-light)" }}>
+            <ColorItemIconSub >
               <FanartIcon />
             </ColorItemIconSub>
             <ListItemText primary="Fanart" />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
+
+          <ListItemButton value="cosplay"
+            sx={{ pl: 4, color: "var(--accent-light)" }}>
             <ColorItemIconSub>
               <CosplayIcon />
             </ColorItemIconSub>
             <ListItemText primary="Cosplay" />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
+
+          <ListItemButton value="novicelorehelpicon"
+            sx={{ pl: 4, color: "var(--accent-light)" }}>
+            <ColorItemIconSub>
+              <NoviceLoreHelpIcon />
+            </ColorItemIconSub>
+            <ListItemText primary="Novice lore help" />
+          </ListItemButton>
+
+          {/* <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
             <ColorItemIconSub>
               <CharacterIcon />
             </ColorItemIconSub>
@@ -117,7 +139,7 @@ export default function ForumNavbar() {
               <SpellIcon />
             </ColorItemIconSub>
             <ListItemText primary="Spell" />
-          </ListItemButton>
+          </ListItemButton> */}
         </List>
       </Collapse>
       <ListItemButton>
