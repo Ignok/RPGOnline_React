@@ -21,23 +21,13 @@ const ColorButton = styled(Button)((theme) => ({
 
 export default function ForumMenu() {
   return (
-    <Box
-      sx={{
-        display: {
-          xs: "none",
-          sm: "none",
-          md: "inline",
-          lg: "inline",
-          lx: "inline",
-        },
-      }}
-    >
+    <Box>
       <Box
         position="static"
         sx={{
           bgcolor: "var(--accent)",
           borderRadius: 1,
-          boxShadow: 0,
+          boxShadow: 1,
           mb: 3,
         }}
       >
@@ -51,6 +41,7 @@ export default function ForumMenu() {
         >
           <Typography
             color="inherit"
+            noWrap={true}
             sx={{
               letterSpacing: ".1rem",
               color: "white",
