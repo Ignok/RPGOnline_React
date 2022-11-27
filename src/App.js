@@ -7,6 +7,7 @@ import { Forum } from './pages/Forum'
 import AboutMe from './services/User/Profile/AboutMe';
 import Register from './services/User/Profile/Register';
 import Login from './services/User/Profile/Login'
+import PostDiscussionForm from './components/post/postForms/PostDiscussionForm';
 
 import PostDetails from './components/post/postDetails';
 
@@ -41,10 +42,14 @@ class App extends React.Component {
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/users' element={<Users />} />
+
               <Route path='/forum' element={<Forum />} />
               <Route path='/post/:postId' element={<PostDetails />} />
+              <Route path='/post/discussion-form' element={<PostDiscussionForm />} />
+
               <Route path='/aboutme/:uId' element={<AboutMe />} />
               <Route path='/aboutme/details/:uId' element={<AboutMeDetails />} />
+
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
             </Routes>

@@ -9,7 +9,10 @@ import Divider from "@mui/material/Divider";
 
 import "../../App.css";
 
-const pages = ["Discussion", "Fanart", "Assets"];
+const pages = [
+  {name: 'Discussion', link: '/post/discussion-form'},
+  {name: 'Fanart', link: '/post/fanart-form'}
+];
 
 const ColorButton = styled(Button)((theme) => ({
   color: "white",
@@ -53,9 +56,9 @@ export default function ForumMenu() {
             Share~
           </Typography>
           {pages.map((page) => (
-            <ColorButton key={pages.indexOf(page)}>
+            <ColorButton key={pages.indexOf(page)} href={page.link} >
               <Typography textAlign="center" variant="h6" noWrap={true}>
-                {page}
+                {page.name}
               </Typography>
             </ColorButton>
           ))}

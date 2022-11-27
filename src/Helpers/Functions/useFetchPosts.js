@@ -13,9 +13,9 @@ const BASE_URL = 'https://localhost:7251/api/Posts'
 function reducer(state, action) {
     switch (action.type) {
         case ACTIONS.MAKE_REQUEST:
-            return { loading: true, posts: [] }
+            return { loading: true, posts: [], pageCount: 0 }
         case ACTIONS.GET_DATA:
-            return { ...state, loading: false, posts: action.payload.posts }
+            return { ...state, loading: false, posts: action.payload.posts, pageCount: action.payload.pageCount }
         case ACTIONS.ERROR:
             return { ...state, loading: false, error: action.payload.error, posts: [] }
         case ACTIONS.UPDATE_HAS_NEXT_PAGE:
@@ -37,7 +37,7 @@ export default function useFetchPosts(params, page) {
             params: {page: page, ...params }
         }).then(res => {
             console.log(res.data)
-            dispatch({type: ACTIONS.GET_DATA, payload: {posts: res.data}})
+            dispatch({type: ACTIONS.GET_DATA, payload: {posts: res.data.item1, pageCount: res.data.item2}})
         }).catch(e => {
             if (axios.isCancel(e)) return
             dispatch({type:ACTIONS.ERROR, payload : {error: e}})
