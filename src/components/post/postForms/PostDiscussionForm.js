@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { SettingsAccessibility } from "@mui/icons-material";
-import { FormControl, Input, FormHelperText, InputLabel, Button, TextField, MenuItem } from "@mui/material";
+import { FormControl, Input, FormHelperText, InputLabel, Button, TextField, MenuItem, Link } from "@mui/material";
 import { Box } from "@mui/system";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
+import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
+
+
+const BASE_URL = 'https://localhost:7251/api/Posts';
 
 const tags = [
     {
@@ -14,56 +21,85 @@ const tags = [
         label: 'Lore',
     },
     {
-        value: 'notice',
-        label: 'Notice',
-    },
-    {
         value: 'help',
         label: 'Help',
     },
 ];
 
+
 export default function PostDiscussionForm() {
-    const [tag, setTag] = React.useState('none');
+
+    const [values, setValues] = useState({
+        UId: 1, // To weźmiemy po zalogowaniu
+        Title: "",
+        Tag: "none",
+        Content: ""
+    });
+
+
+    const navigate = useNavigate();
+
+    const [formErrors, setFormErrors] = useState({});
+
+
+    const handleChange = (event) => {
+        setValues((values) => ({
+            ...values,
+            [event.target.name]: event.target.value,
+        }));
+    };
+
+
+    function validateForm() {
+        console.log("Validate the form....");
+
+        let errors = {};
+
+        //title field
+        if (!values.Title) {
+            errors.Title = "Title is required";
+        }
+
+        //content field
+        if (!values.Content) {
+            errors.Content = "Content is required";
+        }
+
+        //censor bad words
+
+        setFormErrors(errors);
+
+        if (Object.keys(errors).length === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     function handleSubmit(event) {
         if (event) event.preventDefault();
-        console.log("SUBMIT");
-        // if (validateForm(values)) {
-        //     const data = {
-        //         Username: values.Username,
-        //         Pswd: values.Pswd
-        //     }
-        //     console.log(data);
-        //     let response;
-        //     let promise;
-        //     promise = login(data);
-        //     if (promise) {
-        //         promise
-        //             .then(res => {
-        //                 console.log(res)
-        //                 response = res
-        //                 return res.json()
-        //             })
-        //             .then(
-        //                 (data) => {
-        //                     console.log(data)
-        //                     if (response.status === 401) {
-        //                         console.log(response);
-        //                         let errors = {};
-        //                         errors.Pswd = "Username or password is invalid";
-        //                         setFormErrors(errors);
-        //                     }
-        //                     if (response.status === 200) { //logowanie poprawne
-        //                         const userString = JSON.stringify(data);
-        //                         console.log(userString);
-        //                     }
-        //                 },
-        //                 (error) => {
-        //                     setError(error)
-        //                 })
-        //     }
-        // }
+        if (validateForm(values)) {
+
+            axios.post(BASE_URL, values, {
+                headers: { 'Content-Type': 'application/json' },
+            }).then(res => {
+                console.log(res.data);
+                Swal.fire({
+                    title: 'Your post was added successfully!',
+                    width: 450,
+                    padding: '3em',
+                    color: '#716add',
+                    imageUrl: successfulGif,
+                    imageWidth: "100%",
+                    imageHeight: "100%",
+                    imageAlt: 'success image',
+                    backdrop: `rgba(0,0,123,0.4)`
+                })
+                navigate('/forum');
+            }).catch(e => {
+                console.log(e)
+            })
+        }
     }
 
 
@@ -75,34 +111,68 @@ export default function PostDiscussionForm() {
                 component="form"
                 sx={{
                     '& .MuiTextField-root': { m: 2, width: '50vw' },
+
                     display: 'grid',
                     justifyContent: 'center'
                 }}
-                noValidate
                 autoComplete="off"
                 onSubmit={handleSubmit}
             >
                 <FormControl>
-                    <InputLabel htmlFor="title">Title</InputLabel>
-                    <Input id="title" aria-describedby="my-helper-text" inputProps={{ maxLength: 40 }}/>
+                    <InputLabel>UID</InputLabel>
+                    <Input
+                        id="UId"
+                        name="UId"
+                        type="number"
+                        aria-describedby="my-helper-text"
+                        inputProps={{ maxLength: 40 }}
+                        onChange={handleChange}
+                        value={values.UId}
+                    />
+                </FormControl>
+
+                <FormControl>
+                    <InputLabel>Title</InputLabel>
+                    <Input
+                        id="Title"
+                        name="Title"
+                        aria-describedby="my-helper-text"
+                        inputProps={{ maxLength: 40 }}
+                        onChange={handleChange}
+                        value={values.Title}
+                    />
+                    {
+                        formErrors.Title && (
+                            <p className="text-warning">{formErrors.Title}</p>
+                        )
+                    }
                 </FormControl>
 
                 <FormControl>
                     <TextField
-                        id="content"
+                        id="Content"
+                        name="Content"
                         label="Content"
                         multiline
                         rows={10}
                         inputProps={{ maxLength: 1080 }}
+                        onChange={handleChange}
+                        value={values.Content}
                     />
+                    {
+                        formErrors.Content && (
+                            <p className="text-warning">{formErrors.Content}</p>
+                        )
+                    }
                 </FormControl>
 
                 <TextField
-                    id="tag"
                     select
+                    id="Tag"
+                    name="Tag"
                     label="Tag"
-                    value={tag}
-                    onChange={(e) => { setTag(e.target.value) }}
+                    value={values.Tag}
+                    onChange={handleChange}
                     helperText="Choose the tag that best fits your post"
                     variant="standard"
                 >
@@ -113,7 +183,7 @@ export default function PostDiscussionForm() {
                     ))}
                 </TextField>
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit" >Submit</Button>
             </Box>
         </Box>
     );
