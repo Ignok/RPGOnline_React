@@ -45,7 +45,7 @@ export default function PostItem(props) {
   }));
 
   return (
-    <Card sx={{ maxWidth: "md", maxHeight: "md" }}>
+    <Card sx={{ maxWidth: "auto", maxHeight: "md", mb: 3 }}>
       <CardHeader
         sx={{ bgcolor: "var(--accent)", borderBottom: 1 }}
         avatar={
