@@ -44,8 +44,8 @@ export default function SearchBar({ params, onParamChange }) {
   return (
     <Box
       sx={{
-        flexGrow: 1,
-        mb: 1.5,
+        // flexGrow: 1,
+        mb: 2,
         border: 2.5,
         borderRadius: "20px",
         color: "var(--accent)",

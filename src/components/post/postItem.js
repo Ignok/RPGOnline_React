@@ -39,7 +39,6 @@ export default function PostItem(props) {
     backgroundColor: flagFollow ? "#572348" : "#b74a97",
     borderRadius: 20,
     "&:hover": {
-      color: "var(accent-light)",
       backgroundColor: flagFollow ? "#572348" : "#b74a97",
     },
   }));
@@ -50,7 +49,7 @@ export default function PostItem(props) {
         sx={{ bgcolor: "var(--accent)", borderBottom: 1 }}
         avatar={
           <Avatar
-            sx={{ bgcolor: "text.secondary" }}
+            sx={{ bgcolor: "text.secondary", ml: 1 }}
             alt={props.avatarAlt}
             src={props.avatarSrc}
           />
@@ -127,7 +126,12 @@ export default function PostItem(props) {
           <FavoriteIcon />
         </IconButton>
         <div>{props.likes}</div>
-        <IconButton aria-label="comment" sx={{ ml: "auto" }}>
+        <IconButton
+          aria-label="comment"
+          sx={{ ml: "auto" }}
+          component={Link}
+          to={`/post/${props.id}`}
+        >
           <CommentIcon />
         </IconButton>
         <div>{props.comments}</div>

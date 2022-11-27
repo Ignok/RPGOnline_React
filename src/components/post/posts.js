@@ -51,63 +51,73 @@ export default function Posts() {
     <Box>
       <ForumSearch params={params} onParamChange={handleParamChange} />
       <ResponsiveBox
-        maxWidth="100%"
+        //maxWidth="100%"
         display="flex"
-      //sx={{ flexWrap: "wrap", alignItems: "baseline", }}
+        //sx={{ flexWrap: "wrap", alignItems: "baseline", }}
       >
         <ForumNavbar params={params} onParamChange={handleParamChange} />
         <Container maxWidth="md" sx={{ pb: 5 }}>
-          
           <ForumMenu />
           {/* inside we pass the actual post component */}
-          <Stack spacing={3} direction="column" justifyContent="center" sx={{ flexGrow: 1 }}>
+          <Stack
+            spacing={3}
+            direction="column"
+            justifyContent="center"
+            sx={{ flexGrow: 1 }}
+          >
             <Pagination
               count={pageCount}
               page={page}
-              onChange={(e, p) => { setPage(p) }}
+              onChange={(e, p) => {
+                setPage(p);
+              }}
               color="secondary"
               size="large"
               showFirstButton
               showLastButton
               sx={{
-                '.MuiTablePagination-root': {
-                  display: 'flex',
-                  justifyContent: 'center',
+                ".MuiTablePagination-root": {
+                  display: "flex",
+                  justifyContent: "center",
                 },
               }}
             />
             {loading && <h1>Loading...</h1>}
             {error && <h1>Error. Try Refreshing.</h1>}
-            {posts.map(post => {
-              return <PostItem
-                key={post.postId}
-                id={post.postId}
-                avatarSrc={post.creatorNavigation.picture}
-                avatarAlt="avatar"
-                username={post.creatorNavigation.username}
-                date={DatetimeToLocaleDateString(post.creationDate)}
-                title={post.title}
-                text={post.content}
-                imgSrc={post.postId === 1 ? src1 : post.picture}
-                imgAlt="picture"
-                // tag1="fanart"
-                // tag2="NPC"
-                likes={post.likes}
-                comments={post.comments}
-              />
+            {posts.map((post) => {
+              return (
+                <PostItem
+                  key={post.postId}
+                  id={post.postId}
+                  avatarSrc={post.creatorNavigation.picture}
+                  avatarAlt="avatar"
+                  username={post.creatorNavigation.username}
+                  date={DatetimeToLocaleDateString(post.creationDate)}
+                  title={post.title}
+                  text={post.content}
+                  imgSrc={post.postId === 1 ? src1 : post.picture} //tymczasowo do potestowania
+                  imgAlt="picture"
+                  // tag1="fanart"
+                  // tag2="NPC"
+                  likes={post.likes}
+                  comments={post.comments}
+                />
+              );
             })}
             <Pagination
               count={pageCount}
               page={page}
-              onChange={(e, p) => { setPage(p) }}
+              onChange={(e, p) => {
+                setPage(p);
+              }}
               color="secondary"
               size="large"
               showFirstButton
               showLastButton
               sx={{
-                '.MuiTablePagination-root': {
-                  display: 'flex',
-                  justifyContent: 'center',
+                ".MuiTablePagination-root": {
+                  display: "flex",
+                  justifyContent: "center",
                 },
               }}
             />

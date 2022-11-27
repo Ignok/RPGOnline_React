@@ -49,7 +49,7 @@ export default function CommentItem(props) {
                 sx={{ backgroundColor: "transparent" }}
               >
                 <Avatar
-                  src={""}
+                  src={props.avatar}
                   sx={{ ml: 1, backgroundColor: "var(--accent)" }}
                 ></Avatar>
                 <Stack spacing={0} direction="column" sx={{ padding: 1 }}>

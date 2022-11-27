@@ -17,6 +17,8 @@ import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConv
 
 import CommentItem from "../comments/commentItem";
 import ReplyCommentItem from "../comments/replyCommentItem";
+import CommentForm from "../comments/commentForm";
+
 import { Container, Stack } from "@mui/material";
 
 const withRouter = (WrappedComponent) => (props) => {
@@ -105,6 +107,8 @@ class PostDetails extends React.Component {
             />
           )}
 
+          <CommentForm/>
+
           {post.comments === undefined
             ? console.log("loading")
             : post.comments.map((comment) => {
@@ -117,6 +121,7 @@ class PostDetails extends React.Component {
                           comment.creationDate
                         )}
                         content={comment.content}
+                        avatar={comment.userResponse.picture}
                       />
                     ) : (
                       <ReplyCommentItem
