@@ -8,8 +8,8 @@ import AboutMe from './services/User/Profile/AboutMe';
 import Register from './services/User/Profile/Register';
 import Login from './services/User/Profile/Login'
 import PostDiscussionForm from './components/post/postForms/PostDiscussionForm';
-
-import PostDetails from './components/post/postDetails';
+import { PostProvider } from "./contexts/postContext"
+import { PostDetails } from './components/post/postDetails';
 
 import { Navigation } from './containers/navigation';
 
@@ -44,7 +44,15 @@ class App extends React.Component {
               <Route path='/users' element={<Users />} />
 
               <Route path='/forum' element={<Forum />} />
-              <Route path='/post/:postId' element={<PostDetails />} />
+              <Route
+                path="/post/:postId"
+                element={
+                  <PostProvider>
+                    <PostDetails />
+                  </PostProvider>
+                }
+              />
+              {/* <Route path='/post/:postId' element={<PostDetails />} /> */}
               <Route path='/post/discussion-form' element={<PostDiscussionForm />} />
 
               <Route path='/aboutme/:uId' element={<AboutMe />} />

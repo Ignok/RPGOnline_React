@@ -23,100 +23,114 @@ import { Link, useLocation } from "react-router-dom";
 
 import ReplyIcon from "@mui/icons-material/Reply";
 
+import { useState } from "react";
+import { usePost } from "../../contexts/postContext";
+import { CommentList } from "../comments/commentList"
+
 import "../../App.css";
 
 export default function CommentItem(props) {
+  const { getReplies } = usePost()
+  const childComments = getReplies(props.commentId)
+
   return (
-    <Card sx={{ mb: 2, ml: 10, boxShadow: 2 }}>
-      <Box sx={{ px: "15px", backgroundColor: "white" }}>
-        <Stack
-          spacing={2}
-          direction="row"
-          sx={{ backgroundColor: "transparent" }}
-        >
-          <Box sx={{ width: "100%" }}>
-            <Stack
-              spacing={2}
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              backgroundColor="transparent"
-            >
+    <>
+      <Card sx={{ mb: 2, ml: 10, boxShadow: 2 }}>
+        <Box sx={{ px: "15px", backgroundColor: "white" }}>
+          <Stack
+            spacing={2}
+            direction="row"
+            sx={{ backgroundColor: "transparent" }}
+          >
+            <Box sx={{ width: "100%" }}>
               <Stack
                 spacing={2}
                 direction="row"
+                justifyContent="space-between"
                 alignItems="center"
-                sx={{ backgroundColor: "transparent" }}
+                backgroundColor="transparent"
               >
-                <Avatar
-                  src={""}
-                  sx={{ ml: 1, backgroundColor: "var(--accent-light)" }}
-                ></Avatar>
-                <Stack spacing={0} direction="column" sx={{ padding: 1 }}>
-                  <Stack direction="row">
-                    <Typography
-                      fontWeight="bold"
-                      sx={{ color: "neutral.darkBlue" }}
-                    >
-                      {props.username}
-                    </Typography>
+                <Stack
+                  spacing={2}
+                  direction="row"
+                  alignItems="center"
+                  sx={{ backgroundColor: "transparent" }}
+                >
+                  <Avatar
+                    src={""}
+                    sx={{ ml: 1, backgroundColor: "var(--accent-light)" }}
+                  ></Avatar>
+                  <Stack spacing={0} direction="column" sx={{ padding: 1 }}>
+                    <Stack direction="row">
+                      <Typography
+                        fontWeight="bold"
+                        sx={{ color: "neutral.darkBlue" }}
+                      >
+                        {props.username}
+                      </Typography>
+
+                      <Typography
+                        fontWeight="bold"
+                        sx={{ color: "var(--accent-light)" }}
+                      >
+                        &nbsp;replied to: @{props.responseUsername}
+                      </Typography>
+                    </Stack>
 
                     <Typography
-                      fontWeight="bold"
-                      sx={{ color: "var(--accent-light)" }}
+                      sx={{ color: "neutral.grayishBlue", fontSize: "small" }}
                     >
-                      &nbsp;replied to: @{props.responseUsername}
+                      {props.creationDate}
                     </Typography>
                   </Stack>
-
-                  <Typography
-                    sx={{ color: "neutral.grayishBlue", fontSize: "small" }}
+                </Stack>
+                <Stack direction="row" spacing={1}>
+                  <Button
+                    variant="text"
+                    sx={{
+                      fontWeight: 500,
+                      textTransform: "capitalize",
+                      color: "var(--accent-light)",
+                    }}
+                    startIcon={<ReplyIcon />}
                   >
-                    {props.creationDate}
-                  </Typography>
+                    Reply
+                  </Button>
                 </Stack>
               </Stack>
-              <Stack direction="row" spacing={1}>
-                <Button
-                  variant="text"
-                  sx={{
-                    fontWeight: 500,
-                    textTransform: "capitalize",
-                    color: "var(--accent-light)",
-                  }}
-                  startIcon={<ReplyIcon />}
-                >
-                  Reply
-                </Button>
-              </Stack>
-            </Stack>
-            <Typography sx={{ color: "neutral.grayishBlue", p: "12px 0" }}>
-              {props.content}
-            </Typography>
-          </Box>
-        </Stack>
-      </Box>
-      <CardActions
-        disableSpacing
-        sx={{
-          bgcolor: "transparent",
-          justifyContent: "right",
-          height: 10,
-          pb: 3,
-        }}
-      >
-        <IconButton
-          aria-label="add to favorites"
-          sx={{ color: "var(--accent-light)" }}
+              <Typography sx={{ color: "neutral.grayishBlue", p: "12px 0" }}>
+                {props.content}
+              </Typography>
+            </Box>
+          </Stack>
+        </Box>
+        <CardActions
+          disableSpacing
+          sx={{
+            bgcolor: "transparent",
+            justifyContent: "right",
+            height: 10,
+            pb: 3,
+          }}
         >
-          <FavoriteIcon />
-        </IconButton>
-        <div>{props.likes}</div>
-        <IconButton aria-label="comment" sx={{ color: "var(--accent-light)" }}>
-          <CommentIcon />
-        </IconButton>
-        <div>{props.comments}</div>
-      </CardActions>
-    </Card>
+          <IconButton
+            aria-label="add to favorites"
+            sx={{ color: "var(--accent-light)" }}
+          >
+            <FavoriteIcon />
+          </IconButton>
+          <div>{props.likes}</div>
+          <IconButton aria-label="comment" sx={{ color: "var(--accent-light)" }}>
+            <CommentIcon />
+          </IconButton>
+          <div>{props.comments}</div>
+        </CardActions>
+      </Card>
+      {
+        childComments?.length > 0 && (
+          <CommentList comments={childComments} isRoot={false} />
+        )
+      }
+    </>
   );
 }

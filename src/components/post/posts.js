@@ -87,6 +87,7 @@ export default function Posts() {
             {posts.map((post) => {
               return (
                 <PostItem
+                  isDetails={false}
                   key={post.postId}
                   id={post.postId}
                   avatarSrc={post.creatorNavigation.picture}

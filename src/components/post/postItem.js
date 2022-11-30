@@ -86,7 +86,7 @@ export default function PostItem(props) {
               {props.title}
             </Typography>
             {!props.imgSrc && (
-              <Typography noWrap={true} variant="body2" color="text.secondary">
+              <Typography noWrap={!props.isDetails} variant="body2" color="text.secondary">
                 {props.text}
               </Typography>
             )}
