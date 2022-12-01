@@ -6,20 +6,12 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { styled, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 
-import ButtonBase from "@mui/material/ButtonBase";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import { red } from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
-import { PersonAddAlt1 } from "@mui/icons-material";
-import { Chip, CardActionArea } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
 
 import ReplyIcon from "@mui/icons-material/Reply";
 
@@ -27,11 +19,26 @@ import { useState } from "react";
 import { usePost } from "../../contexts/postContext";
 import { CommentList } from "../comments/commentList"
 
+import CommentForm from "./commentForm";
+import { useAsyncFn } from "../../hooks/useAsync"
+import { createComment } from "../../services/comments"
+
 import "../../App.css";
 
 export default function CommentItem(props) {
-  const { getReplies } = usePost()
+  const { post, getReplies, createLocalComment } = usePost()
   const childComments = getReplies(props.commentId)
+  const createCommentFn = useAsyncFn(createComment)
+  const [isReplying, setIsReplying] = useState(false)
+
+  function onCommentReply(content) {
+    return createCommentFn
+      .execute({ postId: post.postId, content, responseCommentId: props.commentId })
+      .then(comment => {
+        setIsReplying(false)
+        createLocalComment(comment)
+      })
+  }
 
   return (
     <>
@@ -86,7 +93,8 @@ export default function CommentItem(props) {
                 </Stack>
                 <Stack direction="row" spacing={1}>
                   <Button
-                    variant="text"
+                    onClick={() => setIsReplying(prev => !prev)}
+                    variant={isReplying ? "outlined" : "text"}
                     sx={{
                       fontWeight: 500,
                       textTransform: "capitalize",
@@ -94,7 +102,7 @@ export default function CommentItem(props) {
                     }}
                     startIcon={<ReplyIcon />}
                   >
-                    Reply
+                    {isReplying ? "Replying" : "Reply"}
                   </Button>
                 </Stack>
               </Stack>
@@ -126,6 +134,16 @@ export default function CommentItem(props) {
           <div>{props.comments}</div>
         </CardActions>
       </Card>
+
+      {isReplying && (
+        <CommentForm
+          autoFocus
+          onSubmit={onCommentReply}
+          loading={createCommentFn.loading}
+          error={createCommentFn.error} />
+      )
+      }
+
       {
         childComments?.length > 0 && (
           <CommentList comments={childComments} isRoot={false} />

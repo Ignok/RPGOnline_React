@@ -12,56 +12,72 @@ import SendIcon from "@mui/icons-material/Send";
 
 import "../../App.css";
 
-export default function CommentForm() {
-  const [value, setValue] = useState("");
+export default function CommentForm({
+  loading,
+  error,
+  onSubmit,
+  autoFocus = false,
+  initialValue = ""
+}) {
+  const [value, setValue] = useState(initialValue);
   const handleChange = (e) => {
     console.log(`Typed => ${e.target.value}`);
     setValue(e.target.value);
   };
-    
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    console.log(value)
+    onSubmit(value).then(() => setValue(""))
+  }
+
   return (
-    <Card sx={{ mb: 3, boxShadow: 3 }}>
-      <Box sx={{ width: "100%", mb: 1 }}>
-        <Stack
-          direction="row"
-          alignItems="baseline"
-          backgroundColor="var(--bg)"
-          sx={{ mx: 1, mt: 1 }}
-        >
-          <Avatar
-            src={""} //logged user's avatar
-            sx={{
-              ml: 2,
-              mt: 1,
-              backgroundColor: "#1976d2",
-              color: "var(--bg)",
-            }}
-          ></Avatar>
-          <TextField
-            helperText="Write your comment..."
-            variant="outlined"
-            margin="normal"
-            multiline
-            sx={{ flexGrow: 1, mx: 2 }}
-            value={value}
-            onChange={handleChange}
-          />
-        </Stack>
-        <Stack alignItems="flex-end">
-          <Button
-            variant="contained"
-            size="medium"
-            endIcon={<SendIcon />}
-            sx={{ mr: 3, mb: 2 }}
-            onClick={() => {
-                console.log(value);
-                setValue("");
-            }}
+    <>
+      <Card sx={{ mb: 3, boxShadow: 3 }} onSubmit={handleSubmit} component="form">
+        <Box sx={{ width: "100%", mb: 1 }}>
+          <Stack
+            direction="row"
+            alignItems="baseline"
+            backgroundColor="var(--bg)"
+            sx={{ mx: 1, mt: 1 }}
           >
-            Send
-          </Button>
-        </Stack>
-      </Box>
-    </Card>
+            <Avatar
+              src={""} //logged user's avatar
+              sx={{
+                ml: 2,
+                mt: 1,
+                backgroundColor: "#1976d2",
+                color: "var(--bg)",
+              }}
+            ></Avatar>
+            <TextField
+              autoFocus={autoFocus}
+              helperText="Write your comment..."
+              variant="outlined"
+              margin="normal"
+              multiline
+              sx={{ flexGrow: 1, mx: 2 }}
+              value={value}
+              onChange={handleChange}
+            />
+          </Stack>
+          <Stack alignItems="flex-end">
+            <Button
+              variant="contained"
+              size="medium"
+              endIcon={<SendIcon />}
+              sx={{ mr: 3, mb: 2 }}
+              disabled={loading}
+              type="submit"
+            >
+              {loading ? "Loading" : "Send"}
+            </Button>
+          </Stack>
+        </Box>
+      </Card>
+      <div className="error-msg">
+        {error && console.log(error)}
+      </div>
+    </>
   );
 }

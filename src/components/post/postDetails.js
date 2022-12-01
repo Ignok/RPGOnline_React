@@ -1,6 +1,6 @@
 import { usePost } from "../../contexts/postContext"
 import { useAsyncFn } from "../../hooks/useAsync"
-//import { createComment } from "../services/comments"
+import { createComment } from "../../services/comments"
 //import { CommentForm } from "./CommentForm"
 import { CommentList } from "../comments/commentList"
 
@@ -11,14 +11,12 @@ import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConv
 
 
 export function PostDetails() {
-  const { post, rootComments } = usePost()
-  //const { loading, error, execute: createCommentFn } = useAsyncFn(createComment)
+  const { post, rootComments, createLocalComment } = usePost()
+  const { loading, error, execute: createCommentFn } = useAsyncFn(createComment)
 
-  // function onCommentCreate(message) {
-  //   return createCommentFn({ postId: post.id, message }).then(
-  //     createLocalComment
-  //   )
-  // }
+  function onCommentCreate(content) {
+    return createCommentFn({ postId: post.postId, content }).then(createLocalComment)
+  }
 
   return (
     <Box
@@ -49,7 +47,8 @@ export function PostDetails() {
             comments={post.comments.length}
           />
         )}
-        <CommentForm/>
+        <h4>Comments</h4>
+        <CommentForm loading={loading} error={error} onSubmit={onCommentCreate}/>
         <section>
           {rootComments != null && rootComments.length > 0 && (
               <div>

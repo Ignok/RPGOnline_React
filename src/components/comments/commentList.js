@@ -21,6 +21,7 @@ export function CommentList({ comments, isRoot }) {
                         comment.creationDate
                     )}
                     content={comment.content}
+                    avatar={comment.userResponse.picture}
                     responseUsername={comment.respondingUserResponse.username}
                 />
             )}

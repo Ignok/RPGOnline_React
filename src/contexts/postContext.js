@@ -12,25 +12,30 @@ export function usePost() {
 export function PostProvider({ children }) {
   const { postId } = useParams()
   const { loading, error, value: post } = useAsync(() => getPost(postId), [postId])
- // const [comments, setComments] = useState([])
+  const [comments, setComments] = useState([])
   const commentsByParentId = useMemo(() => {
-    if(post?.comments == null) return []
     const group = {}
-    post.comments.forEach(comment => {
+    comments.forEach(comment => {
       group[comment.responseCommentId] ||= []
       group[comment.responseCommentId].push(comment)
     })
     return group
+  }, [comments])
+
+
+  useEffect(() => {
+    if (post?.comments == null) return
+    setComments(post.comments)
   }, [post?.comments])
-
-
-  // useEffect(() => {
-  //   if (post?.comments == null) return
-  //   setComments(post.comments)
-  // }, [post?.comments])
 
   function getReplies(responseCommentId) {
     return commentsByParentId[responseCommentId]
+  }
+
+  function createLocalComment(comment) {
+    setComments(prevComments => {
+      return [comment, ...prevComments]
+    })
   }
 
   return (
@@ -39,7 +44,7 @@ export function PostProvider({ children }) {
         post: { postId, ...post },
         getReplies,
         rootComments: commentsByParentId[null],
-        // createLocalComment,
+        createLocalComment,
         // updateLocalComment,
         // deleteLocalComment,
         // toggleLocalCommentLike,
