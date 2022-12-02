@@ -55,7 +55,9 @@ export default function UserMenu() {
         <Box display="flex">
           <ColorButton sx={{ mx: 1 }}>EDIT AVATAR</ColorButton>
           <Divider orientation="vertical" color="white" flexItem />
-          <ColorButton sx={{ mx: 1 }}>EDIT PROFILE</ColorButton>
+          <ColorButton sx={{ mx: 1 }}>
+            EDIT PROFILE
+          </ColorButton>
         </Box>
       </Stack>
     </Box>
