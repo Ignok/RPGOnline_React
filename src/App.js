@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { Home } from "./pages/Home";
 import { Users } from "./services/User/Users";
 import { Forum } from "./pages/Forum";
-import { AboutMe } from "./services/User/Profile/AboutMe";
+import { AboutMe } from "./pages/Profile";
 import Register from "./services/User/Profile/Register";
 import Login from "./services/User/Profile/Login";
 import PostDiscussionForm from "./components/post/postForms/PostDiscussionForm";

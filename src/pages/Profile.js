@@ -1,23 +1,23 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import ProfileNav from "./profileNav";
-import { getUsersAbout } from "../../../Api_RPGOnline";
-import { DatetimeToLocaleDateString } from "../../../helpers/functions/DateTimeConverter";
+import ProfileNav from "../components/userprofile/profileNav";
+import { getUsersAbout } from "../Api_RPGOnline";
+import { DatetimeToLocaleDateString } from "../helpers/functions/DateTimeConverter";
 import ReactDOM from "react-dom";
 import Box from "@mui/material/Box";
 import { Stack } from "@mui/material";
-import UserHeading from "../../../components/userprofile/userHeading";
-import AboutMeContents from "../../../components/userprofile/aboutme/aboutme";
+import UserHeading from "../components/userprofile/userHeading";
+import AboutMeContents from "../components/userprofile/contents/aboutme";
 
 import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Unstable_Grid2";
 
-import "../../../App.css";
-import { useAsyncFn } from "../../../hooks/useAsync";
-import { editProfile } from "../../users";
-import { useUser } from "../../../contexts/userContext";
+import "../App.css";
+import { useAsyncFn } from "../hooks/useAsync";
+import { editProfile } from "../services/users";
+import { useUser } from "../contexts/userContext";
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 50,
@@ -40,6 +40,7 @@ const Sidebar = styled(Box)(({ theme }) => ({
   },
 }));
 
+// trzeba bedzie przerobic na Profile i podmieniać tylko część about-me...
 export function AboutMe() {
   const {user} = useUser();
   const {loading, error}  = useAsyncFn();
@@ -102,13 +103,13 @@ export function AboutMe() {
               badgeContent={
                 <SmallAvatar
                   alt="PL"
-                  src={require("../../../helpers/pictures/poland_flag.png")}
+                  src={require("../helpers/pictures/poland_flag.png")}
                 />
               }
             >
               <Avatar
                 alt="Avatar"
-                src={require("../../../helpers/pictures/anonymous_user.png")}
+                src={require("../helpers/pictures/anonymous_user.png")}
                 variant="rounded"
                 sx={{ width: 150, height: 150 }}
               />

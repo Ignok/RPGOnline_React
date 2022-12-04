@@ -65,15 +65,8 @@ const CustomDisableInput = styled(TextField)(() => ({
 }));
 
 export default function AboutMeContents() {
-  const [edit, setDisabled] = React.useState(true);
-  const handleDisabledChange = (e) => {
-    if (edit === true) {
-      setDisabled(false);
-    }
-  };
-  const handleSaveChanges = (e) => {
-    setDisabled(true);
-  }
+  const [isEditing, setIsEditing] = React.useState(true); //default is disabled=true
+  //const updateDetailsFn = useAsyncFn(updateDetails)
 
   const [country, setCountry] = React.useState("PL"); //tu trzeba bedzie przekazywac aktualny
   const handleCountryChange = (e) => {
@@ -117,14 +110,23 @@ export default function AboutMeContents() {
             MY PROFILE
           </Typography>
 
-          <ColorButton onClick={handleSaveChanges} sx={{ flexGrow: 2, fontWeight: "bold" }}>
+          <ColorButton
+            onClick={() => setIsEditing(() => true)}
+            sx={{ flexGrow: 2, fontWeight: "bold" }}
+            // onSubmit={onAboutmeUpdate} to powinno byc onclick ale nie zdazylam ogarnac jak wywolac 2 rzeczy w onclick
+            // loading={updateAboutmeFn.loading}
+            // error={updateAboutmeFn.error}
+          >
             SAVE CHANGES
           </ColorButton>
           <Box display="flex">
             <ColorButton sx={{ mx: 1 }}>EDIT AVATAR</ColorButton>
             <Divider orientation="vertical" color="white" flexItem />
-            <ColorButton onClick={handleDisabledChange} sx={{ mx: 1 }}>
-              EDIT PROFILE
+            <ColorButton
+              onClick={() => setIsEditing((prev) => !prev)}
+              sx={{ mx: 1 }}
+            >
+            {isEditing ? "EDIT PROFILE" : "CANCEL EDIT"}
             </ColorButton>
           </Box>
         </Stack>
@@ -148,7 +150,7 @@ export default function AboutMeContents() {
         </Typography>
         <CustomDisableInput
           select
-          disabled={edit}
+          disabled={isEditing}
           value={country}
           onChange={handleCountryChange}
           variant="outlined"
@@ -167,7 +169,7 @@ export default function AboutMeContents() {
           City
         </Typography>{" "}
         <CustomDisableInput
-          disabled={edit}
+          disabled={isEditing}
           id="outlined-basic"
           variant="outlined"
           size="small"
@@ -179,7 +181,7 @@ export default function AboutMeContents() {
           About me
         </Typography>
         <CustomDisableInput
-          disabled={edit}
+          disabled={isEditing}
           value="My journey with tabletop RPGs. Which systems do I play. What are my favorite professions... etc."
           variant="outlined"
           size="small"
@@ -195,7 +197,7 @@ export default function AboutMeContents() {
         {/* w przyszlosci pewnie stworzyc custom text field dla obu selectorow */}
         <CustomDisableInput
           select
-          disabled={edit}
+          disabled={isEditing}
           value={attitude}
           onChange={handleAttitudeChange}
           variant="outlined"

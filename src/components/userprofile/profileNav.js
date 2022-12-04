@@ -1,11 +1,11 @@
-import UserProfile from "../../../components/userprofile";
-import Icon from "../../../components/icons";
+import UserProfile from ".";
+import Icon from "../icons";
 import { Stack } from "@mui/system";
 import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { styled } from "@mui/material/styles";
-import "../../../App.css";
+import "../../App.css";
 
 
 export default function ProfileNav(user) {
