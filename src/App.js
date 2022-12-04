@@ -16,7 +16,7 @@ import { Navigation } from "./containers/navigation";
 import { FooterContainer } from "./containers/footer";
 
 import { Link, BrowserRouter, Route, Routes } from "react-router-dom";
-import AboutMeDetails from "./services/User/Profile/AboutMeDetails";
+import AboutMeDetails from "./services/User/Profile/AboutMeDetails-old";
 import { UserProvider } from "./contexts/userContext";
 
 class App extends React.Component {

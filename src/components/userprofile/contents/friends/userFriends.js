@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useUser } from "../../../contexts/userContext"
-import { getUserFriends } from "../../../services/users";
-import { useAsyncFn } from "../../../hooks/useAsync";
-
+import { useUser } from "../../../../contexts/userContext"
+import { getUserFriends } from "../../../../services/users";
+import { useAsyncFn } from "../../../../hooks/useAsync";
+import FriendsMenu from "./menu";
 
 export default function UserFriendsContents({uId}) {
     const [friends, setFriends] = useState();
@@ -38,7 +38,7 @@ export default function UserFriendsContents({uId}) {
 
     return (
         <article>
-            <h1>Friend list</h1>
+            <FriendsMenu/>
             {friends?.length
                 ? (
                     <div>
@@ -58,7 +58,7 @@ export default function UserFriendsContents({uId}) {
                                         <td>
                                             {friends.picture === null ? (
                                                 <img
-                                                    src={require("../../../helpers/pictures/anonymous_user.png")}
+                                                    src={require("../../../../helpers/pictures/anonymous_user.png")}
                                                     alt="anonymous_user"
                                                     width="50"
                                                     height="50"

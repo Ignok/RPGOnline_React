@@ -3,12 +3,11 @@ import { styled, Stack } from "@mui/system";
 import Button, { ButtonProps } from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import AppBar from "@mui/material/AppBar";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-import "../../../App.css";
+import "../../../../App.css";
 
 // const pages = ["SAVE CHANGES", "EDIT AVATAR", "EDIT PROFILE"];
 

@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 import Box from "@mui/material/Box";
 import { Stack } from "@mui/material";
 import UserHeading from "../components/userprofile/userHeading";
-import AboutMeContents from "../components/userprofile/contents/aboutme";
+import AboutMeContents from "../components/userprofile/contents/aboutme/aboutMe";
 
 import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
@@ -18,7 +18,8 @@ import "../App.css";
 import { useAsyncFn } from "../hooks/useAsync";
 import { editProfile } from "../services/users";
 import { useUser } from "../contexts/userContext";
-import UserFriendsContents from "../components/userprofile/contents/userFriends";
+import UserFriendsContents from "../components/userprofile/contents/friends/userFriends";
+import FriendsContents from "../components/userprofile/contents/friends/friends";
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 50,
@@ -43,7 +44,6 @@ const Sidebar = styled(Box)(({ theme }) => ({
 
 
 
-// trzeba bedzie przerobic na Profile i podmieniać tylko część about-me...
 export function Profile() {
   const {user, page = 'aboutme', changePage} = useUser();
   const {loading, error}  = useAsyncFn();
@@ -90,7 +90,7 @@ export function Profile() {
       case 'aboutme':
         return <AboutMeContents />;
       case 'friends':
-        return <UserFriendsContents uId={user.uId} />;
+        return <FriendsContents uId={user.uId} />;
       default:
         return 'something is wrong';
     }

@@ -3,14 +3,10 @@ import { styled, Stack } from "@mui/system";
 import Button, { ButtonProps } from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import AppBar from "@mui/material/AppBar";
-import Divider from "@mui/material/Divider";
 
-import "../../App.css";
+import "../../../../App.css";
 
-const pages = ["SAVE CHANGES", "EDIT AVATAR", "EDIT PROFILE"];
-
-const ColorButton = styled(Button)((theme) => ({
+const ColorButton = styled(Button)(() => ({
   color: "white",
   "&:hover": {
     color: "#f37653",
@@ -18,7 +14,7 @@ const ColorButton = styled(Button)((theme) => ({
   },
 }));
 
-export default function UserMenu() {
+export default function FriendsMenu() {
   return (
     <Box
       position="static"
@@ -46,19 +42,15 @@ export default function UserMenu() {
             fontWeight: "bold",
           }}
         >
-          MY PROFILE
+          FRIENDS
         </Typography>
-
+        {/* dodac FRIEND LIST kiedy sie jest w widoku requests/blocked */}
         <ColorButton sx={{ flexGrow: 2, fontWeight: "bold" }}>
-          SAVE CHANGES
+          FRIEND REQUESTS
         </ColorButton>
-        <Box display="flex">
-          <ColorButton sx={{ mx: 1 }}>EDIT AVATAR</ColorButton>
-          <Divider orientation="vertical" color="white" flexItem />
-          <ColorButton sx={{ mx: 1 }}>
-            EDIT PROFILE
-          </ColorButton>
-        </Box>
+        <ColorButton sx={{ flexGrow: 2, fontWeight: "bold" }}>
+          BLOCKED
+        </ColorButton>
       </Stack>
     </Box>
   );
