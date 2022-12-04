@@ -6,13 +6,14 @@ import { editProfile, getUser } from "../services/users";
 const Context = React.createContext();
 
 export function useUser() {
-    console.log("useUser");
   return useContext(Context);
 }
 
 export function UserProvider({ children }) {
   const { uId } = useParams();
   const { loading, error, value: user } = useAsync(() => getUser(uId), [uId]);
+  const [ page, setPage ] = useState();
+  
 
   //   useEffect(() => {
   //     if (post?.comments == null) return
@@ -25,12 +26,22 @@ export function UserProvider({ children }) {
   //     })
   //   }
 
+  // function getUserFriends(uId) {
+  //   return commentsByParentId[responseCommentId]
+  // }
+
+  function changePage(pageName){
+    setPage(pageName)
+  }
+
   console.log(user);
 
   return (
     <Context.Provider
       value={{
         user: { uId, ...user },
+        page: page,
+        changePage
         // updateLocalUser
       }}
     >

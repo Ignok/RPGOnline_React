@@ -18,6 +18,7 @@ import "../App.css";
 import { useAsyncFn } from "../hooks/useAsync";
 import { editProfile } from "../services/users";
 import { useUser } from "../contexts/userContext";
+import UserFriendsContents from "../components/userprofile/contents/userFriends";
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 50,
@@ -40,17 +41,21 @@ const Sidebar = styled(Box)(({ theme }) => ({
   },
 }));
 
+
+
 // trzeba bedzie przerobic na Profile i podmieniać tylko część about-me...
-export function AboutMe() {
-  const {user} = useUser();
+export function Profile() {
+  const {user, page = 'aboutme', changePage} = useUser();
   const {loading, error}  = useAsyncFn();
+
+  
 
   // function onUserEdit(country, city, aboutme, attitude){
   //   return editProfileFn({uId: user.uId, country, city, aboutme, attitude})
   //     .then(updateLocalUser)
   // }
 
-  // refreshPage() {
+  // function refreshPage() {
   //   getUsersAbout(this.state.uId)
   //     .then((response) => response.json())
   //     .then(
@@ -69,9 +74,27 @@ export function AboutMe() {
   //     );
   // }
 
-  // componentDidMount() {
+  // function componentDidMount() {
   //   this.refreshPage();
   // }
+
+  const onPageChange = pageName => {
+    console.log(pageName)
+    changePage(pageName)
+  }
+
+
+  function switchPage(page) {
+    console.log(page)
+    switch(page) {
+      case 'aboutme':
+        return <AboutMeContents />;
+      case 'friends':
+        return <UserFriendsContents uId={user.uId} />;
+      default:
+        return 'something is wrong';
+    }
+  }
 
   return (
     <Grid
@@ -117,7 +140,7 @@ export function AboutMe() {
           </Stack>
           <Box sx={{ typography: "subtitle2", mt: 1, mb: 2 }}>{user.email}</Box>
         </Box>
-        <ProfileNav user={user} />
+        <ProfileNav onPageChange={onPageChange} />
       </Sidebar>
 
       <GridBox sx={{ backgroundColor: "transparent" }}>
@@ -125,7 +148,7 @@ export function AboutMe() {
           username={user.username}
           date={DatetimeToLocaleDateString(user.creationDate)}
         />
-        <AboutMeContents />
+        {switchPage(page)}
       </GridBox>
     </Grid>
   );

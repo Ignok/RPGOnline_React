@@ -1,7 +1,20 @@
 import { makeRequest } from "./makeRequest"
 
+export function getUsers({controller}){
+  return makeRequest(`Users`, {
+    method: "GET",
+    //signal: controller.signal
+  })
+}
+
 export function getUser(uId){
   return makeRequest(`Users/${uId}`, {
+    method: "GET",
+  })
+}
+
+export function getUserFriends(uId){
+  return makeRequest(`Users/${uId}/Friends`, {
     method: "GET",
   })
 }
