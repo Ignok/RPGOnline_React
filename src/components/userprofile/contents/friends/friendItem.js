@@ -8,7 +8,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import Divider from "@mui/material/Divider";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import EmailIcon from "@mui/icons-material/Email";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
@@ -16,8 +15,14 @@ import Tooltip from "@mui/material/Tooltip";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 
-const settings = ["Unfriend", "Block"];
+const settings = ["unfriend", "block"];
 
 const ItemDiv = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -25,19 +30,25 @@ const ItemDiv = styled("div")(({ theme }) => ({
 
 export default function FriendItem(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const [open, setOpen] = React.useState(false);
+  const [action, setAction] = React.useState(null);
+
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (currentAction) => {
     setAnchorEl(null);
+    if (settings.includes(currentAction)){
+      setOpen(true);
+      setAction(currentAction);
+    }
   };
 
   return (
-    <ItemDiv sx={{mb: 1}}>
+    <ItemDiv sx={{ mb: 1 }}>
       <ListItem>
         <ListItemAvatar>
-          <Avatar alt={props.username} src={props.picture}/>
+          <Avatar alt={props.username} src={props.picture} />
         </ListItemAvatar>
         <ListItemText primary={props.username} secondary={props.country} />
         <ListItemIcon>
@@ -74,11 +85,29 @@ export default function FriendItem(props) {
           onClose={handleClose}
         >
           {settings.map((setting) => (
-            <MenuItem key={setting} onClick={handleClose}>
-              <Typography textAlign="center">{setting}</Typography>
+            <MenuItem key={setting} onClick={() => handleClose(setting)}>
+              <Typography textAlign="center" sx={{textTransform: 'capitalize'}}>{setting}</Typography>
             </MenuItem>
           ))}
         </Menu>
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle id="alert-dialog-title">
+            Are you sure you want to {action} this user?
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="dialog-description">
+              {action === "block"
+              ? "This user won't be able to view your profile and won't see any of your activity. Simmilarly, this user won't show up in your Forum section."
+              : "This action will remove selected user from your friends list."}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{px: 5, justifyContent: "space-between"}}>
+            <Button onClick={() => setOpen(false)}>Yes</Button>
+            <Button onClick={() => setOpen(false)} autoFocus>
+              No
+            </Button>
+          </DialogActions>
+        </Dialog>
       </ListItem>
     </ItemDiv>
   );
