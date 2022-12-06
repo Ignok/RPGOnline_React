@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import { styled, Stack } from "@mui/system";
 import Typography from "@mui/material/Typography";
 import Button, { ButtonProps } from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 
 const ColorButton = styled(Button)(() => ({
   color: "white",
@@ -18,6 +19,11 @@ const ColorButton = styled(Button)(() => ({
 }));
 
 export default function FriendsContents({ uId }) {
+  const [contents, setContents] = useState("friends");
+  const handleContentsChange = (pageName) => {
+    setContents(pageName);
+  };
+
   const [friends, setFriends] = useState();
   // const {user, page = 'friends', changePage} = useUser();
 
@@ -69,42 +75,62 @@ export default function FriendsContents({ uId }) {
   return (
     <Box>
       <Box
-      position="static"
-      sx={{
-        bgcolor: "var(--accent)",
-        boxShadow: 1,
-        padding: 1.5,
-      }}
-    >
-      <Stack
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={4}
-        sx={{ bgColor: "#da57b3", mx: 2 }}
+        position="static"
+        sx={{
+          bgcolor: "var(--accent)",
+          boxShadow: 1,
+          padding: 1.5,
+        }}
       >
-        <Typography
-          variant="h6"
-          align="center"
-          sx={{
-            flexGrow: 1,
-            display: { xs: "none", sm: "none", md: "inline" },
-            color: "white",
-            fontStyle: "italic",
-            fontWeight: "bold",
-          }}
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={4}
+          sx={{ bgColor: "#da57b3", mx: 2 }}
         >
-          FRIENDS
-        </Typography>
-        {/* dodac FRIEND LIST kiedy sie jest w widoku requests/blocked */}
-        <ColorButton sx={{ flexGrow: 2, fontWeight: "bold" }}>
-          FRIEND REQUESTS
-        </ColorButton>
-        <ColorButton sx={{ flexGrow: 2, fontWeight: "bold" }}>
-          BLOCKED
-        </ColorButton>
-      </Stack>
-    </Box>
+          <Typography
+            variant="h6"
+            align="center"
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "none", md: "inline" },
+              color: "white",
+              fontStyle: "italic",
+              fontWeight: "bold",
+            }}
+          >
+            FRIENDS
+          </Typography>
+          {/* dodac FRIEND LIST kiedy sie jest w widoku requests/blocked */}
+          <ColorButton
+            onClick={() => handleContentsChange("requests")}
+            sx={{
+              color: contents === "requests" ? "var(--accent-light)" : "white",
+            }}
+          >
+            FRIEND REQUESTS
+          </ColorButton>
+          <Divider orientation="vertical" color="white" flexItem />
+          <ColorButton
+            onClick={() => handleContentsChange("friends")}
+            sx={{
+              color: contents === "friends" ? "var(--accent-light)" : "white",
+            }}
+          >
+            FRIENDS LIST
+          </ColorButton>
+          <Divider orientation="vertical" color="white" flexItem />
+          <ColorButton
+            onClick={() => handleContentsChange("blocked")}
+            sx={{
+              color: contents === "blocked" ? "var(--accent-light)" : "white",
+            }}
+          >
+            BLOCKED
+          </ColorButton>
+        </Stack>
+      </Box>
       {friends?.length ? (
         <List
           sx={{
@@ -125,6 +151,7 @@ export default function FriendsContents({ uId }) {
                 username={friend.username}
                 country="PL" //tymczasowo
                 picture={friend.picture}
+                contents={contents}
               />
             );
           })}
