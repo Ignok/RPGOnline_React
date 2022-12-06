@@ -19,6 +19,12 @@ export function getUserFriends(uId){
   })
 }
 
+export function getUserMessages(uId){
+  return makeRequest(`Users/${uId}/Messages`, {
+    method: "GET",
+  })
+}
+
 export function editProfile({ uId, country, city, aboutme, attitude }) {
   console.log(uId)
   console.log(country)

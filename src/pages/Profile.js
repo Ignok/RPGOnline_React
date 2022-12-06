@@ -18,8 +18,8 @@ import "../App.css";
 import { useAsyncFn } from "../hooks/useAsync";
 import { editProfile } from "../services/users";
 import { useUser } from "../contexts/userContext";
-import UserFriendsContents from "../components/userprofile/contents/friends/userFriends";
 import FriendsContents from "../components/userprofile/contents/friends/friends";
+import MessagesContents from "../components/userprofile/contents/messages/messages";
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 50,
@@ -91,6 +91,8 @@ export function Profile() {
         return <AboutMeContents />;
       case 'friends':
         return <FriendsContents uId={user.uId} />;
+      case 'messages':
+        return <MessagesContents uId={user.uId} />;
       default:
         return 'something is wrong';
     }

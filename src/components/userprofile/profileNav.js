@@ -29,7 +29,7 @@ export default function ProfileNav({onPageChange}) {
         <Icon className="fa-solid fa-chart-simple" />
         Statistics
       </UserProfile.ButtonNav>
-      <UserProfile.ButtonNav className="navigation-button" href="#">
+      <UserProfile.ButtonNav className="navigation-button" onClick={event => onPageChange('messages')} type="button" >
         <Icon className="fa-solid fa-envelope" />
         Messages
       </UserProfile.ButtonNav>
