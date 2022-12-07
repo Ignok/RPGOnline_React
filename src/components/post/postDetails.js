@@ -5,7 +5,7 @@ import { createComment } from "../../services/comments"
 import { CommentList } from "../comments/commentList"
 
 import CommentForm from "../comments/commentForm";
-import {Box, Container, Stack } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import PostItem from "./postItem";
 import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
 
@@ -48,13 +48,13 @@ export function PostDetails() {
           />
         )}
         <h4>Comments</h4>
-        <CommentForm loading={loading} error={error} onSubmit={onCommentCreate}/>
+        <CommentForm loading={loading} error={error} onSubmit={onCommentCreate} isResponse={false} />
         <section>
           {rootComments != null && rootComments.length > 0 && (
-              <div>
-                <CommentList comments={rootComments} isRoot={true}/>
-              </div>
-            )
+            <div>
+              <CommentList comments={rootComments} isRoot={true} />
+            </div>
+          )
           }
         </section>
       </Container>

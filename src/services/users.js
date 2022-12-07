@@ -25,6 +25,21 @@ export function getUserMessages(uId){
   })
 }
 
+export function createMessage({senderId, receiver, title, content}){
+  console.log(senderId)
+  console.log(receiver)
+  console.log(title)
+  console.log(content)
+  return makeRequest(`Users/${senderId}/Messages`, {
+    method: "POST",
+    data: {
+      title : title,
+      content: content,
+      receiverUsername: receiver
+     },
+  })
+}
+
 export function editProfile({ uId, country, city, aboutme, attitude }) {
   console.log(uId)
   console.log(country)
