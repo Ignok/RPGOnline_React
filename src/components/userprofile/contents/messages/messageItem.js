@@ -27,8 +27,6 @@ import { DatetimeToLocaleDateString } from "../../../../helpers/functions/DateTi
 import { Collapse } from '@mui/material';
 import ReplyIcon from '@mui/icons-material/Reply';
 
-
-
 const ItemDiv = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
 }));
@@ -41,7 +39,8 @@ export default function MessageItem({ message }) {
     };
 
     return (
-        <ItemDiv sx={{ mb: 1 }}>
+        <ItemDiv
+        sx={{ mb: 1}}>
             <ListItemButton alignItems="flex-start" onClick={expandMessage}>
                 <ListItemAvatar>
                     <Avatar alt={message.senderUsername} src="" />
@@ -78,7 +77,7 @@ export default function MessageItem({ message }) {
                 </ListItemIcon>
             </ListItemButton>
             <Collapse in={open} timeout="auto" unmountOnExit >
-                <Typography noWrap={false} variant="body2" color="text.secondary" margin={2} >
+                <Typography noWrap={false} variant="body2" color="text.secondary" margin={2} sx={{pl: 3, pb: 1, maxWidth: 500}} >
                     {message.content}
               </Typography>
             </Collapse>

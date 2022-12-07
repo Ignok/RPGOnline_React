@@ -157,7 +157,7 @@ export default function FriendsContents({ uId }) {
           })}
         </List>
       ) : (
-        <h1>No friends to display</h1>
+        <h4>No friends to display</h4>
       )}
     </Box>
   );

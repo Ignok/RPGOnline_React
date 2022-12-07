@@ -62,8 +62,8 @@ export default function MessageForm({
     };
 
       return (
-        <>
-          <Card sx={{ mb: 3, boxShadow: 3 }} onSubmit={handleSubmit} component="form">
+        <Box>
+          <Card sx={{ my: 2, boxShadow: 3, pr: 4, py: 3 }} onSubmit={handleSubmit} component="form">
             <Box sx={{ width: "100%", mb: 1 }}>
               <Stack
                 direction="column"
@@ -130,6 +130,6 @@ export default function MessageForm({
           <div className="error-msg">
             {error && console.log(error)}
           </div>
-        </>
+        </Box>
       );
 }
