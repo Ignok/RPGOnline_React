@@ -26,21 +26,68 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { DatetimeToLocaleDateString } from "../../../../helpers/functions/DateTimeConverter";
 import { Collapse } from '@mui/material';
 import ReplyIcon from '@mui/icons-material/Reply';
+import { useAsync } from "../../../../hooks/useAsync";
+import Swal from "sweetalert2";
 
 const ItemDiv = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
 }));
 
-export default function MessageItem({ message }) {
+export default function MessageItem({
+    message,
+    onDelete,
+    onReply
+}) {
     const [open, setOpen] = React.useState(false);
 
+
     const expandMessage = () => {
-      setOpen(!open);
+        setOpen(!open);
     };
+
+
+    function handleDelete(e) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                e.preventDefault()
+                onDelete({ messageId: message.messageId })
+                    .then(() => {
+                        Swal.fire(
+                            'Deleted!',
+                            'Message has been deleted.',
+                            'success'
+                        )
+                    })
+                    .catch(e => {
+                        console.log(e)
+                        if (e.status === 400) {
+                            Swal.fire(
+                                'Error',
+                                'This message is already deleted, try refreshing page.',
+                                'error'
+                            )
+                        }
+                    })
+            }
+        })
+    }
+
+    function handleReply(e){
+        onReply({initialTitle: message.title, initialReceiver: message.senderUsername})
+    }
 
     return (
         <ItemDiv
-        sx={{ mb: 1}}>
+            sx={{ mb: 1 }}>
             <ListItemButton alignItems="flex-start" onClick={expandMessage}>
                 <ListItemAvatar>
                     <Avatar alt={message.senderUsername} src="" />
@@ -63,23 +110,23 @@ export default function MessageItem({ message }) {
                 />
                 <ListItemIcon>
                     <Tooltip title="Reply">
-                        <IconButton aria-label="reply" onClick={() => { console.log("REPLY CLICKED") }} >
+                        <IconButton aria-label="reply" onClick={handleReply} >
                             <ReplyIcon />
                         </IconButton>
                     </Tooltip>
                 </ListItemIcon>
                 <ListItemIcon>
                     <Tooltip title="Delete">
-                        <IconButton aria-label="delete" onClick={() => { console.log("DELETE CLICKED") }} >
+                        <IconButton aria-label="delete" onClick={handleDelete} >
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
                 </ListItemIcon>
             </ListItemButton>
             <Collapse in={open} timeout="auto" unmountOnExit >
-                <Typography noWrap={false} variant="body2" color="text.secondary" margin={2} sx={{pl: 3, pb: 1, maxWidth: 500}} >
+                <Typography noWrap={false} variant="body2" color="text.secondary" margin={2} sx={{ pl: 3, pb: 1, maxWidth: 500 }} >
                     {message.content}
-              </Typography>
+                </Typography>
             </Collapse>
         </ItemDiv>
     );

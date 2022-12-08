@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../../../../contexts/userContext";
-import { getUserMessages, createMessage } from "../../../../services/users";
+import { getUserMessages, createMessage, deleteMessage } from "../../../../services/users";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { DatetimeToLocaleDateString } from "../../../../helpers/functions/DateTimeConverter";
 import {
@@ -36,7 +36,12 @@ const ColorButton = styled(Button)(() => ({
 export default function MessagesContents({ uId }) {
   const [messages, setMessages] = useState();
 
-  const [isCreating, setIsCreating] = useState(false);
+  const [creating, setCreating] = useState({
+    isCreating: false,
+    isReplying: false,
+    initialTitle: "",
+    initialReceiver: ""
+  });
 
   const {
     loading,
@@ -45,6 +50,7 @@ export default function MessagesContents({ uId }) {
   } = useAsyncFn(getUserMessages);
 
   const { execute: createMessageFn } = useAsyncFn(createMessage);
+  const { execute: deleteMessageFn } = useAsyncFn(deleteMessage);
 
   function onMessageCreate({ title, content, receiver }) {
     return createMessageFn({
@@ -54,13 +60,36 @@ export default function MessagesContents({ uId }) {
       content: content,
     }).then((res) => {
       console.log(res);
-      setIsCreating(false);
+      setCreating({
+        isCreating: false,
+        isReplying: false,
+        initialTitle: "",
+        initialReceiver: ""
+      });
       Success.fire({
         icon: "success",
         title: "Message sent successfully",
       });
     });
   }
+
+
+  function onMessageDelete({ messageId }) {
+    return deleteMessageFn({
+      receiverId: uId,
+      messageId: messageId
+    }).then((res) => {
+      console.log(res);
+      setMessages(prevMessages => {
+        return prevMessages.filter(message => message.messageId !== messageId)
+      })
+      Success.fire({
+        icon: "success",
+        title: "Message deleted successfully",
+      })
+    });
+  }
+
   const Success = Swal.mixin({
     toast: true,
     position: "bottom-start",
@@ -73,14 +102,29 @@ export default function MessagesContents({ uId }) {
     },
   });
 
+  function onGetMessages({ isMounted }) {
+    return getUserMessagesFn(uId).then((data) => {
+      console.log(data);
+      console.log(isMounted);
+      isMounted && setMessages(data);
+    });
+  }
+
+  function replying({initialTitle, initialReceiver}){
+    setCreating({
+      isCreating: true,
+      isReplying: true,
+      initialTitle: "RE: "+initialTitle,
+      initialReceiver: initialReceiver
+    });
+  }
+
+
   useEffect(() => {
     let isMounted = true;
     //const controller = new AbortController();
 
-    getUserMessagesFn(uId).then((data) => {
-      console.log(data);
-      isMounted && setMessages(data);
-    });
+    onGetMessages({ isMounted });
 
     return () => {
       isMounted = false;
@@ -117,17 +161,29 @@ export default function MessagesContents({ uId }) {
           >
             MESSAGES
           </Typography>
-          {!isCreating ? (
+          {!creating.isCreating ? (
             <Button
               variant="contained"
               endIcon={<SendIcon />}
-              onClick={() => setIsCreating(true)}
+              onClick={() => setCreating({
+                isCreating: true,
+                isReplying: false,
+                initialTitle: "",
+                initialReceiver: ""
+              })}
               sx={{ backgroundColor: "var(--accent-light)" }}
             >
               New message
             </Button>
           ) : (
-            <ColorButton onClick={() => setIsCreating(false)}>CANCEL MESSAGE</ColorButton>
+            <ColorButton onClick={() => setCreating({
+              isCreating: false,
+              isReplying: false,
+              initialTitle: "",
+              initialReceiver: ""
+            })}>
+              CANCEL MESSAGE
+            </ColorButton>
           )}
           <Stack
             direction="row"
@@ -143,7 +199,7 @@ export default function MessagesContents({ uId }) {
               <IconButton
                 aria-label="refresh"
                 sx={{ color: "var(--bg)" }}
-                // onClick={() => refresh}
+                onClick={() => onGetMessages({ isMounted: true })}
               >
                 <RefreshIcon />
               </IconButton>
@@ -151,11 +207,14 @@ export default function MessagesContents({ uId }) {
           </Stack>
         </Stack>
       </Box>
-      {isCreating ? (
+      {creating.isCreating ? (
         <MessageForm
           loading={loading}
           error={error}
           onSubmit={onMessageCreate}
+          isReplying={creating.isReplying}
+          initialReceiver={creating.initialReceiver}
+          initialTitle={creating.initialTitle}
         />
       ) : (
         <>
@@ -174,7 +233,7 @@ export default function MessagesContents({ uId }) {
               }}
             >
               {messages.map((message) => (
-                <MessageItem key={message.messageId} message={message} />
+                <MessageItem key={message.messageId} message={message} onDelete={onMessageDelete} onReply={replying} />
               ))}
             </List>
           ) : (

@@ -15,6 +15,7 @@ export default function MessageForm({
     autoFocus = false,
     initialTitle = "",
     initialReceiver ="",
+    isReplying=false,
     receiverId = "",
     isResponse = false
 }) {
@@ -73,6 +74,7 @@ export default function MessageForm({
               >
                 <TextField
                   label="Reciver username"
+                  disabled={isReplying}
                   required
                   fullWidth
                   inputProps={{ maxLength: 40 }}
@@ -88,6 +90,7 @@ export default function MessageForm({
                 />
                 <TextField
                   label="Title"
+                  disabled={isReplying}
                   required
                   fullWidth
                   inputProps={{ maxLength: 40 }}

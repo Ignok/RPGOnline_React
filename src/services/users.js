@@ -13,32 +13,7 @@ export function getUser(uId){
   })
 }
 
-export function getUserFriends(uId){
-  return makeRequest(`Users/${uId}/Friends`, {
-    method: "GET",
-  })
-}
 
-export function getUserMessages(uId){
-  return makeRequest(`Users/${uId}/Messages`, {
-    method: "GET",
-  })
-}
-
-export function createMessage({senderId, receiver, title, content}){
-  console.log(senderId)
-  console.log(receiver)
-  console.log(title)
-  console.log(content)
-  return makeRequest(`Users/${senderId}/Messages`, {
-    method: "POST",
-    data: {
-      title : title,
-      content: content,
-      receiverUsername: receiver
-     },
-  })
-}
 
 export function editProfile({ uId, country, city, aboutme, attitude }) {
   console.log(uId)
@@ -55,5 +30,38 @@ export function editProfile({ uId, country, city, aboutme, attitude }) {
       aboutme: aboutme,
       attitude: attitude
      },
+  })
+}
+
+
+// FRIENDS
+export function getUserFriends(uId){
+  return makeRequest(`Users/${uId}/Friends`, {
+    method: "GET",
+  })
+}
+
+
+// MESSAGES
+export function getUserMessages(uId){
+  return makeRequest(`Message/${uId}`, {
+    method: "GET",
+  })
+}
+
+export function createMessage({senderId, receiver, title, content}){
+  return makeRequest(`Message/${senderId}/send`, {
+    method: "POST",
+    data: {
+      title : title,
+      content: content,
+      receiverUsername: receiver
+     },
+  })
+}
+
+export function deleteMessage({receiverId, messageId}){
+  return makeRequest(`Message/${receiverId}/delete/${messageId}`, {
+    method: "DELETE",
   })
 }
