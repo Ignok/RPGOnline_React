@@ -14,7 +14,23 @@ import { editProfile } from "../../../../services/users";
 
 import { attitudes } from "../../../../helpers/enums/attitudes";
 import { countries } from "../../../../helpers/enums/countries";
+import Modal from "@mui/material/Modal";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
+import Badge from "@mui/material/Badge";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
+import { avatars } from "../../../../helpers/enums/avatars";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
 const ColorButton = styled(Button)(() => ({
   color: "white",
   "&:hover": {
@@ -83,6 +99,15 @@ export default function AboutMeContents({
     }
   }
 
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setChosen(0);
+  };
+
+  const [chosen, setChosen] = React.useState(0);
+
   return (
     <Box>
       {/* USER MENU */}
@@ -131,7 +156,9 @@ export default function AboutMeContents({
             SAVE CHANGES
           </ColorButton>
           <Box display="flex">
-            <ColorButton sx={{ mx: 1 }}>EDIT AVATAR</ColorButton>
+            <ColorButton sx={{ mx: 1 }} onClick={handleOpen}>
+              EDIT AVATAR
+            </ColorButton>
             <Divider orientation="vertical" color="white" flexItem />
             <ColorButton
               onClick={() => setIsDisabled((prev) => !prev)}
@@ -223,6 +250,45 @@ export default function AboutMeContents({
           ))}
         </CustomDisableInput>
       </Box>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6">
+            {chosen}
+          </Typography>
+          <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={165}>
+            {avatars.map((item) => (
+              <Badge
+                overlap="circular"
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                badgeContent={item.id === chosen ? <CheckCircleIcon /> : ""}
+                sx={{ color: "var(--accent)" }}
+              >
+                <ImageListItem
+                  key={item.img}
+                  sx={{
+                    border: item.id === chosen ? 5 : 0,
+                    borderColor: "var(--accent)",
+                  }}
+                  onClick={() => setChosen(() => item.id)}
+                >
+                  <img
+                    src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                    srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                    alt={item.title}
+                    loading="lazy"
+                  />
+                </ImageListItem>
+              </Badge>
+            ))}
+          </ImageList>
+        </Box>
+      </Modal>
     </Box>
   );
 }
