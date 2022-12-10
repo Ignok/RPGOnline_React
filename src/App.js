@@ -64,11 +64,7 @@ class App extends React.Component {
                   </UserProvider>
                 }
               />
-              <Route
-                path="/aboutme/details/:uId"
-                element={<AboutMeDetails />}
-              />
-
+              
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
             </Routes>

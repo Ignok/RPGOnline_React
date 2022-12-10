@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../../../../contexts/userContext";
-import { getUserMessages, createMessage, deleteMessage } from "../../../../services/users";
+import {
+  getUserMessages,
+  createMessage,
+  deleteMessage,
+} from "../../../../services/users";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { DatetimeToLocaleDateString } from "../../../../helpers/functions/DateTimeConverter";
 import {
@@ -40,7 +44,7 @@ export default function MessagesContents({ uId }) {
     isCreating: false,
     isReplying: false,
     initialTitle: "",
-    initialReceiver: ""
+    initialReceiver: "",
   });
 
   const {
@@ -64,7 +68,7 @@ export default function MessagesContents({ uId }) {
         isCreating: false,
         isReplying: false,
         initialTitle: "",
-        initialReceiver: ""
+        initialReceiver: "",
       });
       Success.fire({
         icon: "success",
@@ -73,20 +77,21 @@ export default function MessagesContents({ uId }) {
     });
   }
 
-
   function onMessageDelete({ messageId }) {
     return deleteMessageFn({
       receiverId: uId,
-      messageId: messageId
+      messageId: messageId,
     }).then((res) => {
       console.log(res);
-      setMessages(prevMessages => {
-        return prevMessages.filter(message => message.messageId !== messageId)
-      })
+      setMessages((prevMessages) => {
+        return prevMessages.filter(
+          (message) => message.messageId !== messageId
+        );
+      });
       Success.fire({
         icon: "success",
         title: "Message deleted successfully",
-      })
+      });
     });
   }
 
@@ -110,15 +115,14 @@ export default function MessagesContents({ uId }) {
     });
   }
 
-  function replying({initialTitle, initialReceiver}){
+  function replying({ initialTitle, initialReceiver }) {
     setCreating({
       isCreating: true,
       isReplying: true,
-      initialTitle: "RE: "+initialTitle,
-      initialReceiver: initialReceiver
+      initialTitle: "Re: " + initialTitle,
+      initialReceiver: initialReceiver,
     });
   }
-
 
   useEffect(() => {
     let isMounted = true;
@@ -165,23 +169,29 @@ export default function MessagesContents({ uId }) {
             <Button
               variant="contained"
               endIcon={<SendIcon />}
-              onClick={() => setCreating({
-                isCreating: true,
-                isReplying: false,
-                initialTitle: "",
-                initialReceiver: ""
-              })}
+              onClick={() =>
+                setCreating({
+                  isCreating: true,
+                  isReplying: false,
+                  initialTitle: "",
+                  initialReceiver: "",
+                })
+              }
               sx={{ backgroundColor: "var(--accent-light)" }}
             >
               New message
             </Button>
           ) : (
-            <ColorButton onClick={() => setCreating({
-              isCreating: false,
-              isReplying: false,
-              initialTitle: "",
-              initialReceiver: ""
-            })}>
+            <ColorButton
+              onClick={() =>
+                setCreating({
+                  isCreating: false,
+                  isReplying: false,
+                  initialTitle: "",
+                  initialReceiver: "",
+                })
+              }
+            >
               CANCEL MESSAGE
             </ColorButton>
           )}
@@ -233,7 +243,12 @@ export default function MessagesContents({ uId }) {
               }}
             >
               {messages.map((message) => (
-                <MessageItem key={message.messageId} message={message} onDelete={onMessageDelete} onReply={replying} />
+                <MessageItem
+                  key={message.messageId}
+                  message={message}
+                  onDelete={onMessageDelete}
+                  onReply={replying}
+                />
               ))}
             </List>
           ) : (

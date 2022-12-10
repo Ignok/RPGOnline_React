@@ -6,14 +6,17 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import { useState } from "react";
 
 import "../../../../App.css";
+import { useAsync, useAsyncFn } from "../../../../hooks/useAsync";
+import { editProfile } from "../../../../services/users";
 
 // const pages = ["SAVE CHANGES", "EDIT AVATAR", "EDIT PROFILE"];
 
 const countries = [
   {
-    value: "PL",
+    value: "Poland",
     label: "Poland",
   },
   {
@@ -23,6 +26,10 @@ const countries = [
   {
     value: "GB",
     label: "Great Britain",
+  },
+  {
+    value: "JP",
+    label: "Japan",
   },
 ];
 
@@ -34,6 +41,10 @@ const attitudes = [
   {
     value: "Experienced",
     label: "Experienced",
+  },
+  {
+    value: "Eager to play",
+    label: "Adventurous",
   },
   {
     value: "Casual Player",
@@ -63,19 +74,49 @@ const CustomDisableInput = styled(TextField)(() => ({
   },
 }));
 
-export default function AboutMeContents() {
-  const [isEditing, setIsEditing] = React.useState(true); //default is disabled=true
-  //const updateDetailsFn = useAsyncFn(updateDetails)
+export default function AboutMeContents({ uId, country, city, attitude, aboutme }) {
+  const [isDisabled, setIsDisabled] = useState(true);
 
-  const [country, setCountry] = React.useState("PL"); //tu trzeba bedzie przekazywac aktualny
-  const handleCountryChange = (e) => {
-    setCountry(e.target.value);
+  const [values, setValues] = useState({
+    country: country,
+    city: city,
+    attitude: attitude,
+    aboutme: aboutme,
+  });
+
+  const handleChange = (e) => {
+    console.log(e.target.value);
+
+    setValues((values) => ({
+      ...values,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const [attitude, setAttitude] = React.useState("New Gamer"); //tu trzeba bedzie przekazywac aktualny
-  const handleAttitudeChange = (e) => {
-    setAttitude(e.target.value);
-  };
+  const [contents, setContents] = useState();
+
+  const { execute: editProfileFn } = useAsyncFn(editProfile);
+
+  function onProfileEdit({ country, city, attitude, aboutme }) {
+    if (isDisabled !== true) {
+      setIsDisabled(() => true);
+      return editProfileFn({
+        uId: uId,
+        country: country,
+        city: city,
+        attitude: attitude,
+        aboutme: aboutme,
+      }).then((res) => {
+        console.log("udalo sb");
+        console.log(res);
+        setContents((prev) => {
+          return prev;
+        });
+
+        //pop-up że się udało
+      });
+    }
+  }
 
   return (
     <Box>
@@ -110,9 +151,8 @@ export default function AboutMeContents() {
           </Typography>
 
           <ColorButton
-            onClick={() => setIsEditing(() => true)}
+            onClick={onProfileEdit}
             sx={{ flexGrow: 2, fontWeight: "bold" }}
-            // onSubmit={onAboutmeUpdate} to powinno byc onclick ale nie zdazylam ogarnac jak wywolac 2 rzeczy w onclick
             // loading={updateAboutmeFn.loading}
             // error={updateAboutmeFn.error}
           >
@@ -122,10 +162,10 @@ export default function AboutMeContents() {
             <ColorButton sx={{ mx: 1 }}>EDIT AVATAR</ColorButton>
             <Divider orientation="vertical" color="white" flexItem />
             <ColorButton
-              onClick={() => setIsEditing((prev) => !prev)}
+              onClick={() => setIsDisabled((prev) => !prev)}
               sx={{ mx: 1 }}
             >
-            {isEditing ? "EDIT PROFILE" : "CANCEL EDIT"}
+              {isDisabled ? "EDIT PROFILE" : "CANCEL EDIT"}
             </ColorButton>
           </Box>
         </Stack>
@@ -143,15 +183,15 @@ export default function AboutMeContents() {
           px: 10,
         }}
       >
-        {/* SELECT COUNTRY */}
         <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
           Country
         </Typography>
         <CustomDisableInput
           select
-          disabled={isEditing}
-          value={country}
-          onChange={handleCountryChange}
+          disabled={isDisabled}
+          value={values.country}
+          onChange={handleChange}
+          id="country"
           variant="outlined"
           size="small"
           margin="dense"
@@ -163,25 +203,27 @@ export default function AboutMeContents() {
             </MenuItem>
           ))}
         </CustomDisableInput>
-        {/* CITY INPUT */}
         <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
           City
         </Typography>{" "}
         <CustomDisableInput
-          disabled={isEditing}
-          id="outlined-basic"
+          disabled={isDisabled}
+          value={values.city}
+          onChange={handleChange}
+          id="city"
           variant="outlined"
           size="small"
           margin="dense"
           sx={{ mb: 3 }}
         />
-        {/* ABOUT ME INPUT */}
         <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
           About me
         </Typography>
         <CustomDisableInput
-          disabled={isEditing}
-          value="My journey with tabletop RPGs. Which systems do I play. What are my favorite professions... etc."
+          disabled={isDisabled}
+          value={values.aboutme}
+          onChange={handleChange}
+          id="aboutme"
           variant="outlined"
           size="small"
           margin="dense"
@@ -189,16 +231,15 @@ export default function AboutMeContents() {
           multiline
           // maxRows={4}
         />
-        {/* SELECT ATTITUDE /> */}
         <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
           Attitude
         </Typography>
-        {/* w przyszlosci pewnie stworzyc custom text field dla obu selectorow */}
         <CustomDisableInput
           select
-          disabled={isEditing}
-          value={attitude}
-          onChange={handleAttitudeChange}
+          disabled={isDisabled}
+          value={values.attitude}
+          onChange={handleChange}
+          id="attitude"
           variant="outlined"
           size="small"
           margin="dense"

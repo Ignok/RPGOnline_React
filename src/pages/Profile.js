@@ -42,13 +42,9 @@ const Sidebar = styled(Box)(({ theme }) => ({
   },
 }));
 
-
-
 export function Profile() {
-  const {user, page = 'aboutme', changePage} = useUser();
-  const {loading, error}  = useAsyncFn();
-
-  
+  const { user, page = "aboutme", changePage } = useUser();
+  const { loading, error } = useAsyncFn();
 
   // function onUserEdit(country, city, aboutme, attitude){
   //   return editProfileFn({uId: user.uId, country, city, aboutme, attitude})
@@ -78,23 +74,30 @@ export function Profile() {
   //   this.refreshPage();
   // }
 
-  const onPageChange = pageName => {
-    console.log(pageName)
-    changePage(pageName)
-  }
-
+  const onPageChange = (pageName) => {
+    console.log(pageName);
+    changePage(pageName);
+  };
 
   function switchPage(page) {
-    console.log(page)
-    switch(page) {
-      case 'aboutme':
-        return <AboutMeContents />;
-      case 'friends':
+    console.log(page);
+    switch (page) {
+      case "aboutme":
+        return (
+          <AboutMeContents
+            uId={user.uId}
+            country={user.country}
+            city={user.city}
+            attitude={user.attitude}
+            aboutme={user.aboutMe}
+          />
+        );
+      case "friends":
         return <FriendsContents uId={user.uId} />;
-      case 'messages':
+      case "messages":
         return <MessagesContents uId={user.uId} />;
       default:
-        return 'something is wrong';
+        return "something is wrong";
     }
   }
 
