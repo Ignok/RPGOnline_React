@@ -12,49 +12,8 @@ import "../../../../App.css";
 import { useAsync, useAsyncFn } from "../../../../hooks/useAsync";
 import { editProfile } from "../../../../services/users";
 
-// const pages = ["SAVE CHANGES", "EDIT AVATAR", "EDIT PROFILE"];
-
-const countries = [
-  {
-    value: "Poland",
-    label: "Poland",
-  },
-  {
-    value: "UA",
-    label: "Ukraine",
-  },
-  {
-    value: "GB",
-    label: "Great Britain",
-  },
-  {
-    value: "JP",
-    label: "Japan",
-  },
-];
-
-const attitudes = [
-  {
-    value: "Epic GM",
-    label: "Epic GM",
-  },
-  {
-    value: "Experienced",
-    label: "Experienced",
-  },
-  {
-    value: "Eager to play",
-    label: "Adventurous",
-  },
-  {
-    value: "Casual Player",
-    label: "Casual Player",
-  },
-  {
-    value: "New User",
-    label: "New User",
-  },
-];
+import { attitudes } from "../../../../helpers/enums/attitudes";
+import { countries } from "../../../../helpers/enums/countries";
 
 const ColorButton = styled(Button)(() => ({
   color: "white",
@@ -74,7 +33,13 @@ const CustomDisableInput = styled(TextField)(() => ({
   },
 }));
 
-export default function AboutMeContents({ uId, country, city, attitude, aboutme }) {
+export default function AboutMeContents({
+  uId,
+  country,
+  city,
+  attitude,
+  aboutme,
+}) {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [values, setValues] = useState({
@@ -151,7 +116,14 @@ export default function AboutMeContents({ uId, country, city, attitude, aboutme 
           </Typography>
 
           <ColorButton
-            onClick={onProfileEdit}
+            onClick={() => {
+              onProfileEdit({
+                country: values.country,
+                city: values.city,
+                attitude: values.attitude,
+                aboutme: values.aboutme,
+              });
+            }}
             sx={{ flexGrow: 2, fontWeight: "bold" }}
             // loading={updateAboutmeFn.loading}
             // error={updateAboutmeFn.error}
@@ -191,7 +163,7 @@ export default function AboutMeContents({ uId, country, city, attitude, aboutme 
           disabled={isDisabled}
           value={values.country}
           onChange={handleChange}
-          id="country"
+          name="country"
           variant="outlined"
           size="small"
           margin="dense"
@@ -210,7 +182,7 @@ export default function AboutMeContents({ uId, country, city, attitude, aboutme 
           disabled={isDisabled}
           value={values.city}
           onChange={handleChange}
-          id="city"
+          name="city"
           variant="outlined"
           size="small"
           margin="dense"
@@ -223,7 +195,7 @@ export default function AboutMeContents({ uId, country, city, attitude, aboutme 
           disabled={isDisabled}
           value={values.aboutme}
           onChange={handleChange}
-          id="aboutme"
+          name="aboutme"
           variant="outlined"
           size="small"
           margin="dense"
@@ -239,7 +211,7 @@ export default function AboutMeContents({ uId, country, city, attitude, aboutme 
           disabled={isDisabled}
           value={values.attitude}
           onChange={handleChange}
-          id="attitude"
+          name="attitude"
           variant="outlined"
           size="small"
           margin="dense"

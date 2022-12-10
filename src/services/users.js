@@ -14,12 +14,6 @@ export function getUser(uId) {
 }
 
 export function editProfile({ uId, country, city, aboutme, attitude }) {
-  console.log(uId);
-  console.log(country);
-  console.log(city);
-  console.log(aboutme);
-  console.log(attitude);
-
   return makeRequest(`Users/${uId}/Details`, {
     method: "PUT",
     data: {
