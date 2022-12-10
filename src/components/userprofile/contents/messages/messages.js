@@ -118,7 +118,7 @@ export default function MessagesContents({ uId }) {
     setCreating({
       isCreating: true,
       isReplying: true,
-      initialTitle: "RE: " + initialTitle,
+      initialTitle: "Re: " + initialTitle,
       initialReceiver: initialReceiver
     });
   }

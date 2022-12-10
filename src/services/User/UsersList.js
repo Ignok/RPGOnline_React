@@ -61,7 +61,7 @@ export function UsersList() {
                     <td>{users.uId}</td>
                     <td>{users.username}</td>
                     <td>
-                      {users.picture === null ? (
+                      {users.picture === 0 ? (
                         <img
                           src={require("../../helpers/pictures/anonymous_user.png")}
                           alt="anonymous_user"

@@ -56,6 +56,7 @@ export default function AboutMeContents({
   city,
   attitude,
   aboutme,
+  picture,
 }) {
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -250,7 +251,7 @@ export default function AboutMeContents({
         </CustomDisableInput>
       </Box>
       
-      {editAvatarForm && <AvatarForm handleClose={handleClose} open={true} initialVal={0} /> }
+      {editAvatarForm && <AvatarForm uId={uId} handleClose={handleClose} open={true} initialVal={picture} /> }
       
     </Box>
   );

@@ -43,7 +43,7 @@ const Sidebar = styled(Box)(({ theme }) => ({
 }));
 
 export function Profile() {
-  const { user, page = "aboutme", changePage } = useUser();
+  const { user, page = "aboutme", changePage, changeLocalAvatar } = useUser();
   const { loading, error } = useAsyncFn();
 
   // function onUserEdit(country, city, aboutme, attitude){
@@ -90,6 +90,7 @@ export function Profile() {
             city={user.city}
             attitude={user.attitude}
             aboutme={user.aboutMe}
+            picture={user.picture}
           />
         );
       case "friends":

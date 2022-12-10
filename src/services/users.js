@@ -25,6 +25,15 @@ export function editProfile({ uId, country, city, aboutme, attitude }) {
   });
 }
 
+export function editAvatar({ uId, picture }) {
+  return makeRequest(`Users/${uId}/Avatar`, {
+    method: "PUT",
+    data: {
+      picture: picture
+    },
+  });
+}
+
 // FRIENDS
 export function getUserFriends(uId) {
   return makeRequest(`Users/${uId}/Friends`, {
