@@ -19,6 +19,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Badge from "@mui/material/Badge";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { AvatarForm } from "./avatarForm";
 
 import { avatars } from "../../../../helpers/enums/avatars";
 
@@ -88,7 +89,6 @@ export default function AboutMeContents({
         attitude: attitude,
         aboutme: aboutme,
       }).then((res) => {
-        console.log("udalo sb");
         console.log(res);
         setContents((prev) => {
           return prev;
@@ -98,15 +98,14 @@ export default function AboutMeContents({
       });
     }
   }
+  const [editAvatarForm, setEditAvatarForm] = useState(false);
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setOpen(false);
+    setEditAvatarForm(false);
     setChosen(0);
   };
 
-  const [chosen, setChosen] = React.useState(0);
+  const [chosen, setChosen] = useState(0);
 
   return (
     <Box>
@@ -156,7 +155,7 @@ export default function AboutMeContents({
             SAVE CHANGES
           </ColorButton>
           <Box display="flex">
-            <ColorButton sx={{ mx: 1 }} onClick={handleOpen}>
+            <ColorButton sx={{ mx: 1 }} onClick={() => setEditAvatarForm(true)}>
               EDIT AVATAR
             </ColorButton>
             <Divider orientation="vertical" color="white" flexItem />
@@ -220,7 +219,7 @@ export default function AboutMeContents({
         </Typography>
         <CustomDisableInput
           disabled={isDisabled}
-          value={values.aboutme}
+          value={values.aboutme === null ? "" : values.aboutme}
           onChange={handleChange}
           name="aboutme"
           variant="outlined"
@@ -250,45 +249,9 @@ export default function AboutMeContents({
           ))}
         </CustomDisableInput>
       </Box>
-
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6">
-            {chosen}
-          </Typography>
-          <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={165}>
-            {avatars.map((item) => (
-              <Badge
-                overlap="circular"
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                badgeContent={item.id === chosen ? <CheckCircleIcon /> : ""}
-                sx={{ color: "var(--accent)" }}
-              >
-                <ImageListItem
-                  key={item.img}
-                  sx={{
-                    border: item.id === chosen ? 5 : 0,
-                    borderColor: "var(--accent)",
-                  }}
-                  onClick={() => setChosen(() => item.id)}
-                >
-                  <img
-                    src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                    srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    alt={item.title}
-                    loading="lazy"
-                  />
-                </ImageListItem>
-              </Badge>
-            ))}
-          </ImageList>
-        </Box>
-      </Modal>
+      
+      {editAvatarForm && <AvatarForm handleClose={handleClose} open={true} initialVal={0} /> }
+      
     </Box>
   );
 }

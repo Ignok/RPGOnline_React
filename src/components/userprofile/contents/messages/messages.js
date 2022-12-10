@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../../../../contexts/userContext";
-import {
-  getUserMessages,
-  createMessage,
-  deleteMessage,
-} from "../../../../services/users";
+import { getUserMessages, createMessage, deleteMessage } from "../../../../services/users";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { DatetimeToLocaleDateString } from "../../../../helpers/functions/DateTimeConverter";
 import {
@@ -28,6 +24,7 @@ import { ButtonProps } from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Tooltip from "@mui/material/Tooltip";
+import Pagination from '@mui/material/Pagination';
 
 const ColorButton = styled(Button)(() => ({
   color: "white",
@@ -40,11 +37,14 @@ const ColorButton = styled(Button)(() => ({
 export default function MessagesContents({ uId }) {
   const [messages, setMessages] = useState();
 
+  const [pageCount, setPageCount] = useState();
+  const [page, setPage] = useState(1)
+
   const [creating, setCreating] = useState({
     isCreating: false,
     isReplying: false,
     initialTitle: "",
-    initialReceiver: "",
+    initialReceiver: ""
   });
 
   const {
@@ -68,7 +68,7 @@ export default function MessagesContents({ uId }) {
         isCreating: false,
         isReplying: false,
         initialTitle: "",
-        initialReceiver: "",
+        initialReceiver: ""
       });
       Success.fire({
         icon: "success",
@@ -77,21 +77,20 @@ export default function MessagesContents({ uId }) {
     });
   }
 
+
   function onMessageDelete({ messageId }) {
     return deleteMessageFn({
       receiverId: uId,
-      messageId: messageId,
+      messageId: messageId
     }).then((res) => {
       console.log(res);
-      setMessages((prevMessages) => {
-        return prevMessages.filter(
-          (message) => message.messageId !== messageId
-        );
-      });
+      setMessages(prevMessages => {
+        return prevMessages.filter(message => message.messageId !== messageId)
+      })
       Success.fire({
         icon: "success",
         title: "Message deleted successfully",
-      });
+      })
     });
   }
 
@@ -107,11 +106,11 @@ export default function MessagesContents({ uId }) {
     },
   });
 
-  function onGetMessages({ isMounted }) {
-    return getUserMessagesFn(uId).then((data) => {
+  function onGetMessages({ isMounted, page }) {
+    return getUserMessagesFn({ uId, page }).then((data) => {
       console.log(data);
-      console.log(isMounted);
-      isMounted && setMessages(data);
+      setPageCount(data.pageCount)
+      isMounted && setMessages(data.item1);
     });
   }
 
@@ -119,16 +118,17 @@ export default function MessagesContents({ uId }) {
     setCreating({
       isCreating: true,
       isReplying: true,
-      initialTitle: "Re: " + initialTitle,
-      initialReceiver: initialReceiver,
+      initialTitle: "RE: " + initialTitle,
+      initialReceiver: initialReceiver
     });
   }
+
 
   useEffect(() => {
     let isMounted = true;
     //const controller = new AbortController();
-
-    onGetMessages({ isMounted });
+    setPage(1)
+    onGetMessages({ isMounted, page: 1 });
 
     return () => {
       isMounted = false;
@@ -169,29 +169,23 @@ export default function MessagesContents({ uId }) {
             <Button
               variant="contained"
               endIcon={<SendIcon />}
-              onClick={() =>
-                setCreating({
-                  isCreating: true,
-                  isReplying: false,
-                  initialTitle: "",
-                  initialReceiver: "",
-                })
-              }
+              onClick={() => setCreating({
+                isCreating: true,
+                isReplying: false,
+                initialTitle: "",
+                initialReceiver: ""
+              })}
               sx={{ backgroundColor: "var(--accent-light)" }}
             >
               New message
             </Button>
           ) : (
-            <ColorButton
-              onClick={() =>
-                setCreating({
-                  isCreating: false,
-                  isReplying: false,
-                  initialTitle: "",
-                  initialReceiver: "",
-                })
-              }
-            >
+            <ColorButton onClick={() => setCreating({
+              isCreating: false,
+              isReplying: false,
+              initialTitle: "",
+              initialReceiver: ""
+            })}>
               CANCEL MESSAGE
             </ColorButton>
           )}
@@ -209,7 +203,10 @@ export default function MessagesContents({ uId }) {
               <IconButton
                 aria-label="refresh"
                 sx={{ color: "var(--bg)" }}
-                onClick={() => onGetMessages({ isMounted: true })}
+                onClick={() => {
+                  setPage(1)
+                  onGetMessages({ isMounted: true, page: 1 })
+                }}
               >
                 <RefreshIcon />
               </IconButton>
@@ -243,12 +240,7 @@ export default function MessagesContents({ uId }) {
               }}
             >
               {messages.map((message) => (
-                <MessageItem
-                  key={message.messageId}
-                  message={message}
-                  onDelete={onMessageDelete}
-                  onReply={replying}
-                />
+                <MessageItem key={message.messageId} message={message} onDelete={onMessageDelete} onReply={replying} />
               ))}
             </List>
           ) : (
@@ -256,6 +248,24 @@ export default function MessagesContents({ uId }) {
           )}
         </>
       )}
+      <Pagination
+        count={pageCount}
+        page={page}
+        onChange={(e, p) => {
+          setPage(p);
+          onGetMessages({ isMounted: true, page: p })
+        }}
+        color="secondary"
+        size="large"
+        showFirstButton
+        showLastButton
+        sx={{
+          ".MuiTablePagination-root": {
+            display: "flex",
+            justifyContent: "center",
+          },
+        }}
+      />
     </Box>
   );
 }

@@ -22,7 +22,7 @@ import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConv
 export default function Posts() {
   const [params, setParams] = useState({})
   const [page, setPage] = useState(1)
-  const { posts, loading, error, hasNextPage, pageCount } = useFetchPosts(params, page);
+  const { posts, loading, error, pageCount } = useFetchPosts(params, page);
 
   const ResponsiveBox = styled(Box)(({ theme }) => ({
     [theme.breakpoints.up("md")]: {
@@ -84,7 +84,10 @@ export default function Posts() {
             />
             {loading && <h1>Loading...</h1>}
             {error && <h1>Error. Try Refreshing.</h1>}
-            {posts.map((post) => {
+            {loading || (posts.length === 0 ?
+            <h1>No posts to display</h1>
+            :
+            posts.map((post) => {
               return (
                 <PostItem
                   isDetails={false}
@@ -104,7 +107,7 @@ export default function Posts() {
                   comments={post.comments}
                 />
               );
-            })}
+            }))}
             <Pagination
               count={pageCount}
               page={page}

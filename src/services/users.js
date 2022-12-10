@@ -33,9 +33,10 @@ export function getUserFriends(uId) {
 }
 
 // MESSAGES
-export function getUserMessages(uId) {
+export function getUserMessages({uId, page}) {
   return makeRequest(`Message/${uId}`, {
     method: "GET",
+    params: { Page: page}
   });
 }
 
