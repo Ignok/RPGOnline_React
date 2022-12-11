@@ -4,8 +4,7 @@ import axios from 'axios'
 const ACTIONS = {
     MAKE_REQUEST: 'make-request',
     GET_DATA: 'get-data',
-    ERROR: 'error',
-    UPDATE_HAS_NEXT_PAGE: 'update-has-next-page'
+    ERROR: 'error'
 }
 
 const BASE_URL = 'https://localhost:7251/api/Posts'

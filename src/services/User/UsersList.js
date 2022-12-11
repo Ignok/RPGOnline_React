@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { getUsers } from '../users';
 import { useAsyncFn } from '../../hooks/useAsync';
 import { Link } from 'react-router-dom';
-
+import { CircularProgress } from '@mui/material';
 import useRefreshToken from '../../hooks/useRefreshToken';
 
 import { getImage } from '../../helpers/functions/getImage';
@@ -44,7 +44,10 @@ export function UsersList() {
   return (
     <article>
       <h1>Users List</h1>
-      {users?.length ? (
+      {loading ?
+      <h1>Loading . . .</h1>
+      :
+      (users?.length ? (
         <div>
           <table>
             <thead>
@@ -92,7 +95,7 @@ export function UsersList() {
         </div>
       ) : (
         <h1>No users to display</h1>
-      )}
+      ))}
     </article>
 
     // <div>

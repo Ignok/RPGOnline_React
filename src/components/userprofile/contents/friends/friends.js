@@ -131,7 +131,10 @@ export default function FriendsContents({ uId }) {
           </ColorButton>
         </Stack>
       </Box>
-      {friends?.length ? (
+      {loading ?
+      <h1>Loading . . .</h1>
+      :
+      (friends?.length ? (
         <List
           sx={{
             border: 1,
@@ -160,7 +163,7 @@ export default function FriendsContents({ uId }) {
         </List>
       ) : (
         <h4>No friends to display</h4>
-      )}
+      ))}
     </Box>
   );
 }

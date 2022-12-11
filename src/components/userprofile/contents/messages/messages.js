@@ -213,7 +213,10 @@ export default function MessagesContents({ uId }) {
         />
       ) : (
         <>
-          {messages?.length ? (
+        {loading ?
+          <h1>Loading . . .</h1>
+          :
+          (messages?.length ? (
             <List
               sx={{
                 border: 1,
@@ -233,7 +236,7 @@ export default function MessagesContents({ uId }) {
             </List>
           ) : (
             <h4>No messages to display</h4>
-          )}
+          ))}
         </>
       )}
       <Pagination
