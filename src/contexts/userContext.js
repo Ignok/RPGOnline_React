@@ -12,26 +12,25 @@ export function useUser() {
 export function UserProvider({ children }) {
   const { uId } = useParams();
   const { loading, error, value: user } = useAsync(() => getUser(uId), [uId]);
-  const [ page, setPage ] = useState();
-  
+  const [page, setPage] = useState();
+  const [avatar, setAvatar] = useState();
 
   //   useEffect(() => {
   //     if (post?.comments == null) return
   //     setComments(post.comments)
   //   }, [post?.comments])
 
-  //   function updateLocalUser(comment) {
-  //     setComments(prevComments => {
-  //       return [comment, ...prevComments]
-  //     })
-  //   }
+  function updateLocalAvatar(avatar) {
+    console.log(avatar);
+    setAvatar(avatar);
+  }
 
   // function getUserFriends(uId) {
   //   return commentsByParentId[responseCommentId]
   // }
 
-  function changePage(pageName){
-    setPage(pageName)
+  function changePage(pageName) {
+    setPage(pageName);
   }
 
   console.log(user);
@@ -41,8 +40,9 @@ export function UserProvider({ children }) {
       value={{
         user: { uId, ...user },
         page: page,
-        changePage
-        // updateLocalUser
+        changePage,
+        updateLocalAvatar,
+        avatar: avatar,
       }}
     >
       {loading ? (

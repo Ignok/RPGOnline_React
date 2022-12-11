@@ -25,6 +25,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import { getImage } from "../../../../helpers/functions/getImage";
 
 const settings = ["unfriend", "block"];
 const ItemDiv = styled("div")(({ theme }) => ({
@@ -52,7 +53,7 @@ export default function FriendItem(props) {
     <ItemDiv sx={{ mb: 1 }}>
       <ListItem>
         <ListItemAvatar>
-          <Avatar alt={props.username} src={props.picture} />
+          <Avatar alt={props.username} src={getImage(props.picture).img} />
         </ListItemAvatar>
         <ListItemText primary={props.username} secondary={props.country} />
         {props.contents === "blocked" ? (

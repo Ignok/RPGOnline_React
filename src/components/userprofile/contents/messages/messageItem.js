@@ -28,6 +28,7 @@ import { Collapse } from "@mui/material";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { useAsync } from "../../../../hooks/useAsync";
 import Swal from "sweetalert2";
+import { getImage } from "../../../../helpers/functions/getImage";
 
 const ItemDiv = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -81,7 +82,10 @@ export default function MessageItem({ message, onDelete, onReply }) {
     <ItemDiv sx={{ mb: 1 }}>
       <ListItemButton alignItems="flex-start" onClick={expandMessage}>
         <ListItemAvatar>
-          <Avatar alt={message.senderUsername} src="" />
+          <Avatar
+            alt={message.senderUsername}
+            src={getImage(message.senderPicture).img}
+          />
         </ListItemAvatar>
         <ListItemText
           primary={message.title}

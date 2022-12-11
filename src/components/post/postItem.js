@@ -20,6 +20,7 @@ import Button from "@mui/material/Button";
 import { Link, useLocation } from "react-router-dom";
 
 import "../../App.css";
+import { getImage } from "../../helpers/functions/getImage";
 
 export default function PostItem(props) {
   
@@ -51,7 +52,7 @@ export default function PostItem(props) {
           <Avatar
             sx={{ bgcolor: "text.secondary", ml: 1 }}
             alt={props.avatarAlt}
-            src={props.avatarSrc}
+            src={getImage(props.avatarSrc).img}
           />
         }
         action={
@@ -86,7 +87,11 @@ export default function PostItem(props) {
               {props.title}
             </Typography>
             {!props.imgSrc && (
-              <Typography noWrap={!props.isDetails} variant="body2" color="text.secondary">
+              <Typography
+                noWrap={!props.isDetails}
+                variant="body2"
+                color="text.secondary"
+              >
                 {props.text}
               </Typography>
             )}

@@ -15,7 +15,7 @@ import { Button, Stack, Divider } from "@mui/material";
 import { editAvatar } from "../../../../services/users";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 
-export function AvatarForm({ uId, handleClose, open, initialVal }) {
+export function AvatarForm({ uId, handleClose, open, initialVal, updateLocalAvatar }) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -37,6 +37,7 @@ export function AvatarForm({ uId, handleClose, open, initialVal }) {
         picture: picture,
       }).then((res) => {
         console.log(`Succes! chosen:${chosen}`);
+        updateLocalAvatar(picture);
         //pop-up
       });
     }
@@ -50,11 +51,11 @@ export function AvatarForm({ uId, handleClose, open, initialVal }) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6">
-          {chosen}
+        <Typography id="modal-modal-title" variant="h6" sx={{ mb: 2 }}>
+          Choose your avatar: {chosen === 0 ? "None" : avatars.find((e) => e.id === chosen).title}
         </Typography>
         <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={165}>
-          {avatars.map((item) => (
+          {avatars.slice(1).map((item) => (
             <Badge
               key={item.id}
               overlap="circular"
@@ -84,11 +85,7 @@ export function AvatarForm({ uId, handleClose, open, initialVal }) {
           <Button color="error" onClick={handleClose}>
             BACK
           </Button>
-          <Button
-            color="inherit"
-            sx={{ mx: 1 }}
-            onClick={() => setChosen(0)}
-          >
+          <Button color="inherit" sx={{ mx: 1 }} onClick={() => setChosen(0)}>
             SELECT ANONYMOUS
           </Button>
           <Button

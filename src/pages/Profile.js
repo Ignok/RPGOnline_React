@@ -21,6 +21,8 @@ import { useUser } from "../contexts/userContext";
 import FriendsContents from "../components/userprofile/contents/friends/friends";
 import MessagesContents from "../components/userprofile/contents/messages/messages";
 
+import { avatars } from "../helpers/enums/avatars";
+
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 50,
   height: 50,
@@ -43,7 +45,13 @@ const Sidebar = styled(Box)(({ theme }) => ({
 }));
 
 export function Profile() {
-  const { user, page = "aboutme", changePage, changeLocalAvatar } = useUser();
+  const {
+    user,
+    page = "aboutme",
+    changePage,
+    updateLocalAvatar,
+    avatar = user.picture,
+  } = useUser();
   const { loading, error } = useAsyncFn();
 
   // function onUserEdit(country, city, aboutme, attitude){
@@ -90,7 +98,8 @@ export function Profile() {
             city={user.city}
             attitude={user.attitude}
             aboutme={user.aboutMe}
-            picture={user.picture}
+            picture={avatar}
+            updateLocalAvatar={updateLocalAvatar}
           />
         );
       case "friends":
@@ -138,7 +147,7 @@ export function Profile() {
             >
               <Avatar
                 alt="Avatar"
-                src={require("../helpers/pictures/anonymous_user.png")}
+                src={avatar === 0 ? require("../helpers/pictures/anonymous_user.png") : avatars.find(e => e.id === avatar).img}
                 variant="rounded"
                 sx={{ width: 150, height: 150 }}
               />
