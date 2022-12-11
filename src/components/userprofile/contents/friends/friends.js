@@ -148,8 +148,10 @@ export default function FriendsContents({ uId }) {
           {friends.map((friend) => {
             return (
               <FriendItem
+                senderId={uId}
                 username={friend.username}
-                country="PL" //tymczasowo
+                country={friend.country}
+                attitude={friend.attitude}
                 picture={friend.picture}
                 contents={contents}
               />

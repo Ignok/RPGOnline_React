@@ -16,7 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MessageItem from "./messageItem";
 import SendIcon from "@mui/icons-material/Send";
 import MessageForm from "./messageForm";
-import Swal from "sweetalert2";
+import { Success } from "../../../../helpers/pop-ups/success";
 import { Box } from "@mui/material";
 import { styled, Stack } from "@mui/system";
 import Typography from "@mui/material/Typography";
@@ -93,18 +93,6 @@ export default function MessagesContents({ uId }) {
       })
     });
   }
-
-  const Success = Swal.mixin({
-    toast: true,
-    position: "bottom-start",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener("mouseenter", Swal.stopTimer);
-      toast.addEventListener("mouseleave", Swal.resumeTimer);
-    },
-  });
 
   function onGetMessages({ isMounted, page }) {
     return getUserMessagesFn({ uId, page }).then((data) => {

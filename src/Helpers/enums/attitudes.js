@@ -8,7 +8,7 @@ export let attitudes = [
     label: "Experienced",
   },
   {
-    value: "Eager to",
+    value: "Adventurous",
     label: "Adventurous",
   },
   {

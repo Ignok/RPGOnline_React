@@ -25,7 +25,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import { Collapse } from "@mui/material";
+
 import { getImage } from "../../../../helpers/functions/getImage";
+import MessageForm from "../messages/messageForm";
+import { useAsyncFn } from "../../../../hooks/useAsync";
+import { createMessage } from "../../../../services/users";
+import { Success } from "../../../../helpers/pop-ups/success";
 
 const settings = ["unfriend", "block"];
 const ItemDiv = styled("div")(({ theme }) => ({
@@ -45,17 +51,39 @@ export default function FriendItem(props) {
     }
   };
   const handleButtonClose = (buttonAction) => {
-      setOpen(true);
-      setAction(buttonAction);
+    setOpen(true);
+    setAction(buttonAction);
   };
 
+  const [openMessageForm, setOpenMessageForm] = React.useState(false);
+
+  const { execute: createMessageFn } = useAsyncFn(createMessage);
+  function onMessageCreate({ title, content, receiver }) {
+    return createMessageFn({
+      senderId: props.senderId,
+      receiver: receiver,
+      title: title,
+      content: content,
+    }).then((res) => {
+      setOpenMessageForm(false);
+      console.log(res);
+      Success.fire({
+        icon: "success",
+        title: "Message sent successfully",
+      });
+    });
+  }
+  
   return (
     <ItemDiv sx={{ mb: 1 }}>
       <ListItem>
         <ListItemAvatar>
           <Avatar alt={props.username} src={getImage(props.picture).img} />
         </ListItemAvatar>
-        <ListItemText primary={props.username} secondary={props.country} />
+        <ListItemText
+          primary={props.username}
+          secondary={`${props.country} / ${props.attitude}`}
+        />
         {props.contents === "blocked" ? (
           <ListItemIcon>
             <Tooltip title="Unblock">
@@ -98,7 +126,10 @@ export default function FriendItem(props) {
           <div>
             <ListItemIcon>
               <Tooltip title="Message">
-                <IconButton aria-label="message">
+                <IconButton
+                  aria-label="message"
+                  onClick={() => setOpenMessageForm(!openMessageForm)}
+                >
                   <EmailIcon />
                 </IconButton>
               </Tooltip>
@@ -169,6 +200,14 @@ export default function FriendItem(props) {
           </DialogActions>
         </Dialog>
       </ListItem>
+      <Collapse in={openMessageForm}>
+        <MessageForm
+          isReplying={false}
+          initialReceiver={props.username}
+          initialTitle={""}
+          onSubmit={onMessageCreate}
+        />
+      </Collapse>
     </ItemDiv>
   );
 }
