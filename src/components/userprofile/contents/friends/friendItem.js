@@ -73,7 +73,11 @@ export default function FriendItem(props) {
       });
     });
   }
-  
+
+  function handleCancel() {
+    return setOpenMessageForm(!openMessageForm);
+  }
+
   return (
     <ItemDiv sx={{ mb: 1 }}>
       <ListItem>
@@ -206,6 +210,7 @@ export default function FriendItem(props) {
           initialReceiver={props.username}
           initialTitle={""}
           onSubmit={onMessageCreate}
+          onCancel={handleCancel}
         />
       </Collapse>
     </ItemDiv>

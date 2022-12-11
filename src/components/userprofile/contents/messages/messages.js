@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../../../../contexts/userContext";
-import { getUserMessages, createMessage, deleteMessage } from "../../../../services/users";
+import {
+  getUserMessages,
+  createMessage,
+  deleteMessage,
+} from "../../../../services/users";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { DatetimeToLocaleDateString } from "../../../../helpers/functions/DateTimeConverter";
 import {
@@ -24,7 +28,8 @@ import { ButtonProps } from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Tooltip from "@mui/material/Tooltip";
-import Pagination from '@mui/material/Pagination';
+import Pagination from "@mui/material/Pagination";
+import { Collapse } from "@mui/material";
 
 const ColorButton = styled(Button)(() => ({
   color: "white",
@@ -38,13 +43,13 @@ export default function MessagesContents({ uId }) {
   const [messages, setMessages] = useState();
 
   const [pageCount, setPageCount] = useState();
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
   const [creating, setCreating] = useState({
     isCreating: false,
     isReplying: false,
     initialTitle: "",
-    initialReceiver: ""
+    initialReceiver: "",
   });
 
   const {
@@ -68,7 +73,7 @@ export default function MessagesContents({ uId }) {
         isCreating: false,
         isReplying: false,
         initialTitle: "",
-        initialReceiver: ""
+        initialReceiver: "",
       });
       Success.fire({
         icon: "success",
@@ -77,45 +82,54 @@ export default function MessagesContents({ uId }) {
     });
   }
 
-
   function onMessageDelete({ messageId }) {
     return deleteMessageFn({
       receiverId: uId,
-      messageId: messageId
+      messageId: messageId,
     }).then((res) => {
       console.log(res);
-      setMessages(prevMessages => {
-        return prevMessages.filter(message => message.messageId !== messageId)
-      })
+      setMessages((prevMessages) => {
+        return prevMessages.filter(
+          (message) => message.messageId !== messageId
+        );
+      });
       Success.fire({
         icon: "success",
         title: "Message deleted successfully",
-      })
+      });
     });
   }
 
   function onGetMessages({ isMounted, page }) {
     return getUserMessagesFn({ uId, page }).then((data) => {
       console.log(data);
-      setPageCount(data.pageCount)
+      setPageCount(data.pageCount);
       isMounted && setMessages(data.item1);
     });
   }
 
   function replying({ initialTitle, initialReceiver }) {
-    setCreating({
+    return setCreating({
       isCreating: true,
       isReplying: true,
       initialTitle: "Re: " + initialTitle,
-      initialReceiver: initialReceiver
+      initialReceiver: initialReceiver,
     });
   }
 
+  function handleCancel() {
+    return setCreating({
+      isCreating: false,
+      isReplying: false,
+      initialTitle: "",
+      initialReceiver: "",
+    });
+  }
 
   useEffect(() => {
     let isMounted = true;
     //const controller = new AbortController();
-    setPage(1)
+    setPage(1);
     onGetMessages({ isMounted, page: 1 });
 
     return () => {
@@ -157,25 +171,20 @@ export default function MessagesContents({ uId }) {
             <Button
               variant="contained"
               endIcon={<SendIcon />}
-              onClick={() => setCreating({
-                isCreating: true,
-                isReplying: false,
-                initialTitle: "",
-                initialReceiver: ""
-              })}
+              onClick={() =>
+                setCreating({
+                  isCreating: true,
+                  isReplying: false,
+                  initialTitle: "",
+                  initialReceiver: "",
+                })
+              }
               sx={{ backgroundColor: "var(--accent-light)" }}
             >
               New message
             </Button>
           ) : (
-            <ColorButton onClick={() => setCreating({
-              isCreating: false,
-              isReplying: false,
-              initialTitle: "",
-              initialReceiver: ""
-            })}>
-              CANCEL MESSAGE
-            </ColorButton>
+            <ColorButton onClick={handleCancel}>CANCEL MESSAGE</ColorButton>
           )}
           <Stack
             direction="row"
@@ -192,8 +201,8 @@ export default function MessagesContents({ uId }) {
                 aria-label="refresh"
                 sx={{ color: "var(--bg)" }}
                 onClick={() => {
-                  setPage(1)
-                  onGetMessages({ isMounted: true, page: 1 })
+                  setPage(1);
+                  onGetMessages({ isMounted: true, page: 1 });
                 }}
               >
                 <RefreshIcon />
@@ -201,50 +210,55 @@ export default function MessagesContents({ uId }) {
             </Tooltip>
           </Stack>
         </Stack>
+        <Collapse in={creating.isCreating}>
+          {creating.isCreating && (
+            <MessageForm
+              loading={loading}
+              error={error}
+              onSubmit={onMessageCreate}
+              onCancel={handleCancel}
+              isReplying={creating.isReplying}
+              initialReceiver={creating.initialReceiver}
+              initialTitle={creating.initialTitle}
+            />
+          )}
+        </Collapse>
       </Box>
-      {creating.isCreating ? (
-        <MessageForm
-          loading={loading}
-          error={error}
-          onSubmit={onMessageCreate}
-          isReplying={creating.isReplying}
-          initialReceiver={creating.initialReceiver}
-          initialTitle={creating.initialTitle}
-        />
-      ) : (
-        <>
-        {loading ?
-          <h1>Loading . . .</h1>
-          :
-          (messages?.length ? (
-            <List
-              sx={{
-                border: 1,
-                borderRadius: 0,
-                borderColor: "var(--accent)",
-                backgroundColor: "var(--accent-opaque)",
-                my: 2,
-                display: "flex",
-                flexDirection: "column",
-                py: 3,
-                px: 10,
-              }}
-            >
-              {messages.map((message) => (
-                <MessageItem key={message.messageId} message={message} onDelete={onMessageDelete} onReply={replying} />
-              ))}
-            </List>
-          ) : (
-            <h4>No messages to display</h4>
+      {loading ? (
+        <h1>Loading . . .</h1>
+      ) : messages?.length ? (
+        <List
+          sx={{
+            border: 1,
+            borderRadius: 0,
+            borderColor: "var(--accent)",
+            backgroundColor: "var(--accent-opaque)",
+            my: 2,
+            display: "flex",
+            flexDirection: "column",
+            py: 3,
+            px: 10,
+          }}
+        >
+          {messages.map((message) => (
+            <MessageItem
+              key={message.messageId}
+              message={message}
+              onDelete={onMessageDelete}
+              onReply={replying}
+            />
           ))}
-        </>
+        </List>
+      ) : (
+        <h4>No messages to display</h4>
       )}
+
       <Pagination
         count={pageCount}
         page={page}
         onChange={(e, p) => {
           setPage(p);
-          onGetMessages({ isMounted: true, page: p })
+          onGetMessages({ isMounted: true, page: p });
         }}
         color="secondary"
         size="large"

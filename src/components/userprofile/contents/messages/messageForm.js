@@ -11,6 +11,7 @@ export default function MessageForm({
   loading,
   error,
   onSubmit,
+  onCancel,
   autoFocus = false,
   initialTitle = "",
   initialReceiver = "",
@@ -64,10 +65,19 @@ export default function MessageForm({
     }));
   };
 
+  function handleCancel() {
+    onCancel();
+    setValues({
+      title: "",
+      receiver: initialReceiver,
+      content: "",
+    });
+  }
+
   return (
-    <Box>
+    <Box sx={{ mx: 2, my: 2 }}>
       <Card
-        sx={{ my: 2, boxShadow: 3, pr: 4, py: 3 }}
+        sx={{ boxShadow: 3, pr: 4, py: 2 }}
         onSubmit={handleSubmit}
         component="form"
       >
@@ -121,12 +131,14 @@ export default function MessageForm({
               onChange={handleChange}
             />
           </Stack>
-          <Stack alignItems="flex-end">
+          <Stack spacing={10} justifyContent="flex-end" direction="row">
+            <Button color="error" onClick={handleCancel} variant="outlined">
+              CANCEL
+            </Button>
             <Button
               variant="contained"
               size="medium"
               endIcon={<SendIcon />}
-              sx={{ mr: 3, mb: 2 }}
               disabled={loading}
               type="submit"
             >
