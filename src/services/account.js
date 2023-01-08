@@ -36,3 +36,12 @@ export function refreshToken() {
         withCredentials: true
     })
 }
+
+export function logout(){
+    console.log("Logging out...")
+
+    return makeRequest(`Account/logout`, {
+        method: "POST",
+        withCredentials: true
+    })
+}
