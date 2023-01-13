@@ -43,7 +43,6 @@ export function UsersList() {
 
   return (
     <article>
-      <h1>Users List</h1>
       {loading ?
       <h1>Loading . . .</h1>
       :

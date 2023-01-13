@@ -3,21 +3,17 @@ import { FooterContainer } from "../containers/footer";
 import Navigation from "../containers/navigation";
 
 const Layout = () => {
-    return (
-        <main className="App">
-            <div className="container">
-                <div className="titleheader">
-                    <h1>
-                        Nice Dice
-                        <span>PLAY RPG ONLINE</span>
-                    </h1>
-                </div>
-                <Navigation />
-                <Outlet />
-                <FooterContainer />
-            </div>
-        </main>
-    )
-}
+  return (
+    <>
+      <Navigation />
+      <main className="App">
+        <div className="container">
+          <Outlet />
+        </div>
+      </main>
+      <FooterContainer />
+    </>
+  );
+};
 
-export default Layout
+export default Layout;

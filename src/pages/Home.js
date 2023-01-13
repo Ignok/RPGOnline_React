@@ -4,6 +4,12 @@ export class Home extends Component {
   render() {
     return (
       <div>
+        <div className="titleheader">
+          <h1>
+            Nice Dice
+            <span>PLAY RPG ONLINE</span>
+          </h1>
+        </div>
         <h1>Welcome!</h1>
         <img
           className="scalable-photo"
