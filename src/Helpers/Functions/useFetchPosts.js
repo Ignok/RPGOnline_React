@@ -31,6 +31,7 @@ export default function useFetchPosts(params, page) {
         axios.get(BASE_URL, {
             headers: { 'Content-Type': 'application/json' },
             cancelToken: cancelToken.token,
+            withCredentials: true,
             params: {page: page, ...params }
         }).then(res => {
             console.log(res.data)

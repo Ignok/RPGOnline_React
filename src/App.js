@@ -10,7 +10,7 @@ import Login from "./services/User/Profile/Login";
 import PostDiscussionForm from "./components/post/postForms/PostDiscussionForm";
 import { PostProvider } from "./contexts/postContext";
 import { PostDetails } from "./components/post/postDetails";
-import { Link, BrowserRouter, Route, Routes } from "react-router-dom";
+import { Link, BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import AboutMeDetails from "./services/User/Profile/AboutMeDetails-old";
 import { UserProvider } from "./contexts/userContext";
 import AdminPage from "./pages/AdminPage";
@@ -23,6 +23,7 @@ import { ROLES } from "./helpers/enums/roles";
 
 
 function App() {
+  
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -37,6 +38,7 @@ function App() {
             </Route> */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User, ROLES.Moderator]}/> }>
           <Route path="/users" element={<UsersList />} />
+          <Route path="/post/discussion-form" element={<PostDiscussionForm />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]}/> }>
@@ -53,10 +55,8 @@ function App() {
           }
         />
         {/* <Route path='/post/:postId' element={<PostDetails />} /> */}
-        <Route
-          path="/post/discussion-form"
-          element={<PostDiscussionForm />}
-        />
+        
+        {/* <Route path="/post/discussion-form" element={<PostDiscussionForm />} /> */}
 
         <Route
           path="/aboutme/:uId"

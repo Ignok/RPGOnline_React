@@ -8,14 +8,31 @@ import CommentForm from "../comments/commentForm";
 import { Box, Container, Stack } from "@mui/material";
 import PostItem from "./postItem";
 import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
+import { useState } from "react";
+import { Fail } from "../../helpers/pop-ups/failed";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 
 export function PostDetails() {
+  const navigate = useNavigate();
+  const { auth } = useAuth();
+
   const { post, rootComments, createLocalComment } = usePost()
   const { loading, error, execute: createCommentFn } = useAsyncFn(createComment)
 
   function onCommentCreate(content) {
-    return createCommentFn({ postId: post.postId, content }).then(createLocalComment)
+    return createCommentFn({uId: auth.uId, postId: post.postId, content })
+    .then(createLocalComment)
+    .catch(err => {
+      console.log(err)
+      Fail.fire()
+      .then(result =>{
+        if(result.isConfirmed){
+          navigate('/login', { replace: true });
+        }
+      });
+    })
   }
 
   return (

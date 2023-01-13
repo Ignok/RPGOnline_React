@@ -1,15 +1,18 @@
 import { makeRequest } from "./makeRequest"
+import useAuth from "../hooks/useAuth"
 
-export function createComment({ postId, content, responseCommentId }) {
+export function createComment({ uId, postId, content, responseCommentId }) {
+  console.log(uId)
   console.log(postId)
   console.log(content)
   console.log(responseCommentId)
 
   return makeRequest(`Posts/${postId}/Comment`, {
     method: "POST",
+    withCredentials: true,
     data: {
       responseCommentId : responseCommentId,
-      uId : 1,  //do zmiany, teraz dodane na sztywno
+      uId : uId,
       content : content
      },
   })

@@ -16,15 +16,15 @@ export function makeRequest(url, options) {
         console.log(error)
         if(error.response?.status === 401){
             console.log("Unauthorized")
-            throw error.response;
+            throw error;
             //window.location.href = "/login";
         }
         else if(error.response?.status === 400){
-            throw error.response;
+            throw error;
         }
         else if(error.response?.status === 403){
             console.log("Incorrect role")
-            throw error.response;
+            throw error;
         }
         else
         {
