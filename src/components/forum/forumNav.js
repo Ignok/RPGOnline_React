@@ -1,4 +1,11 @@
 import * as React from "react";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Box from "@mui/material/Box";
+
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+
 import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -28,181 +35,133 @@ import HelpIcon from "@mui/icons-material/Help";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 
-import Box from "@mui/material/Box";
-
 import { styled } from "@mui/system";
+import "../../App.css";
 
 export default function ForumNavbar({ params, onParamChange }) {
-  const [open, setOpen] = React.useState(false);
-
-  const SidebarBox = styled(Box)(({ theme }) => ({
-    bgcolor: "background.paper",
-    color: "var(--accent)",
-    minWidth: 165,
-    [theme.breakpoints.down("md")]: {
-      width: "100%",
-      padding: 20,
-    },
-    [theme.breakpoints.up("lg")]: {
-      minWidth: 200,
-    },
-  }));
-
-  const SidebarItemIcon = styled(ListItemIcon)((theme) => ({
-    color: "var(--accent)",
-  }));
-  const SidebarSubItemIcon = styled(ListItemIcon)((theme) => ({
-    color: "var(--accent-light)",
-    selectable: false,
-  }));
-
-  const handleClick = () => {
-    setOpen(!open);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
+  const tags = [
+    <Button
+      key="fanart"
+      startIcon={<FanartIcon />}
+      onClick={onParamChange}
+      value="fanart"
+      name="fanart"
+      id="fanart"
+    >
+      Fanart
+    </Button>,
+    <Button
+      key="cosplay"
+      startIcon={<CosplayIcon />}
+      onClick={onParamChange}
+      value="cosplay"
+      name="cosplay"
+      id="cosplay"
+    >
+      Cosplay
+    </Button>,
+    <Button
+      key="lore"
+      startIcon={<HelpIcon />}
+      onClick={onParamChange}
+      value="lore"
+      name="lore"
+      id="lore"
+    >
+      Lore
+    </Button>,
+    <Button
+      key="notice"
+      startIcon={<FmdBadIcon />}
+      onClick={onParamChange}
+      value="notice"
+      name="notice"
+      id="notice"
+    >
+      Notice
+    </Button>,
+    <Button
+      key="help"
+      startIcon={<MenuBookIcon />}
+      onClick={onParamChange}
+      value="help"
+      name="help"
+      id="help"
+    >
+      Help
+    </Button>,
+  ];
+
+  const tagsMenu = (
+    <Menu
+      elevation={1}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "center",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+      id="tags-menu"
+      anchorEl={anchorEl}
+      open={open}
+      onClose={handleClose}
+      sx={{ ml: 1, width: "100%" }}
+    >
+      <ButtonGroup
+        orientation="vertical"
+        display="flex"
+        sx={{ minWidth: 170 }}
+        variant="text"
+        color="secondary"
+      >
+        {tags}
+      </ButtonGroup>
+    </Menu>
+  );
+
+  const nav = [
+    <Button key="home" startIcon={<HomeIcon />} sx={{ minHeight: 50 }}>
+      Home
+    </Button>,
+    <Button
+      key="tags"
+      startIcon={<TagIcon />}
+      sx={{ minHeight: 50 }}
+      onClick={handleMenuOpen}
+    >
+      Tags
+    </Button>,
+    <Button key="followed" startIcon={<EyeIcon />} sx={{ minHeight: 50 }}>
+      Followed
+    </Button>,
+    <Button key="favorite" startIcon={<FavoriteIcon />} sx={{ minHeight: 50 }}>
+      Favorite
+    </Button>,
+  ];
+
   return (
-    <SidebarBox>
-      <List component="nav" sx={{ boxShadow: 1, borderRadius: 1 }}>
-        <ListItemButton>
-          <SidebarItemIcon>
-            <HomeIcon />
-          </SidebarItemIcon>
-          <ListItemText primary="Home" />
-        </ListItemButton>
-        <ListItemButton onClick={handleClick}>
-          <SidebarItemIcon>
-            <TagIcon />
-          </SidebarItemIcon>
-          <ListItemText primary="Tags" />
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton
-              onClick={onParamChange}
-              value="fanart"
-              name="fanart"
-              id="fanart"
-              component="button"
-              sx={{ pl: 4, color: "var(--accent-light)" }}
-            >
-              <SidebarSubItemIcon>
-                <FanartIcon />
-              </SidebarSubItemIcon>
-              <ListItemText primary="Fanart" />
-            </ListItemButton>
-
-            <ListItemButton
-              value="cosplay"
-              sx={{ pl: 4, color: "var(--accent-light)" }}
-            >
-              <SidebarSubItemIcon>
-                <CosplayIcon />
-              </SidebarSubItemIcon>
-              <ListItemText primary="Cosplay" />
-            </ListItemButton>
-
-            <ListItemButton
-              value="book"
-              sx={{ pl: 4, color: "var(--accent-light)" }}
-            >
-              <SidebarSubItemIcon>
-                <MenuBookIcon />
-              </SidebarSubItemIcon>
-              <ListItemText primary="Lore" />
-            </ListItemButton>
-
-            <ListItemButton
-              value="notice"
-              sx={{ pl: 4, color: "var(--accent-light)" }}
-            >
-              <SidebarSubItemIcon>
-                <FmdBadIcon />
-              </SidebarSubItemIcon>
-              <ListItemText primary="Notice" />
-            </ListItemButton>
-
-            <ListItemButton
-              value="help"
-              sx={{ pl: 4, color: "var(--accent-light)" }}
-            >
-              <SidebarSubItemIcon>
-                <HelpIcon />
-              </SidebarSubItemIcon>
-              <ListItemText primary="Help" />
-            </ListItemButton>
-
-            {/* <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
-            <SidebarSubItemIcon
-        >
-              <CharacterIcon />
-            </SidebarSubItemIcon
-        >
-            <ListItemText primary="Character" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
-            <SidebarSubItemIcon
-        >
-              <NPCIcon />
-            </SidebarSubItemIcon
-        >
-            <ListItemText primary="NPC" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
-            <SidebarSubItemIcon
-        >
-              <MonsterIcon />
-            </SidebarSubItemIcon
-        >
-            <ListItemText primary="Monster" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
-            <SidebarSubItemIcon
-        >
-              <RaceIcon />
-            </SidebarSubItemIcon
-        >
-            <ListItemText primary="Race" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
-            <SidebarSubItemIcon
-        >
-              <ProfessionIcon />
-            </SidebarSubItemIcon
-        >
-            <ListItemText primary="Profession" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
-            <SidebarSubItemIcon
-        >
-              <ItemIcon />
-            </SidebarSubItemIcon
-        >
-            <ListItemText primary="Item" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4, color: "var(--accent-light)" }}>
-            <SidebarSubItemIcon
-        >
-              <SpellIcon />
-            </SidebarSubItemIcon
-        >
-            <ListItemText primary="Spell" />
-          </ListItemButton> */}
-          </List>
-        </Collapse>
-        <ListItemButton>
-          <SidebarItemIcon>
-            <EyeIcon />
-          </SidebarItemIcon>
-          <ListItemText primary="Followed" />
-        </ListItemButton>
-        <ListItemButton>
-          <SidebarItemIcon>
-            <FavoriteIcon />
-          </SidebarItemIcon>
-          <ListItemText primary="Favorite" />
-        </ListItemButton>
-      </List>
-    </SidebarBox>
+    <Box sx={{ pb: 3, px: 3, width: "100%" }}>
+      <ButtonGroup
+        variant="contained"
+        orientation="vertical"
+        display="flex"
+        sx={{ minWidth: 165, width: "100%" }}
+        color="secondary"
+      >
+        {nav}
+      </ButtonGroup>
+      {tagsMenu}
+    </Box>
   );
 }
