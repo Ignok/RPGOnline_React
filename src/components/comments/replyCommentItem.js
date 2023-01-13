@@ -24,8 +24,11 @@ import { useAsyncFn } from "../../hooks/useAsync"
 import { createComment } from "../../services/comments"
 
 import "../../App.css";
+import useAuth from "../../hooks/useAuth";
 
 export default function CommentItem(props) {
+
+  const { auth } = useAuth();
   const { post, getReplies, createLocalComment } = usePost()
   const childComments = getReplies(props.commentId)
   const createCommentFn = useAsyncFn(createComment)
@@ -33,10 +36,13 @@ export default function CommentItem(props) {
 
   function onCommentReply(content) {
     return createCommentFn
-      .execute({ postId: post.postId, content, responseCommentId: props.commentId })
+      .execute({uId: auth.uId, postId: post.postId, content, responseCommentId: props.commentId })
       .then(comment => {
         setIsReplying(false)
         createLocalComment(comment)
+      })
+      .catch(err => {
+        console.log(err)
       })
   }
 

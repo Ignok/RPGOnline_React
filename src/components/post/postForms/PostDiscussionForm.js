@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
+import useAuth from "../../../hooks/useAuth";
+
+import { createPost } from "../../../services/posts";
+import { useAsyncFn } from "../../../hooks/useAsync";
 
 
 const BASE_URL = 'https://localhost:7251/api/Posts';
@@ -28,16 +32,18 @@ const tags = [
 
 
 export default function PostDiscussionForm() {
+    const { auth } = useAuth();
 
     const [values, setValues] = useState({
-        UId: 1, // To weźmiemy po zalogowaniu
         Title: "",
         Tag: "none",
         Content: ""
     });
 
+    const { execute: createPostFn } = useAsyncFn(createPost);
 
     const navigate = useNavigate();
+
 
     const [formErrors, setFormErrors] = useState({});
 
@@ -79,9 +85,10 @@ export default function PostDiscussionForm() {
     function handleSubmit(event) {
         if (event) event.preventDefault();
         if (validateForm(values)) {
-
-            axios.post(BASE_URL, values, {
-                headers: { 'Content-Type': 'application/json' },
+            createPostFn({
+                uId: auth.uId,
+                title: values.Title,
+                content: values.Content
             }).then(res => {
                 console.log(res.data);
                 Swal.fire({
@@ -97,6 +104,7 @@ export default function PostDiscussionForm() {
                 })
                 navigate('/forum');
             }).catch(e => {
+                console.log("oops")
                 console.log(e)
             })
         }
@@ -118,19 +126,6 @@ export default function PostDiscussionForm() {
                 autoComplete="off"
                 onSubmit={handleSubmit}
             >
-                <FormControl>
-                    <InputLabel>UID</InputLabel>
-                    <Input
-                        id="UId"
-                        name="UId"
-                        type="number"
-                        aria-describedby="my-helper-text"
-                        inputProps={{ maxLength: 40 }}
-                        onChange={handleChange}
-                        value={values.UId}
-                    />
-                </FormControl>
-
                 <FormControl>
                     <InputLabel>Title</InputLabel>
                     <Input

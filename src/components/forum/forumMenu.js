@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Divider from "@mui/material/Divider";
+import { useNavigate } from "react-router-dom";
 
 
 import "../../App.css";
@@ -23,6 +24,8 @@ const ColorButton = styled(Button)((theme) => ({
 }));
 
 export default function ForumMenu() {
+  const navigate = useNavigate();
+
   return (
     <Box>
       <Box
@@ -56,7 +59,7 @@ export default function ForumMenu() {
             Share~
           </Typography>
           {pages.map((page) => (
-            <ColorButton key={pages.indexOf(page)} href={page.link} >
+            <ColorButton key={pages.indexOf(page)} onClick={() => navigate(page.link, { replace: true })} >
               <Typography textAlign="center" variant="h6" noWrap={true}>
                 {page.name}
               </Typography>

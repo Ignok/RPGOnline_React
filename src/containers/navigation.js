@@ -110,8 +110,7 @@ export default function Navigation() {
       }}
     >
       {isLoggedIn() ? (
-        <>
-          {" "}
+        <div>
           <MenuItem
             onClick={handleMenuClose}
             component={NavLink}
@@ -124,9 +123,9 @@ export default function Navigation() {
             <Logout fontSize="small" sx={{ mr: 1, color: "text.secondary" }} />
             Logout
           </MenuItem>
-        </>
+        </div>
       ) : (
-        <>
+        <div>
           <MenuItem
             onClick={handleMenuClose}
             component={NavLink}
@@ -145,7 +144,7 @@ export default function Navigation() {
             <VpnKeyIcon sx={{ mr: 1, color: "text.secondary" }} />
             Register
           </MenuItem>
-        </>
+        </div>
       )}
     </Menu>
   );
@@ -180,7 +179,7 @@ export default function Navigation() {
       }}
     >
       {isLoggedIn() ? (
-        <>
+        <div>
           <MenuItem
             onClick={handleMenuClose}
             component={NavLink}
@@ -191,9 +190,9 @@ export default function Navigation() {
           <MenuItem onClick={handleMenuClose} component={NavLink} to={"/users"}>
             Find Friends
           </MenuItem>
-        </>
+        </div>
       ) : (
-        <>
+        <div>
           <MenuItem
             onClick={handleMenuClose}
             component={NavLink}
@@ -212,7 +211,7 @@ export default function Navigation() {
             <VpnKeyIcon sx={{ mr: 1, color: "text.secondary" }} />
             Register
           </MenuItem>
-        </>
+        </div>
       )}
     </Menu>
   );
@@ -245,7 +244,7 @@ export default function Navigation() {
               <Button
                 component={NavLink}
                 to={"/" + (nav === "home" ? "" : nav)}
-                key={mainNav}
+                key={nav}
                 sx={{
                   color: "white",
                   display: "block",

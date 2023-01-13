@@ -35,6 +35,7 @@ export default function Login() {
     function onLogin(username, pswd) {
         return loginFn({ username, pswd })
             .then(res => {
+                console.log(location)
                 console.log(res)
 
                 const uId = res?.uId;

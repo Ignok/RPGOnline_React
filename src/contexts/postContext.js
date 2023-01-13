@@ -11,6 +11,7 @@ export function usePost() {
 
 export function PostProvider({ children }) {
   const { postId } = useParams()
+
   const { loading, error, value: post } = useAsync(() => getPost(postId), [postId])
   const [comments, setComments] = useState([])
   const commentsByParentId = useMemo(() => {
