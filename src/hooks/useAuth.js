@@ -1,10 +1,11 @@
 import { useContext, useDebugValue } from "react";
 import AuthContext from "../contexts/AuthProvider";
 
+
 const useAuth = () => {
-    const { auth } = useContext(AuthContext);
-    //console.log(auth);
-    useDebugValue(auth, auth => auth?.user ? "Logged In" : "Logged Out")
+
+    // const user = localStorage.getItem("user");
+    // console.log(user)
     return useContext(AuthContext);
 }
 

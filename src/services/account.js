@@ -1,9 +1,6 @@
 import { makeRequest } from "./makeRequest"
 
 export function login({ username, pswd }) {
-    console.log(username)
-    console.log(pswd)
-
     return makeRequest(`Account/login`, {
         method: "POST",
         withCredentials: true,
@@ -15,10 +12,6 @@ export function login({ username, pswd }) {
 }
 
 export function register({ username, pswd, email }) {
-    console.log(username)
-    console.log(pswd)
-    console.log(email)
-
     return makeRequest(`Account/register`, {
         method: "POST",
         data: {

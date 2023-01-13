@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import { Fail } from "../helpers/pop-ups/failed";
 
 
 const api = axios.create({
@@ -15,8 +16,15 @@ export function makeRequest(url, options) {
         console.log(error)
         if(error.response?.status === 401){
             console.log("Unauthorized")
-            //localStorage.clear()
-            window.location.href = "/login";
+            throw error.response;
+            //window.location.href = "/login";
+        }
+        else if(error.response?.status === 400){
+            throw error.response;
+        }
+        else if(error.response?.status === 403){
+            console.log("Incorrect role")
+            throw error.response;
         }
         else
         {

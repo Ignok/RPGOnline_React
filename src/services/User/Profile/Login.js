@@ -5,7 +5,7 @@ import AuthContext from "../../../contexts/AuthProvider.js";
 
 import { useAsyncFn } from "../../../hooks/useAsync.js";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -15,33 +15,39 @@ import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
 
 import { useCookies } from 'react-cookie'
-
+import axios from 'axios';
 import { login } from "../../account.js";
 import useRefreshToken from "../../../hooks/useRefreshToken.js";
+import useAuth from "../../../hooks/useAuth.js";
 
-//import "./Login.css";
 
 export default function Login() {
 
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth } = useAuth();
 
-    const refreshToken = useRefreshToken();
+    const navigate = useNavigate();
+    const location = useLocation();
 
+    const from = location.state?.from?.pathname || "/";
+
+    
     const { loading, error, execute: loginFn } = useAsyncFn(login)
     function onLogin(username, pswd) {
         return loginFn({ username, pswd })
             .then(res => {
-                console.log(res.headers)
+                console.log(res)
 
-                // const accessToken = res.accessToken;
-                // //const roles = res.roles;
-                // const refreshToken = res.refreshToken;
+                const uId = res?.uId;
+                const username = res?.username;
+                const role = res?.userRole;
 
-                // console.log(accessToken)
-                // console.log(refreshToken)
-                // setAuth({ username: values.Username, Pswd: values.Pswd, accessToken, refreshToken });
-                // setValues({ Username: "", Pswd: "" });
-                // setSuccess(true)
+                setAuth({ uId, username, role});
+
+                setValues({ Username: "", Pswd: "" });
+
+                navigate(from, { replace: true });
+
+                //setSuccess(true)
             }).catch(error => {
                 console.log(error)
                 let errors = {};
@@ -49,10 +55,6 @@ export default function Login() {
                 setFormErrors(errors);
             })
     }
-
-    // useEffect(() => {
-
-    // }, [])
 
 
     const [values, setValues] = useState({
@@ -103,47 +105,12 @@ export default function Login() {
         if (event) event.preventDefault();
         if (validateForm(values)) {
             onLogin(values.Username, values.Pswd)
-
-
-            // const data = {
-            //     Username: values.Username,
-            //     Pswd: values.Pswd
-            // }
-            // console.log(data);
-            // let response;
-            // let promise;
-            // promise = login(data);
-            // if (promise) {
-            //     promise
-            //         .then(res => {
-            //             console.log(res)
-            //             response = res
-            //             return res.json()
-            //         })
-            //         .then(
-            //             (data) => {
-            //                 console.log(data)
-            //                 if (response.status === 400) {
-            //                     let errors = {};
-            //                     errors.Pswd = data.errorMessage;
-            //                     setFormErrors(errors);
-            //                 }
-            //                 if (response.status === 200) { //logowanie poprawne
-            //                     const userString = JSON.stringify(data);
-            //                     setSuccess(true)
-            //                     console.log(userString);
-            //                 }
-            //             },
-            //             (error) => {
-            //                 console.log(error)
-            //             })
-            // }
         }
     }
 
     return (
         <>
-            {success ?
+            {/* {success ?
                 (
                     <div>
                         <h1>You are logged in!</h1>
@@ -151,13 +118,10 @@ export default function Login() {
                         <p>
                             <a href="/">Go to Home page</a>
                         </p>
-                        <button className="button-add" type="button" onClick={() => refreshToken()}>
-                            Refresh token
-                        </button>
                     </div>
                 )
                 :
-                (
+                ( */}
                     <div className="">
                         <header className="">
                             <h1 className=""> {/* Do uzupełnienia className */}
@@ -218,8 +182,8 @@ export default function Login() {
                             </Container>
                         </Container>
                     </div>
-                )
-            }
+                {/* )
+            } */}
         </>
     );
 }

@@ -190,7 +190,7 @@ export default function Register() {
                                 </Form.Group>
 
                                 <Button block="true" size="lg" type="submit">
-                                    Login
+                                    Register
                                 </Button>
 
                             </Form>

@@ -10,70 +10,66 @@ import Login from "./services/User/Profile/Login";
 import PostDiscussionForm from "./components/post/postForms/PostDiscussionForm";
 import { PostProvider } from "./contexts/postContext";
 import { PostDetails } from "./components/post/postDetails";
-
-import { Navigation } from "./containers/navigation";
-
-import { FooterContainer } from "./containers/footer";
-
 import { Link, BrowserRouter, Route, Routes } from "react-router-dom";
 import AboutMeDetails from "./services/User/Profile/AboutMeDetails-old";
 import { UserProvider } from "./contexts/userContext";
+import AdminPage from "./pages/AdminPage";
+import Layout from "./components/Layout";
+import RequireAuth from "./components/RequireAuth";
+import Unauthorized from "./pages/Unauthorized";
+import { ROLES } from "./helpers/enums/roles";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <BrowserRouter>
-        <div className="container">
-          <div className="titleheader">
-            <h1>
-              Nice Dice
-              <span>PLAY RPG ONLINE</span>
-            </h1>
-          </div>
 
-          <Navigation />
 
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="unauthorized" element={<Unauthorized />} />
+
+        <Route path="/" element={<Home />} />
+
+        {/* <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin, ROLES.Moderator]} />}>
               <Route path="/users" element={<UsersList />} />
+            </Route> */}
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User, ROLES.Moderator]}/> }>
+          <Route path="/users" element={<UsersList />} />
+        </Route>
 
-              <Route path="/forum" element={<Forum />} />
-              <Route
-                path="/post/:postId"
-                element={
-                  <PostProvider>
-                    <PostDetails />
-                  </PostProvider>
-                }
-              />
-              {/* <Route path='/post/:postId' element={<PostDetails />} /> */}
-              <Route
-                path="/post/discussion-form"
-                element={<PostDiscussionForm />}
-              />
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]}/> }>
+          <Route path="/secret" element={<AdminPage />} />
+        </Route>
 
-              <Route
-                path="/aboutme/:uId"
-                element={
-                  <UserProvider>
-                    <Profile />
-                  </UserProvider>
-                }
-              />
-              
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-          </main>
-        </div>
-        <FooterContainer />
-      </BrowserRouter>
-    );
-  }
+        <Route path="/forum" element={<Forum />} />
+        <Route
+          path="/post/:postId"
+          element={
+            <PostProvider>
+              <PostDetails />
+            </PostProvider>
+          }
+        />
+        {/* <Route path='/post/:postId' element={<PostDetails />} /> */}
+        <Route
+          path="/post/discussion-form"
+          element={<PostDiscussionForm />}
+        />
+
+        <Route
+          path="/aboutme/:uId"
+          element={
+            <UserProvider>
+              <Profile />
+            </UserProvider>
+          }
+        />
+      </Route>
+    </Routes>
+   
+  );
 }
 
 export default App;
