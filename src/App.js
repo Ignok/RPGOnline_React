@@ -2,7 +2,7 @@
 import "./App.css";
 import React, { Component } from "react";
 import { Home } from "./pages/Home";
-import { UsersList } from "./services/User/UsersList";
+import UsersList from "./components/users/users";
 import { Forum } from "./pages/Forum";
 import { Profile } from "./pages/Profile";
 import Register from "./services/User/Profile/Register";
