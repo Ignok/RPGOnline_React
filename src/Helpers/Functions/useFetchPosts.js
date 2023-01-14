@@ -34,7 +34,7 @@ export default function useFetchPosts(params, page) {
             withCredentials: true,
             params: {page: page, ...params }
         }).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             dispatch({type: ACTIONS.GET_DATA, payload: {posts: res.data.item1, pageCount: res.data.pageCount}})
         }).catch(e => {
             if (axios.isCancel(e)) return

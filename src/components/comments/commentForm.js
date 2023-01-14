@@ -10,6 +10,8 @@ import { styled, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 
+import { getImage } from "../../helpers/functions/getImage";
+
 import "../../App.css";
 
 export default function CommentForm({
@@ -17,11 +19,14 @@ export default function CommentForm({
   error,
   onSubmit,
   autoFocus = false,
-  initialValue = ""
+  initialValue = "",
+  avatar
 }) {
   const [value, setValue] = useState(initialValue);
+
   const handleChange = (e) => {
     console.log(`Typed => ${e.target.value}`);
+    console.log(avatar)
     setValue(e.target.value);
   };
 
@@ -42,7 +47,7 @@ export default function CommentForm({
             sx={{ mx: 1, mt: 1 }}
           >
             <Avatar
-              src={""} //logged user's avatar
+              src={getImage(avatar).img} //logged user's avatar
               sx={{
                 ml: 2,
                 mt: 1,

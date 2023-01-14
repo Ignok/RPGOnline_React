@@ -9,9 +9,14 @@ const useRefreshToken = () => {
         const response = await refreshToken();
 
         setAuth(prev => {
-            console.log(prev)
-            console.log(response)
-            return {...prev}
+            
+            return {
+                ...prev,
+                uId:  response?.uId,
+                username: response?.username,
+                role: response?.userRole,
+                avatar: response?.avatar
+            }
         });
         return response.data;
     }

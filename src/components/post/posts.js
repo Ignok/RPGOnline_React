@@ -53,79 +53,84 @@ export default function Posts() {
       <ResponsiveBox
         //maxWidth="100%"
         display="flex"
-        //sx={{ flexWrap: "wrap", alignItems: "baseline", }}
+      //sx={{ flexWrap: "wrap", alignItems: "baseline", }}
       >
         <ForumNavbar params={params} onParamChange={handleParamChange} />
-        <Container maxWidth="md" sx={{ pb: 5 }}>
-          <ForumMenu />
-          {/* inside we pass the actual post component */}
-          <Stack
-            spacing={3}
-            direction="column"
-            justifyContent="center"
-            sx={{ flexGrow: 1 }}
-          >
-            <Pagination
-              count={pageCount}
-              page={page}
-              onChange={(e, p) => {
-                setPage(p);
-              }}
-              color="secondary"
-              size="large"
-              showFirstButton
-              showLastButton
-              sx={{
-                ".MuiTablePagination-root": {
-                  display: "flex",
-                  justifyContent: "center",
-                },
-              }}
-            />
-            {loading && <h1>Loading...</h1>}
-            {error && <h1>Error. Try Refreshing.</h1>}
+        <Container maxWidth="md" sx={{ pb: 5 }} >
+          <>
+            <ForumMenu />
+            {/* inside we pass the actual post component */}
+
+            {loading && <h1>Loading...<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></h1>}
+            {error && <h1>Error. Try Refreshing.<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></h1>}
             {loading || (posts.length === 0 ?
-            <h1>No posts to display</h1>
-            :
-            posts.map((post) => {
-              return (
-                <PostItem
-                  isDetails={false}
-                  key={post.postId}
-                  id={post.postId}
-                  avatarSrc={post.creatorNavigation.picture}
-                  avatarAlt="avatar"
-                  username={post.creatorNavigation.username}
-                  date={DatetimeToLocaleDateString(post.creationDate)}
-                  title={post.title}
-                  text={post.content}
-                  imgSrc={post.postId === 1 ? src1 : post.picture} //tymczasowo do potestowania
-                  imgAlt="picture"
-                  // tag1="fanart"
-                  // tag2="NPC"
-                  likes={post.likes}
-                  comments={post.comments}
+              <h1>No posts to display<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></h1>
+              :
+
+              <Stack
+                spacing={3}
+                direction="column"
+                justifyContent="center"
+                sx={{ flexGrow: 1 }}
+              >
+                <Pagination
+                  count={pageCount}
+                  page={page}
+                  onChange={(e, p) => {
+                    setPage(p);
+                  }}
+                  color="secondary"
+                  size="large"
+                  showFirstButton
+                  showLastButton
+                  sx={{
+                    ".MuiTablePagination-root": {
+                      display: "flex",
+                      justifyContent: "center",
+                    },
+                  }}
                 />
-              );
-            }))}
-            <Pagination
-              count={pageCount}
-              page={page}
-              onChange={(e, p) => {
-                setPage(p);
-              }}
-              color="secondary"
-              size="large"
-              showFirstButton
-              showLastButton
-              sx={{
-                ".MuiTablePagination-root": {
-                  display: "flex",
-                  justifyContent: "center",
-                },
-              }}
-            />
-          </Stack>
+                {posts.map((post) => {
+                  return (
+                    <PostItem
+                      isDetails={false}
+                      key={post.postId}
+                      id={post.postId}
+                      avatarSrc={post.creatorNavigation.picture}
+                      avatarAlt="avatar"
+                      username={post.creatorNavigation.username}
+                      date={DatetimeToLocaleDateString(post.creationDate)}
+                      title={post.title}
+                      text={post.content}
+                      imgSrc={post.postId === 1 ? src1 : post.picture} //tymczasowo do potestowania
+                      imgAlt="picture"
+                      // tag1="fanart"
+                      // tag2="NPC"
+                      likes={post.likes}
+                      comments={post.comments}
+                    />
+                  );
+                })}
+                <Pagination
+                  count={pageCount}
+                  page={page}
+                  onChange={(e, p) => {
+                    setPage(p);
+                  }}
+                  color="secondary"
+                  size="large"
+                  showFirstButton
+                  showLastButton
+                  sx={{
+                    ".MuiTablePagination-root": {
+                      display: "flex",
+                      justifyContent: "center",
+                    },
+                  }}
+                />
+              </Stack>
+            )}
+          </>
         </Container>
       </ResponsiveBox>
     </Box>

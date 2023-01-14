@@ -113,7 +113,7 @@ export default function PostDiscussionForm() {
 
     return (
         <Box>
-            <Button href='/forum'>Back</Button>
+            <Button onClick={() => navigate('/forum')}>Back</Button>
 
             <Box
                 component="form"

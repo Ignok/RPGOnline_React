@@ -65,7 +65,7 @@ export function PostDetails() {
           />
         )}
         <h4>Comments</h4>
-        <CommentForm loading={loading} error={error} onSubmit={onCommentCreate} isResponse={false} />
+        <CommentForm loading={loading} error={error} onSubmit={onCommentCreate} isResponse={false} avatar={auth.avatar}/>
         <section>
           {rootComments != null && rootComments.length > 0 && (
             <div>

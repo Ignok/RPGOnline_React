@@ -18,57 +18,66 @@ import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth";
 import Unauthorized from "./pages/Unauthorized";
 import { ROLES } from "./helpers/enums/roles";
+import PersistLogin from "./components/PersistLogin";
 
 
 
 
 function App() {
-  
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
+        <Route element={<PersistLogin />}> {/* Route do persist loginu*/}
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
         <Route path="/" element={<Home />} />
+        <Route path="/forum" element={<Forum />} />
 
         {/* <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin, ROLES.Moderator]} />}>
               <Route path="/users" element={<UsersList />} />
             </Route> */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User, ROLES.Moderator]}/> }>
-          <Route path="/users" element={<UsersList />} />
-          <Route path="/post/discussion-form" element={<PostDiscussionForm />} />
+
+        {/* <Route element={<PersistLogin />}> */}
+
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User, ROLES.Moderator]} />}>
+            <Route path="/users" element={<UsersList />} />
+            <Route path="/post/discussion-form" element={<PostDiscussionForm />} />
+          </Route>
+
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path="/secret" element={<AdminPage />} />
+          </Route>
+
+          
+          <Route
+            path="/post/:postId"
+            element={
+              <PostProvider>
+                <PostDetails />
+              </PostProvider>
+            }
+          />
+          {/* <Route path='/post/:postId' element={<PostDetails />} /> */}
+
+          {/* <Route path="/post/discussion-form" element={<PostDiscussionForm />} /> */}
+
+          <Route
+            path="/aboutme/:uId"
+            element={
+              <UserProvider>
+                <Profile />
+              </UserProvider>
+            }
+          />
+
         </Route>
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]}/> }>
-          <Route path="/secret" element={<AdminPage />} />
-        </Route>
-
-        <Route path="/forum" element={<Forum />} />
-        <Route
-          path="/post/:postId"
-          element={
-            <PostProvider>
-              <PostDetails />
-            </PostProvider>
-          }
-        />
-        {/* <Route path='/post/:postId' element={<PostDetails />} /> */}
-        
-        {/* <Route path="/post/discussion-form" element={<PostDiscussionForm />} /> */}
-
-        <Route
-          path="/aboutme/:uId"
-          element={
-            <UserProvider>
-              <Profile />
-            </UserProvider>
-          }
-        />
       </Route>
     </Routes>
-   
+
   );
 }
 

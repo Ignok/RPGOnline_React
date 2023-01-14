@@ -23,7 +23,7 @@ import useAuth from "../../../hooks/useAuth.js";
 
 export default function Login() {
 
-    const { setAuth } = useAuth();
+    const { setAuth} = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -41,14 +41,13 @@ export default function Login() {
                 const uId = res?.uId;
                 const username = res?.username;
                 const role = res?.userRole;
+                const avatar = res?.avatar;
 
-                setAuth({ uId, username, role});
-
+                setAuth({ uId, username, role, avatar});
                 setValues({ Username: "", Pswd: "" });
+                localStorage.setItem("isLoggedIn", true)
 
                 navigate(from, { replace: true });
-
-                //setSuccess(true)
             }).catch(error => {
                 console.log(error)
                 let errors = {};

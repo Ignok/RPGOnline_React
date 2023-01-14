@@ -45,6 +45,7 @@ export default function Navigation() {
           title: "Logout successfully",
         });
         setAuth({});
+        localStorage.removeItem("isLoggedIn");
       })
       .catch((error) => {
         console.log(error);
@@ -52,7 +53,6 @@ export default function Navigation() {
   }
 
   function isLoggedIn() {
-    console.log(auth);
     if (auth.username) {
       return true;
     } else {

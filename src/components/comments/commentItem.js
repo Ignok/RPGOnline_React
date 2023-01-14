@@ -24,6 +24,7 @@ import CommentForm from "./commentForm";
 import { useAsyncFn } from "../../hooks/useAsync"
 import { createComment } from "../../services/comments"
 import useAuth from "../../hooks/useAuth";
+import { getImage } from "../../helpers/functions/getImage";
 
 
 
@@ -71,7 +72,7 @@ export default function CommentItem(props) {
                   sx={{ backgroundColor: "transparent" }}
                 >
                   <Avatar
-                    src={props.avatar}
+                    src={getImage(props.avatar).img}
                     sx={{ ml: 1, backgroundColor: "var(--accent)" }}
                   ></Avatar>
                   <Stack spacing={0} direction="column" sx={{ padding: 1 }}>

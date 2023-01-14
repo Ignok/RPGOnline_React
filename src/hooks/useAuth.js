@@ -3,9 +3,9 @@ import AuthContext from "../contexts/AuthProvider";
 
 
 const useAuth = () => {
+    const { auth } = useContext(AuthContext);
+    useDebugValue(auth, auth => auth?.username ? "Logged In" : "Logged Out")
 
-    // const user = localStorage.getItem("user");
-    // console.log(user)
     return useContext(AuthContext);
 }
 

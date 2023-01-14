@@ -22,6 +22,7 @@ import { CommentList } from "../comments/commentList"
 import CommentForm from "./commentForm";
 import { useAsyncFn } from "../../hooks/useAsync"
 import { createComment } from "../../services/comments"
+import { getImage } from "../../helpers/functions/getImage";
 
 import "../../App.css";
 import useAuth from "../../hooks/useAuth";
@@ -70,7 +71,7 @@ export default function CommentItem(props) {
                   sx={{ backgroundColor: "transparent" }}
                 >
                   <Avatar
-                    src={""}
+                    src={getImage(props.avatar).img}
                     sx={{ ml: 1, backgroundColor: "var(--accent-light)" }}
                   ></Avatar>
                   <Stack spacing={0} direction="column" sx={{ padding: 1 }}>
