@@ -30,7 +30,7 @@ import { Collapse } from "@mui/material";
 import { getImage } from "../../../../helpers/functions/getImage";
 import MessageForm from "../messages/messageForm";
 import { useAsyncFn } from "../../../../hooks/useAsync";
-import { createMessage } from "../../../../services/users";
+import { createMessage } from "../../../../services/messages";
 import { Success } from "../../../../helpers/pop-ups/success";
 
 const settings = ["unfriend", "block"];

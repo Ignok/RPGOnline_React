@@ -4,7 +4,8 @@ import {
   getUserMessages,
   createMessage,
   deleteMessage,
-} from "../../../../services/users";
+  openMessage,
+} from "../../../../services/messages";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { DatetimeToLocaleDateString } from "../../../../helpers/functions/DateTimeConverter";
 import {
@@ -60,6 +61,7 @@ export default function MessagesContents({ uId }) {
 
   const { execute: createMessageFn } = useAsyncFn(createMessage);
   const { execute: deleteMessageFn } = useAsyncFn(deleteMessage);
+  const { execute: setOpenMessageFn } = useAsyncFn(openMessage);
 
   function onMessageCreate({ title, content, receiver }) {
     return createMessageFn({
@@ -114,6 +116,31 @@ export default function MessagesContents({ uId }) {
       isReplying: true,
       initialTitle: "Re: " + initialTitle,
       initialReceiver: initialReceiver,
+    });
+  }
+
+
+
+  function setOpened({ messageId }) {
+    return setOpenMessageFn({
+      uId: uId,
+      messageId: messageId,
+    }).then((res) => {
+      console.log(res);
+      const newMessages = messages.map((message) => {
+        if(message.messageId === messageId){
+          const updatedMessage = {
+            ...message,
+            isOpened: true,
+          };
+
+          return updatedMessage
+        }
+
+        return message
+      });
+
+      setMessages(newMessages);
     });
   }
 
@@ -246,6 +273,7 @@ export default function MessagesContents({ uId }) {
               message={message}
               onDelete={onMessageDelete}
               onReply={replying}
+              onOpen={setOpened}
             />
           ))}
         </List>

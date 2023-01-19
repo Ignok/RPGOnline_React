@@ -40,28 +40,3 @@ export function getUserFriends(uId) {
     method: "GET",
   });
 }
-
-// MESSAGES
-export function getUserMessages({uId, page}) {
-  return makeRequest(`Message/${uId}`, {
-    method: "GET",
-    params: { Page: page}
-  });
-}
-
-export function createMessage({ senderId, receiver, title, content }) {
-  return makeRequest(`Message/${senderId}/send`, {
-    method: "POST",
-    data: {
-      title: title,
-      content: content,
-      receiverUsername: receiver,
-    },
-  });
-}
-
-export function deleteMessage({ receiverId, messageId }) {
-  return makeRequest(`Message/${receiverId}/delete/${messageId}`, {
-    method: "DELETE",
-  });
-}

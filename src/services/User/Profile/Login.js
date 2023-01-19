@@ -48,6 +48,7 @@ export default function Login() {
                 localStorage.setItem("isLoggedIn", true)
 
                 navigate(from, { replace: true });
+                
             }).catch(error => {
                 console.log(error)
                 let errors = {};

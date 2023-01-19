@@ -10,6 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import EmailIcon from "@mui/icons-material/Email";
+import DraftsIcon from "@mui/icons-material/Drafts";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import Tooltip from "@mui/material/Tooltip";
 import Menu from "@mui/material/Menu";
@@ -34,11 +35,17 @@ const ItemDiv = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export default function MessageItem({ message, onDelete, onReply }) {
+export default function MessageItem({ message, onDelete, onReply, onOpen }) {
   const [open, setOpen] = React.useState(false);
 
   const expandMessage = () => {
     setOpen(!open);
+    if(!message.isOpened){
+      console.log(message)
+      handleSetOpen();
+    }else {
+      console.log(message)
+    }
   };
 
   function handleDelete(e) {
@@ -78,6 +85,12 @@ export default function MessageItem({ message, onDelete, onReply }) {
     });
   }
 
+  function handleSetOpen(e) {
+    onOpen({
+      messageId: message.messageId
+    })
+  }
+
   return (
     <ItemDiv sx={{ mb: 1 }}>
       <ListItemButton alignItems="flex-start" onClick={expandMessage}>
@@ -103,6 +116,26 @@ export default function MessageItem({ message, onDelete, onReply }) {
             </React.Fragment>
           }
         />
+
+        <ListItemIcon>
+        {
+          message.isOpened
+            ?
+            <ListItemIcon>
+              <Tooltip title="Opened">
+                <DraftsIcon />
+              </Tooltip>
+            </ListItemIcon>
+            :
+            <ListItemIcon>
+              <Tooltip title="Not opened">
+                <EmailIcon/>
+              </Tooltip>
+            </ListItemIcon>
+        }
+            </ListItemIcon>
+        
+
         <ListItemIcon>
           <Tooltip title="Reply">
             <IconButton aria-label="reply" onClick={handleReply}>

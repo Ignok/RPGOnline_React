@@ -3,6 +3,7 @@ import { FooterContainer } from "../containers/footer";
 import Navigation from "../containers/navigation";
 
 const Layout = () => {
+  
   return (
     <>
       <Navigation />

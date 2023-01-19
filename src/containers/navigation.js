@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import { useAsyncFn } from "../hooks/useAsync";
@@ -29,28 +29,57 @@ import Stack from "@mui/material/Stack";
 import Collapse from "@mui/material/Collapse";
 import Slide from "@mui/material/Slide";
 import { TransitionGroup } from "react-transition-group";
+import { getNewMessages } from "../services/messages";
 
 export default function Navigation() {
   // LOGIN & LOGOUT OPTIONS
   const { loading, error, execute: logoutFn } = useAsyncFn(logout);
   const { auth, setAuth } = useAuth();
 
+  const [newMessagesCount, setNewMessagesCount] = useState(0);
+  const { execute: getNewMessagesFn } = useAsyncFn(getNewMessages);
+
+  function onNewMessagesGet({ uId }) {
+    return getNewMessagesFn({
+      uId: uId
+    }).then((res) => {
+      setNewMessagesCount(res.newMessagesCount)
+    }).catch((err) => {
+      console.log(err)
+    });
+  }
+
+  // getting new messages count every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if(isLoggedIn()){
+        onNewMessagesGet({uId: auth.uId});
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [auth]);
+
+
+
   function onLogout() {
     return logoutFn()
       .then((res) => {
-        handleMenuClose();
-        console.log(res);
         Success.fire({
           icon: "success",
           title: "Logout successfully",
         });
+        handleMenuClose();
+        console.log(res);
         setAuth({});
+        setNewMessagesCount(0);
         localStorage.removeItem("isLoggedIn");
       })
       .catch((error) => {
         console.log(error);
       });
   }
+
+
 
   function isLoggedIn() {
     if (auth.username) {
@@ -59,6 +88,8 @@ export default function Navigation() {
       return false;
     }
   }
+
+
   // LOGIN & LOGOUT OPTIONS
 
   const mainNav = ["home", "forum", "assets", "secret"];
@@ -79,6 +110,9 @@ export default function Navigation() {
     setAnchorEl(null);
     setAnchorEl2(null);
   };
+
+
+
 
   const profileMenu = (
     <Menu
@@ -282,7 +316,7 @@ export default function Navigation() {
               <AccountCircle />
             </IconButton>
             <IconButton size="large" aria-label="mails" color="inherit">
-              <Badge badgeContent={1} color="error">
+              <Badge badgeContent={newMessagesCount} color="error">
                 <MailIcon />
               </Badge>
             </IconButton>
