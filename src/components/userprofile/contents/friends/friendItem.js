@@ -86,7 +86,7 @@ export default function FriendItem(props) {
         </ListItemAvatar>
         <ListItemText
           primary={props.username}
-          secondary={`${props.country} / ${props.attitude}`}
+          secondary={`${props.country} ${props.country===""?"":"/"} ${props.attitude}`}
         />
         {props.contents === "blocked" ? (
           <ListItemIcon>

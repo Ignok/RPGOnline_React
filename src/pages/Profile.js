@@ -21,7 +21,8 @@ import { useUser } from "../contexts/userContext";
 import FriendsContents from "../components/userprofile/contents/friends/friends";
 import MessagesContents from "../components/userprofile/contents/messages/messages";
 
-import { avatars } from "../helpers/enums/avatars";
+import { getImage } from "../helpers/functions/getImage";
+import { getFlag } from "../helpers/functions/getFlag";
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 50,
@@ -57,63 +58,6 @@ export function Profile() {
   } = useUser();
   const { loading, error } = useAsyncFn();
 
-  // function onUserEdit(country, city, aboutme, attitude){
-  //   return editProfileFn({uId: user.uId, country, city, aboutme, attitude})
-  //     .then(updateLocalUser)
-  // }
-
-  // function refreshPage() {
-  //   getUsersAbout(this.state.uId)
-  //     .then((response) => response.json())
-  //     .then(
-  //       (data) => {
-  //         this.setState({
-  //           user: data,
-  //           isLoaded: true,
-  //         });
-  //       },
-  //       (error) => {
-  //         this.setState({
-  //           isLoaded: true,
-  //           error,
-  //         });
-  //       }
-  //     );
-  // }
-
-  // function componentDidMount() {
-  //   this.refreshPage();
-  // }
-
-  // const onPageChange = (pageName) => {
-  //   console.log(pageName);
-  //   changePage(pageName);
-  // };
-
-  // function switchPage(page) {
-  //   console.log(page);
-  //   switch (page) {
-  //     case "aboutme":
-  //       return (
-  //         <AboutMeContents
-  //           uId={user.uId}
-  //           country={user.country}
-  //           city={user.city}
-  //           attitude={user.attitude}
-  //           aboutme={user.aboutMe}
-  //           picture={user.avatar}
-  //           updateLocalAvatar={updateLocalAvatar}
-  //         />
-  //       );
-  //     case "friends":
-  //       return <FriendsContents uId={user.uId} />;
-  //     case "messages":
-  //       return <MessagesContents uId={user.uId} />;
-  //     default:
-  //       return "something is wrong";
-  //   }
-  // }
-
   return (
     <Grid
       container
@@ -138,23 +82,27 @@ export function Profile() {
           }}
         >
           <Stack direction="row">
-            <Badge
-              overlap="circular"
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              badgeContent={
-                <SmallAvatar
-                  alt="PL"
-                  src={require("../helpers/pictures/poland_flag.png")}
-                />
-              }
-            >
-              <Avatar
-                alt="Avatar"
-                src={avatar === 0 ? require("../helpers/pictures/anonymous_user.png") : avatars.find(e => e.id === avatar).img}
-                variant="rounded"
-                sx={{ width: 150, height: 150 }}
+            <Avatar
+              alt="Avatar"
+              src={getImage(avatar).img}
+              variant="rounded"
+              sx={{ width: 150, height: 150 }}
+            />
+            {getFlag(country) === undefined ? (
+              ""
+            ) : (
+              <Badge
+                overlap="circular"
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                badgeContent={
+                  <SmallAvatar
+                    alt="country-flag"
+                    src={getFlag(country).img}
+                  />
+                }
+                style={{ transform: "translate(-10px, 0px)" }}
               />
-            </Badge>
+            )}
           </Stack>
           <Box sx={{ typography: "subtitle2", mt: 1, mb: 2 }}>{user.email}</Box>
         </Box>
