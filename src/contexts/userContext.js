@@ -12,37 +12,41 @@ export function useUser() {
 export function UserProvider({ children }) {
   const { uId } = useParams();
   const { loading, error, value: user } = useAsync(() => getUser(uId), [uId]);
-  const [page, setPage] = useState();
+
   const [avatar, setAvatar] = useState();
 
-  //   useEffect(() => {
-  //     if (post?.comments == null) return
-  //     setComments(post.comments)
-  //   }, [post?.comments])
+  const [country, setCountry] = useState();
+  const [city, setCity] = useState();
+  const [aboutMe, setAboutMe] = useState();
+  const [attitude, setAttitude] = useState();
+
 
   function updateLocalAvatar(avatar) {
     console.log(avatar);
     setAvatar(avatar);
   }
 
-  // function getUserFriends(uId) {
-  //   return commentsByParentId[responseCommentId]
-  // }
-
-  function changePage(pageName) {
-    setPage(pageName);
+  function updateLocalUser({country, city, aboutMe, attitude}){
+    setCountry(country);
+    setCity(city);
+    setAboutMe(aboutMe);
+    setAttitude(attitude);
   }
 
-  console.log(user);
+
+  //console.log(user);
 
   return (
     <Context.Provider
       value={{
         user: { uId, ...user },
-        page: page,
-        changePage,
+        updateLocalUser,
         updateLocalAvatar,
         avatar: avatar,
+        country: country,
+        city: city,
+        aboutMe: aboutMe,
+        attitude: attitude,
       }}
     >
       {loading ? (

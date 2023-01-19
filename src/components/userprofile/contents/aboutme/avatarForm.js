@@ -14,6 +14,7 @@ import { Button, Stack, Divider } from "@mui/material";
 
 import { editAvatar } from "../../../../services/users";
 import { useAsyncFn } from "../../../../hooks/useAsync";
+import { Success } from "../../../../helpers/pop-ups/success";
 
 export function AvatarForm({ uId, handleClose, open, initialVal, updateLocalAvatar }) {
   const style = {
@@ -38,7 +39,10 @@ export function AvatarForm({ uId, handleClose, open, initialVal, updateLocalAvat
       }).then((res) => {
         console.log(`Succes! chosen:${chosen}`);
         updateLocalAvatar(picture);
-        //pop-up
+        Success.fire({
+          icon: "success",
+          title: "Profile picture changed successfully",
+        })
       });
     }
   }

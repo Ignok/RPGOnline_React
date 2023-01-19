@@ -50,14 +50,14 @@ export default function Navigation() {
   }
 
   // getting new messages count every second
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if(isLoggedIn()){
-        onNewMessagesGet({uId: auth.uId});
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [auth]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if(isLoggedIn()){
+  //       onNewMessagesGet({uId: auth.uId});
+  //     }
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, [auth]);
 
 
 
@@ -148,7 +148,7 @@ export default function Navigation() {
           <MenuItem
             onClick={handleMenuClose}
             component={NavLink}
-            to={"/aboutme/" + auth.uId}
+            to={"/profile/" + auth.uId}
           >
             <ManageAccountsIcon sx={{ mr: 1, color: "text.secondary" }} />
             Profile
@@ -217,7 +217,7 @@ export default function Navigation() {
           <MenuItem
             onClick={handleMenuClose}
             component={NavLink}
-            to={"/aboutme/" + auth.uId}
+            to={"/profile/" + auth.uId}
           >
             Your Profile
           </MenuItem>

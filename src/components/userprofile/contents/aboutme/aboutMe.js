@@ -22,6 +22,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { AvatarForm } from "./avatarForm";
 
 import { avatars } from "../../../../helpers/enums/avatars";
+import { useParams, useOutletContext } from "react-router-dom";
+import { Success } from "../../../../helpers/pop-ups/success";
 
 const style = {
   position: "absolute",
@@ -50,22 +52,16 @@ const CustomDisableInput = styled(TextField)(() => ({
   },
 }));
 
-export default function AboutMeContents({
-  uId,
-  country,
-  city,
-  attitude,
-  aboutme,
-  picture,
-  updateLocalAvatar,
-}) {
+export default function AboutMeContents() {
   const [isDisabled, setIsDisabled] = useState(true);
+
+  const [user, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar] = useOutletContext();
 
   const [values, setValues] = useState({
     country: country,
     city: city,
     attitude: attitude,
-    aboutme: aboutme,
+    aboutMe: aboutMe,
   });
 
   const handleChange = (e) => {
@@ -77,26 +73,30 @@ export default function AboutMeContents({
     }));
   };
 
-  const [contents, setContents] = useState();
 
   const { execute: editProfileFn } = useAsyncFn(editProfile);
 
-  function onProfileEdit({ country, city, attitude, aboutme }) {
+  function onProfileEdit({ country, city, attitude, aboutMe }) {
     if (isDisabled !== true) {
       setIsDisabled(() => true);
       return editProfileFn({
-        uId: uId,
+        uId: user.uId,
         country: country,
         city: city,
         attitude: attitude,
-        aboutme: aboutme,
+        aboutMe: aboutMe,
       }).then((res) => {
         console.log(res);
-        setContents((prev) => {
-          return prev;
-        });
-
-        //pop-up że się udało
+        updateLocalUser({
+          country: values.country,
+          city: values.city,
+          aboutMe: values.aboutMe,
+          attitude: values.attitude
+        })
+        Success.fire({
+          icon: "success",
+          title: "Profile edited successfully",
+        })
       });
     }
   }
@@ -143,11 +143,13 @@ export default function AboutMeContents({
 
           <ColorButton
             onClick={() => {
+              console.log(user.uId)
+              console.log(user)
               onProfileEdit({
                 country: values.country,
                 city: values.city,
                 attitude: values.attitude,
-                aboutme: values.aboutme,
+                aboutMe: values.aboutMe,
               });
             }}
             sx={{ flexGrow: 2, fontWeight: "bold" }}
@@ -221,9 +223,9 @@ export default function AboutMeContents({
         </Typography>
         <CustomDisableInput
           disabled={isDisabled}
-          value={values.aboutme === null ? "" : values.aboutme}
+          value={values.aboutMe === null ? "" : values.aboutMe}
           onChange={handleChange}
-          name="aboutme"
+          name="aboutMe"
           variant="outlined"
           size="small"
           margin="dense"
@@ -254,10 +256,10 @@ export default function AboutMeContents({
 
       {editAvatarForm && (
         <AvatarForm
-          uId={uId}
+          uId={user.uId}
           handleClose={handleClose}
           open={true}
-          initialVal={picture}
+          initialVal={avatar}
           updateLocalAvatar={updateLocalAvatar}
         />
       )}

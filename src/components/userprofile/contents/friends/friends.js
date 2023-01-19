@@ -9,6 +9,7 @@ import { styled, Stack } from "@mui/system";
 import Typography from "@mui/material/Typography";
 import Button, { ButtonProps } from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
+import { useOutletContext } from "react-router-dom";
 
 const ColorButton = styled(Button)(() => ({
   color: "white",
@@ -18,14 +19,15 @@ const ColorButton = styled(Button)(() => ({
   },
 }));
 
-export default function FriendsContents({ uId }) {
+export default function FriendsContents() {
   const [contents, setContents] = useState("friends");
   const handleContentsChange = (pageName) => {
     setContents(pageName);
   };
 
   const [friends, setFriends] = useState();
-  // const {user, page = 'friends', changePage} = useUser();
+
+  const [user] = useOutletContext();
 
   const {
     loading,
@@ -49,7 +51,7 @@ export default function FriendsContents({ uId }) {
     let isMounted = true;
     //const controller = new AbortController();
 
-    getUserFriendsFn(uId).then((data) => {
+    getUserFriendsFn(user.uId).then((data) => {
       console.log(data);
       isMounted && setFriends(data);
     });
@@ -60,17 +62,6 @@ export default function FriendsContents({ uId }) {
     };
   }, []);
 
-  // function switchPage(page) {
-  //   console.log(page)
-  //   switch(page) {
-  //     case 'blocked':
-  //       return <FriendsContents />;
-  //     case 'friends':
-  //       return <FriendsContents uId={user.uId} />;
-  //     default:
-  //       return 'something is wrong';
-  //   }
-  // }
 
   return (
     <Box>
@@ -151,7 +142,8 @@ export default function FriendsContents({ uId }) {
           {friends.map((friend) => {
             return (
               <FriendItem
-                senderId={uId}
+               key={friend.uId}
+                senderId={friend.uId}
                 username={friend.username}
                 country={friend.country}
                 attitude={friend.attitude}

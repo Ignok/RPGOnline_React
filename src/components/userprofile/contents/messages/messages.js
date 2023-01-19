@@ -31,6 +31,8 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import Tooltip from "@mui/material/Tooltip";
 import Pagination from "@mui/material/Pagination";
 import { Collapse } from "@mui/material";
+import { useOutletContext } from "react-router-dom";
+
 
 const ColorButton = styled(Button)(() => ({
   color: "white",
@@ -40,8 +42,10 @@ const ColorButton = styled(Button)(() => ({
   },
 }));
 
-export default function MessagesContents({ uId }) {
+export default function MessagesContents() {
   const [messages, setMessages] = useState();
+
+  const [user] = useOutletContext();
 
   const [pageCount, setPageCount] = useState();
   const [page, setPage] = useState(1);
@@ -65,7 +69,7 @@ export default function MessagesContents({ uId }) {
 
   function onMessageCreate({ title, content, receiver }) {
     return createMessageFn({
-      senderId: uId,
+      senderId: user.uId,
       receiver: receiver,
       title: title,
       content: content,
@@ -86,7 +90,7 @@ export default function MessagesContents({ uId }) {
 
   function onMessageDelete({ messageId }) {
     return deleteMessageFn({
-      receiverId: uId,
+      receiverId: user.uId,
       messageId: messageId,
     }).then((res) => {
       console.log(res);
@@ -103,7 +107,7 @@ export default function MessagesContents({ uId }) {
   }
 
   function onGetMessages({ isMounted, page }) {
-    return getUserMessagesFn({ uId, page }).then((data) => {
+    return getUserMessagesFn({uId: user.uId, page }).then((data) => {
       console.log(data);
       setPageCount(data.pageCount);
       isMounted && setMessages(data.item1);
@@ -123,7 +127,7 @@ export default function MessagesContents({ uId }) {
 
   function setOpened({ messageId }) {
     return setOpenMessageFn({
-      uId: uId,
+      uId: user.uId,
       messageId: messageId,
     }).then((res) => {
       console.log(res);

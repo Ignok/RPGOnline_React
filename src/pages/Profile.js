@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import ProfileNav from "../components/userprofile/profileNav";
 import { getUsersAbout } from "../Api_RPGOnline";
 import { DatetimeToLocaleDateString } from "../helpers/functions/DateTimeConverter";
@@ -47,10 +47,13 @@ const Sidebar = styled(Box)(({ theme }) => ({
 export function Profile() {
   const {
     user,
-    page = "aboutme",
-    changePage,
+    updateLocalUser,
     updateLocalAvatar,
     avatar = user.picture,
+    country = user.country,
+    city = user.city,
+    aboutMe = user.aboutMe,
+    attitude = user.attitude,
   } = useUser();
   const { loading, error } = useAsyncFn();
 
@@ -82,34 +85,34 @@ export function Profile() {
   //   this.refreshPage();
   // }
 
-  const onPageChange = (pageName) => {
-    console.log(pageName);
-    changePage(pageName);
-  };
+  // const onPageChange = (pageName) => {
+  //   console.log(pageName);
+  //   changePage(pageName);
+  // };
 
-  function switchPage(page) {
-    console.log(page);
-    switch (page) {
-      case "aboutme":
-        return (
-          <AboutMeContents
-            uId={user.uId}
-            country={user.country}
-            city={user.city}
-            attitude={user.attitude}
-            aboutme={user.aboutMe}
-            picture={avatar}
-            updateLocalAvatar={updateLocalAvatar}
-          />
-        );
-      case "friends":
-        return <FriendsContents uId={user.uId} />;
-      case "messages":
-        return <MessagesContents uId={user.uId} />;
-      default:
-        return "something is wrong";
-    }
-  }
+  // function switchPage(page) {
+  //   console.log(page);
+  //   switch (page) {
+  //     case "aboutme":
+  //       return (
+  //         <AboutMeContents
+  //           uId={user.uId}
+  //           country={user.country}
+  //           city={user.city}
+  //           attitude={user.attitude}
+  //           aboutme={user.aboutMe}
+  //           picture={user.avatar}
+  //           updateLocalAvatar={updateLocalAvatar}
+  //         />
+  //       );
+  //     case "friends":
+  //       return <FriendsContents uId={user.uId} />;
+  //     case "messages":
+  //       return <MessagesContents uId={user.uId} />;
+  //     default:
+  //       return "something is wrong";
+  //   }
+  // }
 
   return (
     <Grid
@@ -155,7 +158,7 @@ export function Profile() {
           </Stack>
           <Box sx={{ typography: "subtitle2", mt: 1, mb: 2 }}>{user.email}</Box>
         </Box>
-        <ProfileNav onPageChange={onPageChange} />
+        <ProfileNav/>
       </Sidebar>
 
       <GridBox sx={{ backgroundColor: "transparent" }}>
@@ -163,7 +166,7 @@ export function Profile() {
           username={user.username}
           date={DatetimeToLocaleDateString(user.creationDate)}
         />
-        {switchPage(page)}
+        <Outlet context={[user, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar]}/>
       </GridBox>
     </Grid>
   );
