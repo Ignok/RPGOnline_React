@@ -41,25 +41,25 @@ export default function Navigation() {
 
   function onNewMessagesGet({ uId }) {
     return getNewMessagesFn({
-      uId: uId
-    }).then((res) => {
-      setNewMessagesCount(res.newMessagesCount)
-    }).catch((err) => {
-      console.log(err)
-    });
+      uId: uId,
+    })
+      .then((res) => {
+        setNewMessagesCount(res.newMessagesCount);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   // getting new messages count every second
   useEffect(() => {
     const interval = setInterval(() => {
-      if(isLoggedIn()){
-        onNewMessagesGet({uId: auth.uId});
+      if (isLoggedIn()) {
+        onNewMessagesGet({ uId: auth.uId });
       }
     }, 1000);
     return () => clearInterval(interval);
   }, [auth]);
-
-
 
   function onLogout() {
     return logoutFn()
@@ -79,8 +79,6 @@ export default function Navigation() {
       });
   }
 
-
-
   function isLoggedIn() {
     if (auth.username) {
       return true;
@@ -89,13 +87,13 @@ export default function Navigation() {
     }
   }
 
-
   // LOGIN & LOGOUT OPTIONS
 
   const mainNav = ["home", "forum", "assets", "secret"];
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
+  const [anchorEl3, setAnchorEl3] = React.useState(null);
 
   //   const isMenuOpen = Boolean(anchorEl);
 
@@ -105,14 +103,15 @@ export default function Navigation() {
   const handleMenu2Open = (event) => {
     setAnchorEl2(event.currentTarget);
   };
+  const handleMenu3Open = (event) => {
+    setAnchorEl3(event.currentTarget);
+  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
     setAnchorEl2(null);
+    setAnchorEl3(null);
   };
-
-
-
 
   const profileMenu = (
     <Menu
@@ -250,8 +249,70 @@ export default function Navigation() {
     </Menu>
   );
 
+  const compactMenu = (
+    <Menu
+      anchorEl={anchorEl3}
+      open={Boolean(anchorEl3)}
+      onClose={handleMenuClose}
+      keepMounted
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "left",
+      }}
+      PaperProps={{
+        elevation: 1,
+        sx: {
+          overflow: "visible",
+          filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+          mt: 0.5,
+          "&:before": {
+            content: '""',
+            display: "block",
+            position: "absolute",
+            top: 0,
+            left: 12,
+            width: 10,
+            height: 10,
+            bgcolor: "background.paper",
+            transform: "translateY(-50%) rotate(45deg)",
+          },
+        },
+      }}
+    >
+      <MenuItem onClick={handleMenuClose} component={NavLink} to={"/"}>
+        Home
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose} component={NavLink} to={"/forum"}>
+        Forum
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose} component={NavLink} to={"/assets"}>
+        Assets
+      </MenuItem>
+      {isLoggedIn() ? (
+        <div>
+          <MenuItem
+            onClick={handleMenuClose}
+            component={NavLink}
+            to={"/profile/" + auth.uId}
+          >
+            Your Profile
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose} component={NavLink} to={"/users"}>
+            Find Friends
+          </MenuItem>
+        </div>
+      ) : (
+        ""
+      )}
+    </Menu>
+  );
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar
         position="static"
         sx={{
@@ -262,14 +323,25 @@ export default function Navigation() {
           variant="dense"
           sx={{ backgroundColor: "#bb53f0", p: 0.5, maxHeight: 70 }}
         >
+          <Box
+            sx={{
+              mr: 1,
+              ml: { xs: 1, sm: 0 },
+              display: { sm: "inline", md: "none" },
+            }}
+          >
+            <IconButton edge="start" color="inherit" onClick={handleMenu3Open}>
+              <MenuIcon />
+            </IconButton>
+          </Box>
           <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
             NICE DICE
           </Typography>
           <Box sx={{ flexGrow: 1, display: { sm: "flex", md: "none" } }} />
           <Box
             sx={{
-              flexGrow: 1,
-              mx: "15%",
+              flexGrow: 2,
+              mx: "12%",
               justifyContent: "space-around",
               display: { xs: "none", md: "flex" },
             }}
@@ -335,7 +407,7 @@ export default function Navigation() {
                 <Logout />
               </IconButton>
             ) : (
-              <Box sx={{ display: { md: "none", lg: "flex" } }}>
+              <Box sx={{ display: { sm: "none", md: "none", lg: "flex" } }}>
                 <Button
                   component={NavLink}
                   to={"/register"}
@@ -359,6 +431,7 @@ export default function Navigation() {
       </AppBar>
       {profileMenu}
       {communityMenu}
+      {compactMenu}
     </Box>
   );
 }
