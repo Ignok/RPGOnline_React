@@ -3,13 +3,13 @@ import PostItem from "./postItem";
 
 import ForumSearch from "../forum/forumSearch";
 import ForumMenu from "../forum/forumMenu";
+import ForumNavbar from "../forum/forumNav";
 
 import src1 from "../../helpers/pictures/test-img.jpg";
 import src2 from "../../helpers/pictures/test-img-3.jpg";
 import gif1 from "../../helpers/pictures/test.gif";
 
 import { Container, Stack, Pagination } from "@mui/material";
-import ForumNavbar from "../forum/forumNav";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/system";
 

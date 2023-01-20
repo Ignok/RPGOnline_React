@@ -10,6 +10,8 @@ import { getImage } from "../../helpers/functions/getImage";
 import Grid from "@mui/material/Unstable_Grid2";
 import UserItem from "./userItem";
 
+import UserNav from "./usersNav";
+
 export default function UsersList() {
   const [users, setUsers] = useState();
 
@@ -50,6 +52,7 @@ export default function UsersList() {
         pb: 10,
       }}
     >
+      <UserNav/>
       {loading ? (
         <h1>Loading . . .</h1>
       ) : users?.length ? (
