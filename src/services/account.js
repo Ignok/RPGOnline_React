@@ -23,6 +23,7 @@ export function register({ username, pswd, email }) {
 }
 
 export function refreshToken() {
+    console.log("Refreshing token...")
 
     return makeRequest(`Account/refresh`,  {
         method: "POST",

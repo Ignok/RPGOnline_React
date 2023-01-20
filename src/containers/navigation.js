@@ -50,14 +50,14 @@ export default function Navigation() {
   }
 
   // getting new messages count every second
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if(isLoggedIn()){
-  //       onNewMessagesGet({uId: auth.uId});
-  //     }
-  //   }, 1000);
-  //   return () => clearInterval(interval);
-  // }, [auth]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if(isLoggedIn()){
+        onNewMessagesGet({uId: auth.uId});
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [auth]);
 
 
 

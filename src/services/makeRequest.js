@@ -1,23 +1,25 @@
 import axios from "axios"
-import { useNavigate } from "react-router-dom";
-import { Fail } from "../helpers/pop-ups/failed";
+import { refreshToken } from "./account";
 
 
-const api = axios.create({
+export const api = axios.create({
     baseURL: "https://localhost:7251/api/",
     withCredentials: true
 })
 
-export function makeRequest(url, options) {
+export async function makeRequest(url, options) {
 
     return api(url, options)
     .then(res => res.data)
-    .catch(error => {
-        console.log(error)
+    .catch( async error => {
         if(error.response?.status === 401){
             console.log("Unauthorized")
-            throw error;
-            //window.location.href = "/login";
+            await refreshToken();
+            return api(url, options)
+                .then(res => res.data)
+                .catch( async error => {
+                    Promise.reject(error?.response ?? "Error")
+                })
         }
         else if(error.response?.status === 400){
             throw error;

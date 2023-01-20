@@ -47,6 +47,22 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User, ROLES.Moderator]} />}>
             <Route path="/users" element={<UsersList />} />
             <Route path="/post/discussion-form" element={<PostDiscussionForm />} />
+
+
+            {/* USER'S PROFILE */}
+            <Route
+            path="/profile/:uId"
+            element={
+              <UserProvider>
+                <Profile />
+              </UserProvider>
+            }
+          >
+            <Route index element={<AboutMeContents/>}/>
+            <Route path="aboutme" element={<AboutMeContents/>} />
+            <Route path="messages" element={<MessagesContents/>} />
+            <Route path="friends" element={<FriendsContents/>} />
+          </Route>
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
@@ -66,19 +82,7 @@ function App() {
 
           {/* <Route path="/post/discussion-form" element={<PostDiscussionForm />} /> */}
 
-          <Route
-            path="/profile/:uId"
-            element={
-              <UserProvider>
-                <Profile />
-              </UserProvider>
-            }
-          >
-            <Route index element={<AboutMeContents/>}/>
-            <Route path="aboutme" element={<AboutMeContents/>} />
-            <Route path="messages" element={<MessagesContents/>} />
-            <Route path="friends" element={<FriendsContents/>} />
-          </Route>
+          
 
         </Route>
 
