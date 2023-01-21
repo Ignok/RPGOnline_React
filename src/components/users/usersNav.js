@@ -32,13 +32,10 @@ export default function UserNav() {
     console.log(e);
     const param = e.target.getAttribute("name");
     const value = e.target.value;
-    console.log("--------");
-    console.log(param);
-    // console.log(value)
     // setPage(1)
-    // setParams(prevParams => {
-    //   return { ...prevParams, [param]: value }
-    // })
+    setParams(prevParams => {
+      return { ...prevParams, [param]: value }
+    })
   }
 
   return (
