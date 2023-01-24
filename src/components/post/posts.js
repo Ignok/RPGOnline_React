@@ -9,9 +9,9 @@ import src1 from "../../helpers/pictures/test-img.jpg";
 import src2 from "../../helpers/pictures/test-img-3.jpg";
 import gif1 from "../../helpers/pictures/test.gif";
 
-import { Container, Stack, Pagination } from "@mui/material";
+import { Card, Container, Stack, Pagination, CardContent, Typography, LinearProgress } from "@mui/material";
 import Box from "@mui/material/Box";
-import { styled } from "@mui/system";
+import { height, styled } from "@mui/system";
 
 import useFetchPosts from "../../helpers/functions/useFetchPosts";
 
@@ -61,8 +61,29 @@ export default function Posts() {
             <ForumMenu />
             {/* inside we pass the actual post component */}
 
-            {loading && <h1>Loading...<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></h1>}
-            {error && <h1>Error. Try Refreshing.<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></h1>}
+            {loading &&
+              <Card sx={{ maxWidth: "auto", maxHeight: "md", mb: 3 }}>
+                <CardContent
+                  sx={{
+                    bgcolor: "var(--accent)",
+                    maxHeight: "auto",
+                  }}
+                >
+                  <Typography
+                    noWrap={true}
+                    color="text.secondary"
+                    variant="h6"
+                    sx={{ mb: 1, fontWeight: "bold", alignItems: 'center', justifyContent: 'center', display: 'flex', height: '10vh' }}
+                  >
+                    <LinearProgress sx={{ mb: 1, minWidth: '100vw' }}/>
+                  </Typography>
+                </CardContent>
+              </Card>
+
+            }
+            {error &&
+              <h1>Error. Try Refreshing.<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></h1>
+            }
             {loading || (posts.length === 0 ?
               <h1>No posts to display<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></h1>
               :
@@ -78,6 +99,7 @@ export default function Posts() {
                   page={page}
                   onChange={(e, p) => {
                     setPage(p);
+                    window.scrollTo(0, 0)
                   }}
                   color="secondary"
                   size="large"
@@ -116,6 +138,7 @@ export default function Posts() {
                   page={page}
                   onChange={(e, p) => {
                     setPage(p);
+                    window.scrollTo(0, 0)
                   }}
                   color="secondary"
                   size="large"

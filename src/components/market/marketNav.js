@@ -35,7 +35,7 @@ const categories = [
   { label: "spell", icon: <SpellIcon fontSize="small" /> },
 ];
 
-export default function MarketNavbar() {
+export default function MarketNavbar({onAssetNameChange}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,6 +79,7 @@ export default function MarketNavbar() {
     const param = e.target.getAttribute("name");
     const value = e.target.value;
     // setPage(1)
+    onAssetNameChange(e)
     setParams((prevParams) => {
       return { ...prevParams, [param]: value };
     });

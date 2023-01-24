@@ -1,27 +1,31 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useAsync } from "../hooks/useAsync";
-import { getUser } from "../services/users";
+// import React, { useContext, useEffect, useMemo, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import { useAsync } from "../hooks/useAsync";
 
-const Context = React.createContext();
+// const Context = React.createContext();
 
-export function AssetProvider({ children }) {
-    const { uId } = useParams();
-    const { loading, error, value: user } = useAsync(() => getUser(uId), [uId]);
+// export function useAsset() {
+//   return useContext(Context);
+// }
 
-    return (
-      <Context.Provider
-        value={{
-          user: { uId, ...user },
-        }}
-      >
-        {loading ? (
-          <h1>Loading</h1>
-        ) : error ? (
-          <h1 className="error-msg">{error}</h1>
-        ) : (
-          children
-        )}
-      </Context.Provider>
-    );
-}
+// export function AssetProvider({ children }) {
+//     const { assetName } = useParams();
+
+//     const { loading, error, value: assets } = useAsync(() => getAsset(assetName), [assetName]);
+
+//     return (
+//       <Context.Provider
+//         value={{
+//           assets: { assetName, ...assets },
+//         }}
+//       >
+//         {loading ? (
+//           <h1>Loading</h1>
+//         ) : error ? (
+//           <h1 className="error-msg">{error}</h1>
+//         ) : (
+//           children
+//         )}
+//       </Context.Provider>
+//     );
+// }

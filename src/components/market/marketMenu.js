@@ -14,11 +14,12 @@ import SearchBar from "../forum/forumSearch";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function AssetsMenu() {
-  const [params, setParams] = useState({});
+export default function AssetsMenu({ params, onParamChange }) {
+  //const [params, setParams] = useState({});
 
   const [value, setValue] = useState("");
   const handleSelect = (e) => {
+    console.log(e)
     setValue(e.target.value ?? "");
     //pass value
   };
@@ -52,21 +53,10 @@ export default function AssetsMenu() {
     </FormControl>
   );
 
-  function handleParamChange(e) {
-    e.preventDefault();
-    console.log(e);
-    const param = e.target.getAttribute("name");
-    const value = e.target.value;
-    // setPage(1);
-    setParams((prevParams) => {
-      return { ...prevParams, [param]: value };
-    });
-  }
-
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap" }}>
       <Box sx={{ width: 300, flexGrow: 1, pt: 2.5, mr: 3 }}>
-        <SearchBar params={params} onParamChange={handleParamChange} />
+        <SearchBar params={params} onParamChange={onParamChange} />
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", flexGrow: 0 }}>
         {sortingRadio}

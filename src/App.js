@@ -73,17 +73,9 @@ function App() {
               <Route path="friends" element={<FriendsContents />} />
             </Route>
           </Route>
-          <Route path="/assets" element={<AssetMarket />}>
-            {/* <Route
-              index
-              path="characters"
-              element={
-                <AssetProvider>
-                  <CharactersContents />
-                </AssetProvider>
-              }
-            /> */}
-          </Route>
+          
+          <Route path="/assets" element={<AssetMarket />} />
+          
           <Route
             path="/post/:postId"
             element={

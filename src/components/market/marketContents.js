@@ -40,7 +40,7 @@ const StyledToggleButton = styled(ToggleButton)({
   border: 0,
 });
 
-export default function MarketContents() {
+export default function MarketContents({assetName, asset}) {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState(false);
 

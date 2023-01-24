@@ -32,6 +32,7 @@ export default function MarketItem() {
         {spells.map(({ label, column }) => {
           return (
             <Box
+            key={label}
               sx={{
                 display: "flex",
                 flexDirection: "row",
