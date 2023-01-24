@@ -41,10 +41,7 @@ export default function MessageItem({ message, onDelete, onReply, onOpen }) {
   const expandMessage = () => {
     setOpen(!open);
     if(!message.isOpened){
-      console.log(message)
       handleSetOpen();
-    }else {
-      console.log(message)
     }
   };
 

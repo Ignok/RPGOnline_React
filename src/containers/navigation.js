@@ -30,11 +30,14 @@ import Collapse from "@mui/material/Collapse";
 import Slide from "@mui/material/Slide";
 import { TransitionGroup } from "react-transition-group";
 import { getNewMessages } from "../services/messages";
+import { useNavigate } from "react-router-dom";
 
 export default function Navigation() {
   // LOGIN & LOGOUT OPTIONS
   const { loading, error, execute: logoutFn } = useAsyncFn(logout);
   const { auth, setAuth } = useAuth();
+
+  const navigate = useNavigate();
 
   const [newMessagesCount, setNewMessagesCount] = useState(0);
   const { execute: getNewMessagesFn } = useAsyncFn(getNewMessages);
@@ -387,11 +390,16 @@ export default function Navigation() {
             >
               <AccountCircle />
             </IconButton>
-            <IconButton size="large" aria-label="mails" color="inherit">
-              <Badge badgeContent={newMessagesCount} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
+            {auth.uId &&
+              <IconButton size="large" aria-label="mails" color="inherit" onClick={() => {
+                navigate(`/profile/${auth.uId}/messages`)
+              }}>
+                <Badge badgeContent={newMessagesCount} color="error">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+            }
+
             <IconButton size="large" aria-label="language" color="inherit">
               <TranslateIcon />
             </IconButton>

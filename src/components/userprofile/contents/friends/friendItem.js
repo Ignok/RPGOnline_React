@@ -209,6 +209,7 @@ export default function FriendItem(props) {
           isReplying={false}
           initialReceiver={props.username}
           initialTitle={""}
+          isInFriendsList={true}
           onSubmit={onMessageCreate}
           onCancel={handleCancel}
         />

@@ -108,7 +108,7 @@ export default function MessagesContents() {
 
   function onGetMessages({ isMounted, page }) {
     return getUserMessagesFn({uId: user.uId, page }).then((data) => {
-      console.log(data);
+      //console.log(data);
       setPageCount(data.pageCount);
       isMounted && setMessages(data.item1);
     });

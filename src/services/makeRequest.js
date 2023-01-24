@@ -18,6 +18,7 @@ export async function makeRequest(url, options) {
             return api(url, options)
                 .then(res => res.data)
                 .catch( async error => {
+                    localStorage.removeItem("isLoggedIn");
                     Promise.reject(error?.response ?? "Error")
                 })
         }

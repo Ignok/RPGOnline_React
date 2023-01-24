@@ -23,32 +23,38 @@ import useAuth from "../../../hooks/useAuth.js";
 
 export default function Login() {
 
-    const { setAuth} = useAuth();
+    const { setAuth } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
 
     const from = location.state?.from?.pathname || "/";
 
-    
+
     const { loading, error, execute: loginFn } = useAsyncFn(login)
     function onLogin(username, pswd) {
         return loginFn({ username, pswd })
             .then(res => {
-                console.log(location)
-                console.log(res)
+                if (res) {
+                    console.log(location)
+                    console.log(res)
 
-                const uId = res?.uId;
-                const username = res?.username;
-                const role = res?.userRole;
-                const avatar = res?.avatar;
+                    const uId = res?.uId;
+                    const username = res?.username;
+                    const role = res?.userRole;
+                    const avatar = res?.avatar;
 
-                setAuth({ uId, username, role, avatar});
-                setValues({ Username: "", Pswd: "" });
-                localStorage.setItem("isLoggedIn", true)
+                    setAuth({ uId, username, role, avatar });
+                    setValues({ Username: "", Pswd: "" });
+                    localStorage.setItem("isLoggedIn", true)
 
-                navigate(from, { replace: true });
-                
+                    navigate(from, { replace: true });
+                } else {
+                    let errors = {};
+                    errors.Pswd = "Something is wrong on the server''s side";
+                    setFormErrors(errors);
+                }
+
             }).catch(error => {
                 console.log(error)
                 let errors = {};
@@ -123,67 +129,67 @@ export default function Login() {
                 )
                 :
                 ( */}
-                    <div className="">
-                        <header className="">
-                            <h1 className=""> {/* Do uzupełnienia className */}
-                                Login
-                            </h1>
-                            <p>
-                                or <Link to={'/register'} className="">Register</Link> {/* Do uzupełnienia className */}
-                            </p>
-                        </header>
-                        <Container className="p-3">
-                            <Container>
-                                <Row>
-                                    <Col>{error}</Col>
-                                    <Col>
-                                        <Form onSubmit={handleSubmit}>
+            <div className="">
+                <header className="">
+                    <h1 className=""> {/* Do uzupełnienia className */}
+                        Login
+                    </h1>
+                    <p>
+                        or <Link to={'/register'} className="">Register</Link> {/* Do uzupełnienia className */}
+                    </p>
+                </header>
+                <Container className="p-3">
+                    <Container>
+                        <Row>
+                            <Col>{error}</Col>
+                            <Col>
+                                <Form onSubmit={handleSubmit}>
 
-                                            <Form.Group size="lg" controlId="Username">
-                                                <Form.Label>Username</Form.Label>
-                                                <Form.Control
-                                                    autoFocus
-                                                    type="text"
-                                                    name="Username"
-                                                    value={values.Username}
-                                                    onChange={handleChange}
-                                                    placeholder="Enter your username"
-                                                />
-                                                {
-                                                    formErrors.Username && (
-                                                        <p className="text-warning">{formErrors.Username}</p>
-                                                    )
-                                                }
-                                            </Form.Group>
+                                    <Form.Group size="lg" controlId="Username">
+                                        <Form.Label>Username</Form.Label>
+                                        <Form.Control
+                                            autoFocus
+                                            type="text"
+                                            name="Username"
+                                            value={values.Username}
+                                            onChange={handleChange}
+                                            placeholder="Enter your username"
+                                        />
+                                        {
+                                            formErrors.Username && (
+                                                <p className="text-warning">{formErrors.Username}</p>
+                                            )
+                                        }
+                                    </Form.Group>
 
-                                            <Form.Group size="lg" controlId="Pswd">
-                                                <Form.Label>Password</Form.Label>
-                                                <Form.Control
-                                                    type="password"
-                                                    name="Pswd"
-                                                    value={values.Password}
-                                                    onChange={handleChange}
-                                                    placeholder="Enter your password"
-                                                />
-                                                {
-                                                    formErrors.Pswd && (
-                                                        <p className="text-warning">{formErrors.Pswd}</p>
-                                                    )
-                                                }
-                                            </Form.Group>
+                                    <Form.Group size="lg" controlId="Pswd">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            name="Pswd"
+                                            value={values.Password}
+                                            onChange={handleChange}
+                                            placeholder="Enter your password"
+                                        />
+                                        {
+                                            formErrors.Pswd && (
+                                                <p className="text-warning">{formErrors.Pswd}</p>
+                                            )
+                                        }
+                                    </Form.Group>
 
-                                            <Button block="true" size="lg" type="submit">
-                                                Login
-                                            </Button>
+                                    <Button block="true" size="lg" type="submit">
+                                        Login
+                                    </Button>
 
-                                        </Form>
-                                    </Col>
-                                    <Col></Col>
-                                </Row>
-                            </Container>
-                        </Container>
-                    </div>
-                {/* )
+                                </Form>
+                            </Col>
+                            <Col></Col>
+                        </Row>
+                    </Container>
+                </Container>
+            </div>
+            {/* )
             } */}
         </>
     );

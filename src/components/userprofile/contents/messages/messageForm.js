@@ -16,6 +16,7 @@ export default function MessageForm({
   initialTitle = "",
   initialReceiver = "",
   isReplying = false,
+  isInFriendsList = false,
   receiverId = "",
   isResponse = false,
 }) {
@@ -40,17 +41,17 @@ export default function MessageForm({
       .then(() => {
         setValues({
           title: "",
-          receiver: "",
+          receiver: (!isInFriendsList ? "" : values.receiver),
           content: "",
         });
         setErrorUsername(false);
         setErrorUsernameHelperText("");
       })
       .catch((e) => {
-        if (e.status === 400) {
-          if (Object.keys(e.data).includes("Username")) {
+        if (e.response?.status === 400) {
+          if (Object.keys(e.response?.data).includes("Username")) {
             setErrorUsername(true);
-            setErrorUsernameHelperText(e.data.Username);
+            setErrorUsernameHelperText(e.response?.data.Username);
           }
         }
       });

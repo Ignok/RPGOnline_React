@@ -52,7 +52,7 @@ export default function FriendsContents() {
     //const controller = new AbortController();
 
     getUserFriendsFn(user.uId).then((data) => {
-      console.log(data);
+      //console.log(data);
       isMounted && setFriends(data);
     });
 
@@ -143,7 +143,7 @@ export default function FriendsContents() {
             return (
               <FriendItem
                key={friend.uId}
-                senderId={friend.uId}
+                senderId={user.uId}
                 username={friend.username}
                 country={friend.country}
                 attitude={friend.attitude}

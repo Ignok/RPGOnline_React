@@ -16,6 +16,7 @@ const PersistLogin = () => {
                 await refresh();
             }
             catch (err) {
+                localStorage.removeItem("isLoggedIn");
                 console.log(err);
             }
             finally {
