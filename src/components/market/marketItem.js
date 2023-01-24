@@ -16,9 +16,24 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 
-import { spells } from "../../helpers/enums/assets/spells";
+import { item, profession, race, spell } from "../../helpers/enums/assets";
 
-export default function MarketItem() {
+function getCategory(cat) {
+  switch (cat) {
+    case "item":
+      return item;
+    case "profession":
+      return profession;
+    case "race":
+      return race;
+    case "spell":
+      return spell;
+  }
+}
+
+export default function MarketItem(assetName, asset) {
+  const category = getCategory(assetName.assetName.assetName);
+
   return (
     <Box
       sx={{
@@ -29,10 +44,10 @@ export default function MarketItem() {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        {spells.map(({ label, column }) => {
+        {category.map(({ label, column }) => {
           return (
             <Box
-            key={label}
+              key={label}
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -41,7 +56,7 @@ export default function MarketItem() {
                 mb: 2,
               }}
             >
-              <Box sx={{ width: 130 }}>
+              <Box sx={{ width: 150 }}>
                 <Typography
                   variant="overline"
                   color="text.primary"
@@ -51,17 +66,25 @@ export default function MarketItem() {
                 </Typography>
               </Box>
 
-              <Box sx={{ width: {xs: "50%", sm: "65%", md: "70%", lg: "55%"}, mr: 2 }}>
+              <Box
+                sx={{
+                  width: { xs: "50%", sm: "65%", md: "70%", lg: "65%" },
+                }}
+              >
                 <Typography
                   variant="body2"
                   color="text.primary"
                   key={column}
                   sx={{
-                      fontWeight: "medium",
-                      mt: 1,
+                    fontWeight: "medium",
+                    mt: 1,
+                    mr: 1,
+                    textTransform: column.includes("key")
+                      ? "uppercase"
+                      : "normal",
                   }}
                 >
-                  {column}
+                  {assetName.asset[`${column}`] ?? "-"}
                 </Typography>
               </Box>
             </Box>

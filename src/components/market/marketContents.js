@@ -17,8 +17,11 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ToggleButton from "@mui/material/ToggleButton";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip";
 
 import MarketItem from "./marketItem";
+
+import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
 import App from "../../App.css";
 
 const ExpandMore = styled((props) => {
@@ -40,7 +43,7 @@ const StyledToggleButton = styled(ToggleButton)({
   border: 0,
 });
 
-export default function MarketContents({assetName, asset}) {
+export default function MarketContents({ assetName, asset }) {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState(false);
 
@@ -60,29 +63,33 @@ export default function MarketContents({assetName, asset}) {
         >
           <CardHeader
             avatar={<Avatar sx={{ width: 32, height: 32 }} />}
-            title="username"
-            subheader="creation_date"
-            sx={{ height: 50, width: 300, height: "100%" }}
+            title={asset.creatorNavigation.username}
+            subheader={DatetimeToLocaleDateString(asset.creationDate)}
+            sx={{ height: 50, width: 250, height: "100%" }}
           />
           <Typography
             variant="subtitle1"
             color="var(--accent)"
-            sx={{ mr: 2, fontWeight: "bold", textTransform: "uppercase" }}
+            sx={{
+              mr: 2,
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              flexGrow: 1,
+            }}
           >
-            assets_title
+            {asset.name}
           </Typography>
         </Box>
         <Divider variant="middle" />
 
         {/* wlasciwe pola assetu */}
+
         <CardContent sx={{ px: 2, pb: 0 }}>
-          <MarketItem />
+          <MarketItem assetName={assetName} asset={asset} />
         </CardContent>
         {/* zaleza od kategorii */}
 
-        <CardActions
-          sx={{ justifyContent: "flex-end", height: 30, mb: 2 }}
-        >
+        <CardActions sx={{ justifyContent: "flex-end", height: 30, mb: 2 }}>
           <StyledToggleButton
             value="check"
             selected={selected}
@@ -91,7 +98,9 @@ export default function MarketContents({assetName, asset}) {
               //add to favorites
             }}
           >
-            <FavoriteIcon />
+            <Tooltip title="Add to favorites">
+              <FavoriteIcon />
+            </Tooltip>
           </StyledToggleButton>
           <ExpandMore
             expand={expanded}
@@ -99,7 +108,9 @@ export default function MarketContents({assetName, asset}) {
             aria-expanded={expanded}
             aria-label="show more"
           >
-            <ExpandMoreIcon />
+            <Tooltip title="Show description">
+              <ExpandMoreIcon />
+            </Tooltip>
           </ExpandMore>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -110,10 +121,7 @@ export default function MarketContents({assetName, asset}) {
               align="justify"
               sx={{ mx: 0.5 }}
             >
-              Asset's description. ---Lorem ipsum, At vero eos et accusamus et
-              iusto odio dignissimos ducimus qui blanditiis praesentium
-              voluptatum deleniti atque corrupti quos dolores sint occaecati
-              cupiditate non provident.
+              {asset.description}
             </Typography>
           </CardContent>
         </Collapse>
