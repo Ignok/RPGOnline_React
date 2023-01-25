@@ -1,42 +1,36 @@
 import { makeRequest } from "./makeRequest";
 
-export function getUsers({ controller }) {
-  return makeRequest(`Users`, {
-    method: "GET",
-    //signal: controller.signal
-  });
-}
+// export function getAssets({ assetName }) {
+//   console.log({ assetName });
+//   return makeRequest(`Race`, {
+//     method: "GET",
+//     //signal: controller.signal
+//   });
+// }
 
-export function getUser(uId) {
-  return makeRequest(`Users/${uId}`, {
-    method: "GET",
-  });
-}
-
-export function editProfile({ uId, country, city, aboutme, attitude }) {
-  return makeRequest(`Users/${uId}/Details`, {
-    method: "PUT",
+export function createSpell({
+  uId,
+  language,
+  name,
+  description,
+  keySkill,
+  minValue,
+  manaCost,
+  effects,
+}) {
+  return makeRequest(`Spell`, {
+    method: "POST",
+    withCredentials: true,
     data: {
-      country: country,
-      city: city,
-      aboutMe: aboutme,
-      attitude: attitude,
+      uId: uId,
+      isPublic: true, //tymczasowo
+      language: language,
+      name: name,
+      description: description,
+      keySkill: keySkill,
+      minValue: minValue,
+      manaCost: manaCost,
+      effects: effects,
     },
-  });
-}
-
-export function editAvatar({ uId, picture }) {
-  return makeRequest(`Users/${uId}/Avatar`, {
-    method: "PUT",
-    data: {
-      picture: picture
-    },
-  });
-}
-
-// FRIENDS
-export function getUserFriends(uId) {
-  return makeRequest(`Users/${uId}/Friends`, {
-    method: "GET",
   });
 }

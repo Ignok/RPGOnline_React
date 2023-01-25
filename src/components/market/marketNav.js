@@ -55,8 +55,8 @@ export default function MarketNavbar({onAssetNameChange}) {
         return (
           <MenuItem
             key={label}
-            // component={NavLink}
-            // to={"/create/" + label}
+            component={NavLink}
+            to={`create/${label}`} //nie udało się zrobić /assets/item, albo wychodziło /assets/assets/item albo samo /item
             onClick={handleMenuClose}
             sx={{
               textTransform: label === "npc" ? "uppercase" : "capitalize",
