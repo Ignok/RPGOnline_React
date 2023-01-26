@@ -74,21 +74,33 @@ function App() {
               <Route path="messages" element={<MessagesContents />} />
               <Route path="friends" element={<FriendsContents />} />
             </Route>
-
-            <Route
-              path="/assets"
-              element={
-                // <AssetProvider>
-                <AssetMarket />
-                // </AssetProvider>
-              }
-            >
-              <Route index element={<AssetMarket />} />
-              <Route path="item" element={<AssetMarket />} />
-              <Route path="race" element={<AssetMarket />} />
-            </Route>
           </Route>
-          <Route path="/assets/create/spell" element={<SpellForm />} />
+
+          {/* ASSETS */}
+          <Route
+            path="/assets"
+            element={
+              // <AssetProvider>
+              <AssetMarket />
+              // </AssetProvider>
+            }
+          />
+            {/* <Route index element={<AssetMarket />} />
+            <Route path="item" element={<AssetMarket />} />
+            <Route path="race" element={<AssetMarket />} /> */}
+
+            
+          {/* </Route> */}
+          <Route
+            element={
+              <RequireAuth
+                allowedRoles={[ROLES.Admin, ROLES.User, ROLES.Moderator]}
+              />
+            }
+          >
+            <Route path="/assets/create/spell" element={<SpellForm />} />
+          </Route>
+          
 
           <Route
             path="/post/:postId"

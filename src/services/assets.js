@@ -11,6 +11,7 @@ import { makeRequest } from "./makeRequest";
 export function createSpell({
   uId,
   language,
+  isPublic,
   name,
   description,
   keySkill,
@@ -23,7 +24,7 @@ export function createSpell({
     withCredentials: true,
     data: {
       uId: uId,
-      isPublic: true, //tymczasowo
+      isPublic: isPublic,
       language: language,
       name: name,
       description: description,

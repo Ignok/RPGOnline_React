@@ -11,11 +11,12 @@ export function getPost(postId) {
   })
 }
 
-export function createPost({ uId, title, content, postId }) {
+export function createPost({ uId, title, content, postId, tag }) {
   console.log(uId)
   console.log(title)
   console.log(content)
   console.log(postId)
+  console.log(tag)
 
   return makeRequest(`/Posts`, {
     method: "POST",
@@ -23,7 +24,8 @@ export function createPost({ uId, title, content, postId }) {
     data: {
       uId : uId,
       title : title,
-      content : content
+      content : content,
+      tag: tag
      },
   })
 }

@@ -26,14 +26,28 @@ import { spell } from "../../../helpers/enums/assets";
 //podac wszystkie i wydzielic osobno
 const skills = [
   {
-    value: "INTELLIGENCE",
+    value: "intelligence",
     label: "INTELLIGENCE",
   },
   {
-    value: "CHARISMA",
+    value: "charisma",
     label: "CHARISMA",
   },
 ];
+
+const availabilities = [
+  {
+    value: true,
+    label: "PUBLIC",
+  },
+  {
+    value: false,
+    label: "PRIVATE",
+  },
+];
+
+const minValueInput = 0;
+const maxValueInput = 20;
 
 export default function SpellForm() {
   const { auth } = useAuth();
@@ -44,6 +58,7 @@ export default function SpellForm() {
     KeySkill: "",
     MinValue: 0,
     ManaCost: 0,
+    IsPublic: true
   });
 
   const { execute: createSpellFn } = useAsyncFn(createSpell);
@@ -59,26 +74,36 @@ export default function SpellForm() {
     }));
   };
 
+  const handleNumberChange = (event) => {
+    const value = event.target.value.replace(/\D/g, '');
+    const result = Math.max(minValueInput, Math.min(maxValueInput, Number(value)));
+    setValues((values) => ({
+      ...values,
+      [event.target.name]: result,
+    }));
+  };
+
   function validateForm() {
     let errors = {};
     if (!values.Name) {
-      errors.Title = "Name is required";
+      errors.Name = "Name is required";
     }
     if (!values.Description) {
-      errors.Content = "Description is required";
+      errors.Description = "Description is required";
     }
-    if (!values.Effect) {
-      errors.Content = "Effect is required";
+    if (!values.Effects) {
+      errors.Effects = "Effect is required";
     }
     if (!values.KeySkill) {
-      errors.Content = "KeySkill is required";
+      errors.KeySkill = "KeySkill is required";
     }
-    if (!values.MinValue) {
-      errors.Content = "MinValue is required";
+    if (values.MinValue < 0 || values.MinValue > 20) {
+      errors.MinValue = "Allowed input: from 0 to 20";
     }
-    if (!values.ManaCost) {
-      errors.Content = "ManaCost is required";
+    if (values.MinValue < 0 || values.MinValue > 20) {
+      errors.ManaCost = "Allowed input: from 0 to 20";
     }
+
     setFormErrors(errors);
     if (Object.keys(errors).length === 0) {
       return true;
@@ -90,9 +115,11 @@ export default function SpellForm() {
   function handleSubmit(event) {
     if (event) event.preventDefault();
     if (validateForm(values)) {
+      console.log("udalo sb")
       createSpellFn({
         uId: auth.uId,
         name: values.Name,
+        isPublic: values.IsPublic,
         language: 'en', //tymczasowo
         description: values.Description,
         keySkill: values.KeySkill,
@@ -101,7 +128,7 @@ export default function SpellForm() {
         effects: values.Effects,
       })
         .then((res) => {
-          console.log(res.data);
+          console.log(res);
           Swal.fire({
             title: "Your custom spell was added successfully!",
             width: 450,
@@ -158,11 +185,11 @@ export default function SpellForm() {
             label="Effects"
             multiline
             rows={5}
-            inputProps={{ maxLength: 1080 }}
+            inputProps={{ maxLength: 280 }}
             onChange={handleChange}
             value={values.Effects}
           />
-          {formErrors.Content && (
+          {formErrors.Effects && (
             <p className="text-warning">{formErrors.Effects}</p>
           )}
         </FormControl>
@@ -174,31 +201,38 @@ export default function SpellForm() {
             label="Description"
             multiline
             rows={5}
-            inputProps={{ maxLength: 1080 }}
+            inputProps={{ maxLength: 280 }}
             onChange={handleChange}
             value={values.Description}
           />
-          {formErrors.Content && (
+          {formErrors.Description && (
             <p className="text-warning">{formErrors.Description}</p>
           )}
         </FormControl>
 
-        <TextField
-          select
-          id="KeySkill"
-          name="KeySkill"
-          label="KeySkill"
-          value={values.KeySkill}
-          onChange={handleChange}
-          helperText="Choose the crucial skill when casting this spell"
-          variant="standard"
-        >
-          {skills.map((skill) => (
-            <MenuItem skill={skill.value} value={skill.value}>
-              {skill.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl>
+          <TextField
+            select
+            id="KeySkill"
+            name="KeySkill"
+            label="KeySkill"
+            value={values.KeySkill}
+            onChange={handleChange}
+            helperText="Choose the crucial skill when casting this spell"
+            variant="standard"
+          >
+            {skills.map((skill) => (
+              <MenuItem key={skill.label} skill={skill.value} value={skill.value}>
+                {skill.label}
+              </MenuItem>
+            ))}
+
+          </TextField>
+          {formErrors.KeySkill && (
+            <p className="text-warning">{formErrors.KeySkill}</p>
+          )}
+        </FormControl>
+
 
         {/* ale żeby było liczbowe */}
         <FormControl>
@@ -207,8 +241,8 @@ export default function SpellForm() {
             id="MinValue"
             name="MinValue"
             aria-describedby="my-helper-text"
-            inputProps={{ maxLength: 40 }}
-            onChange={handleChange}
+            inputProps={{ maxLength: 2 }}
+            onChange={handleNumberChange}
             value={values.MinValue}
           />
           {formErrors.MinValue && (
@@ -222,15 +256,39 @@ export default function SpellForm() {
             id="ManaCost"
             name="ManaCost"
             aria-describedby="my-helper-text"
-            inputProps={{ maxLength: 40 }}
-            onChange={handleChange}
+            inputProps={{ maxLength: 2 }}
+            onChange={handleNumberChange}
             value={values.ManaCost}
           />
           {formErrors.ManaCost && (
             <p className="text-warning">{formErrors.ManaCost}</p>
           )}
         </FormControl>
-        
+
+        <FormControl>
+          <TextField
+            select
+            type={"bool"}
+            id="IsPublic"
+            name="IsPublic"
+            label="IsPublic"
+            value={values.IsPublic}
+            onChange={handleChange}
+            helperText="Choose whether you want this spell to be public or private"
+            variant="standard"
+          >
+            {availabilities.map((availability) => (
+              <MenuItem key={availability.label} value={availability.value}>
+                {availability.label}
+              </MenuItem>
+            ))}
+
+          </TextField>
+          {formErrors.IsPublic && (
+            <p className="text-warning">{formErrors.IsPublic}</p>
+          )}
+        </FormControl>
+
         <Button type="submit">Submit</Button>
       </Box>
     </Box>

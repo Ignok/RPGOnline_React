@@ -82,10 +82,10 @@ export default function Posts() {
 
             }
             {error &&
-              <h1>Error. Try Refreshing.<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></h1>
+              <h1>Error. Try Refreshing.</h1>
             }
-            {loading || (posts.length === 0 ?
-              <h1>No posts to display<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></h1>
+            {!loading && (posts.length === 0 ?
+              <h1>No posts to display</h1>
               :
 
               <Stack

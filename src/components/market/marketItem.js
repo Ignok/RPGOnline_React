@@ -31,8 +31,8 @@ function getCategory(cat) {
   }
 }
 
-export default function MarketItem(assetName, asset) {
-  const category = getCategory(assetName.assetName.assetName);
+export default function MarketItem({assetName, asset}) {
+  const category = getCategory(assetName.assetName);
 
   return (
     <Box
@@ -84,7 +84,7 @@ export default function MarketItem(assetName, asset) {
                       : "normal",
                   }}
                 >
-                  {assetName.asset[`${column}`] ?? "-"}
+                  {asset[`${column}`] ?? "-"}
                 </Typography>
               </Box>
             </Box>

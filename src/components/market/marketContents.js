@@ -19,6 +19,7 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 
+import { getImage } from "../../helpers/functions/getImage";
 import MarketItem from "./marketItem";
 
 import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
@@ -61,8 +62,8 @@ export default function MarketContents({ assetName, asset }) {
             justifyContent: "space-between",
           }}
         >
-          <CardHeader
-            avatar={<Avatar sx={{ width: 32, height: 32 }} />}
+          <CardHeader onClick={() => console.log("XD")} 
+            avatar={<Avatar sx={{ width: 32, height: 32 }} alt={"avatar"} src={getImage(asset.creatorNavigation.picture).img} />}
             title={asset.creatorNavigation.username}
             subheader={DatetimeToLocaleDateString(asset.creationDate)}
             sx={{ height: 50, width: 250, height: "100%" }}
@@ -90,6 +91,7 @@ export default function MarketContents({ assetName, asset }) {
         {/* zaleza od kategorii */}
 
         <CardActions sx={{ justifyContent: "flex-end", height: 30, mb: 2 }}>
+          <Typography>{asset.timesSaved}</Typography>
           <StyledToggleButton
             value="check"
             selected={selected}
