@@ -6,12 +6,11 @@ import UsersList from "./components/users/users";
 import { Forum } from "./pages/Forum";
 import { Profile } from "./pages/Profile";
 import { AssetMarket } from "./pages/Market";
-import CreateAsset from "./components/market/create/marketCreate-old";
 import Register from "./services/User/Profile/Register";
 import Login from "./services/User/Profile/Login";
 import PostDiscussionForm from "./components/post/postForms/PostDiscussionForm";
 import SpellForm from "./components/market/create/spellForm";
-import { AssetProvider } from "./contexts/assetContext";
+import ItemForm from "./components/market/create/itemForm";
 import { PostProvider } from "./contexts/postContext";
 import { PostDetails } from "./components/post/postDetails";
 import {
@@ -85,11 +84,10 @@ function App() {
               // </AssetProvider>
             }
           />
-            {/* <Route index element={<AssetMarket />} />
+          {/* <Route index element={<AssetMarket />} />
             <Route path="item" element={<AssetMarket />} />
             <Route path="race" element={<AssetMarket />} /> */}
 
-            
           {/* </Route> */}
           <Route
             element={
@@ -99,8 +97,8 @@ function App() {
             }
           >
             <Route path="/assets/create/spell" element={<SpellForm />} />
+            <Route path="/assets/create/item" element={<ItemForm />} />
           </Route>
-          
 
           <Route
             path="/post/:postId"

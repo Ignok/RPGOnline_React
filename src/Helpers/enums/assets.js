@@ -27,3 +27,14 @@ export let spell = [
   { label: "minimal value:", column: "minValue" },
   { label: "mana cost:", column: "manaCost" },
 ];
+
+export let availabilities = [
+  {
+    value: true,
+    label: "Public",
+  },
+  {
+    value: false,
+    label: "Private",
+  },
+];

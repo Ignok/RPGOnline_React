@@ -60,7 +60,10 @@ export default function MarketItem({assetName, asset}) {
                 <Typography
                   variant="overline"
                   color="text.primary"
-                  sx={{ fontWeight: "light", textTransform: "uppercase" }}
+                  sx={{
+                    fontWeight: "light",
+                    textTransform: "uppercase",
+                  }}
                 >
                   {label}
                 </Typography>
@@ -68,7 +71,7 @@ export default function MarketItem({assetName, asset}) {
 
               <Box
                 sx={{
-                  width: { xs: "50%", sm: "65%", md: "70%", lg: "65%" },
+                  width: { xs: "50%", sm: "65%", md: "70%", lg: "60%" },
                 }}
               >
                 <Typography
@@ -78,7 +81,7 @@ export default function MarketItem({assetName, asset}) {
                   sx={{
                     fontWeight: "medium",
                     mt: 1,
-                    mr: 1,
+                    mr: 2,
                     textTransform: column.includes("key")
                       ? "uppercase"
                       : "normal",
