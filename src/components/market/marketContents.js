@@ -44,11 +44,11 @@ const ExpandMore = styled((props) => {
 }));
 
 const StyledToggleButton = styled(ToggleButton)({
+    border: 0,
   "&.Mui-selected, &.Mui-selected:hover": {
     color: "red",
     backgroundColor: "white",
   },
-  border: 0,
 });
 
 
@@ -65,6 +65,8 @@ export default function MarketContents({ assetName, asset }) {
   const {execute: saveAssetFn } = useAsyncFn(saveAsset)
   const {execute: unsaveAssetFn } = useAsyncFn(unsaveAsset)
 
+  const [likes, setLikes] = useState(asset.timesSaved);
+
   function onSaveAsset() {
     console.log("save")
     if(!auth.username){
@@ -76,20 +78,21 @@ export default function MarketContents({ assetName, asset }) {
       });
     }else{
       setWaiting(true);
-      return saveAssetFn({uId: auth.uId, assetId: asset.assetId })
-      .then(res => {
-        console.log(res);
-        setSelected(true);
-        setWaiting(false);
-        Success.fire({
-          icon: "success",
-          title: "Asset saved successfully",
+      return saveAssetFn({ uId: auth.uId, assetId: asset.assetId })
+        .then(res => {
+          console.log(res);
+          setSelected(true);
+          setWaiting(false);
+          Success.fire({
+            icon: "success",
+            title: "Asset saved successfully",
+          })
+          setLikes(likes + 1);
         })
-      })
-      .catch(err => {
-        console.log(err);
-        setWaiting(false);
-      })
+        .catch(err => {
+          console.log(err);
+          setWaiting(false);
+        });
     }
   }
 
@@ -113,6 +116,7 @@ export default function MarketContents({ assetName, asset }) {
           icon: "success",
           title: "Asset unsaved successfully",
         })
+        setLikes(likes - 1);
       })
       .catch(err => {
         console.log(err);
@@ -137,7 +141,13 @@ export default function MarketContents({ assetName, asset }) {
           }}
         >
           <CardHeader
-            avatar={<Avatar sx={{ width: 32, height: 32 }} alt={"avatar"} src={getImage(asset.creatorNavigation.picture).img} />}
+            avatar={
+              <Avatar
+                sx={{ width: 32, height: 32 }}
+                alt={"avatar"}
+                src={getImage(asset.creatorNavigation.picture).img}
+              />
+            }
             title={asset.creatorNavigation.username}
             subheader={DatetimeToLocaleDateString(asset.creationDate)}
             sx={{ height: 50, width: 250, height: "100%" }}
@@ -165,7 +175,6 @@ export default function MarketContents({ assetName, asset }) {
         {/* zaleza od kategorii */}
 
         <CardActions sx={{ justifyContent: "flex-end", height: 30, mb: 2 }}>
-          <Typography>{asset.timesSaved}</Typography>
           <StyledToggleButton
             value="check"
             selected={selected}
@@ -179,6 +188,7 @@ export default function MarketContents({ assetName, asset }) {
               <FavoriteIcon />
             </Tooltip>
           </StyledToggleButton>
+          <Typography sx={{mr: 2, ml: 0.5}}>{likes}</Typography>
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}
