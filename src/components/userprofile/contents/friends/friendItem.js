@@ -31,12 +31,22 @@ import { getImage } from "../../../../helpers/functions/getImage";
 import MessageForm from "../messages/messageForm";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { createMessage } from "../../../../services/messages";
+import { manageFriendship } from "../../../../services/users"
 import { Success } from "../../../../helpers/pop-ups/success";
 
 const settings = ["unfriend", "block"];
 const ItemDiv = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
+
+const options = {
+  block: "block",
+  unfriend: "unfriend",
+  decline: "unfriend",
+  unblock: "unblock",
+  add: "",
+  accept: "friend",
+};
 
 export default function FriendItem(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -56,6 +66,7 @@ export default function FriendItem(props) {
   };
 
   const [openMessageForm, setOpenMessageForm] = React.useState(false);
+  
 
   const { execute: createMessageFn } = useAsyncFn(createMessage);
   function onMessageCreate({ title, content, receiver }) {
@@ -72,6 +83,29 @@ export default function FriendItem(props) {
         title: "Message sent successfully",
       });
     });
+  }
+
+  const { execute: manageFriendshipFn } = useAsyncFn(manageFriendship);
+  function onManageFriendship(option) {
+    console.log(option)
+    return manageFriendshipFn({
+      uId: props.senderId,
+      targetUId: props.friendUId,
+      option: option
+    }).then((res) => {
+      console.log(res)
+      Success.fire({
+        icon: "success",
+        title: "Managed friend successfully",
+      });
+      props.reload()
+    }).catch((err) => {
+      console.log(err)
+      Success.fire({
+        icon: "error",
+        title: "Something went wrong",
+      });
+    })
   }
 
   function handleCancel() {
@@ -197,10 +231,11 @@ export default function FriendItem(props) {
             </DialogContentText>
           </DialogContent>
           <DialogActions sx={{ px: 5, justifyContent: "space-between" }}>
-            <Button onClick={() => setOpen(false)}>Yes</Button>
-            <Button onClick={() => setOpen(false)} autoFocus>
-              No
-            </Button>
+            <Button onClick={() => setOpen(false)} autoFocus >No</Button>
+            <Button onClick={() => {
+                setOpen(false)
+                onManageFriendship(options[action])
+              }}>Yes</Button>
           </DialogActions>
         </Dialog>
       </ListItem>
