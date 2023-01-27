@@ -18,9 +18,16 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
+import { Fail } from "../../helpers/pop-ups/failed";
+import { useAsyncFn } from "../../hooks/useAsync";
+import { useNavigate } from "react-router-dom";
 
 import { getImage } from "../../helpers/functions/getImage";
 import MarketItem from "./marketItem";
+import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
+import { saveAsset, unsaveAsset } from "../../services/assets";
+import { Success } from "../../helpers/pop-ups/success";
 
 import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
 import App from "../../App.css";
@@ -44,9 +51,76 @@ const StyledToggleButton = styled(ToggleButton)({
   border: 0,
 });
 
+
+
 export default function MarketContents({ assetName, asset }) {
-  const [expanded, setExpanded] = React.useState(false);
-  const [selected, setSelected] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [selected, setSelected] = useState(asset.isSaved);
+  const [waiting, setWaiting] = useState(false);
+
+  const navigate = useNavigate();
+  const { auth } = useAuth();
+  
+
+  const {execute: saveAssetFn } = useAsyncFn(saveAsset)
+  const {execute: unsaveAssetFn } = useAsyncFn(unsaveAsset)
+
+  function onSaveAsset() {
+    console.log("save")
+    if(!auth.username){
+      return Fail.fire()
+      .then(result =>{
+        if(result.isConfirmed){
+          navigate('/login', { replace: true });
+        }
+      });
+    }else{
+      setWaiting(true);
+      return saveAssetFn({uId: auth.uId, assetId: asset.assetId })
+      .then(res => {
+        console.log(res);
+        setSelected(true);
+        setWaiting(false);
+        Success.fire({
+          icon: "success",
+          title: "Asset saved successfully",
+        })
+      })
+      .catch(err => {
+        console.log(err);
+        setWaiting(false);
+      })
+    }
+  }
+
+  function onUnsaveAsset() {
+    console.log("unsave")
+    if(!auth.username){
+      return Fail.fire()
+      .then(result =>{
+        if(result.isConfirmed){
+          navigate('/login', { replace: true });
+        }
+      });
+    }else{
+      setWaiting(true);
+      return unsaveAssetFn({uId: auth.uId, assetId: asset.assetId })
+      .then(res => {
+        console.log(res);
+        setSelected(false);
+        setWaiting(false);
+        Success.fire({
+          icon: "success",
+          title: "Asset unsaved successfully",
+        })
+      })
+      .catch(err => {
+        console.log(err);
+        setWaiting(false);
+      })
+    }
+  }
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -62,7 +136,7 @@ export default function MarketContents({ assetName, asset }) {
             justifyContent: "space-between",
           }}
         >
-          <CardHeader onClick={() => console.log("XD")} 
+          <CardHeader
             avatar={<Avatar sx={{ width: 32, height: 32 }} alt={"avatar"} src={getImage(asset.creatorNavigation.picture).img} />}
             title={asset.creatorNavigation.username}
             subheader={DatetimeToLocaleDateString(asset.creationDate)}
@@ -95,9 +169,10 @@ export default function MarketContents({ assetName, asset }) {
           <StyledToggleButton
             value="check"
             selected={selected}
+            disabled={waiting}
             onChange={() => {
-              setSelected(!selected);
               //add to favorites
+              selected ? onUnsaveAsset() : onSaveAsset();
             }}
           >
             <Tooltip title="Add to favorites">

@@ -8,6 +8,26 @@ import { makeRequest } from "./makeRequest";
 //   });
 // }
 
+export function saveAsset({
+  uId,
+  assetId
+}) {
+  return makeRequest(`Users/${uId}/Assets/${assetId}`, {
+    method: "POST",
+    withCredentials: true,
+  });
+}
+
+export function unsaveAsset({
+  uId,
+  assetId
+}) {
+  return makeRequest(`Users/${uId}/Assets/${assetId}`, {
+    method: "DELETE",
+    withCredentials: true,
+  });
+}
+
 export function createSpell({
   uId,
   language,
