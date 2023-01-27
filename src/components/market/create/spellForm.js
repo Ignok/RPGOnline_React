@@ -50,7 +50,7 @@ export default function SpellForm() {
     Name: "",
     Description: "",
     Effects: "",
-    KeySkill: "",
+    KeyAttribute: "",
     MinValue: 0,
     ManaCost: 0,
     IsPublic: true,
@@ -160,8 +160,8 @@ export default function SpellForm() {
     if (!values.Effects) {
       errors.Effects = "Effect is required";
     }
-    if (!values.KeySkill) {
-      errors.KeySkill = "KeySkill is required";
+    if (!values.KeyAttribute) {
+      errors.KeyAttribute = "Key Attribute is required";
     }
     if (values.MinValue < 0 || values.MinValue > 20) {
       errors.MinValue = "Allowed input: from 0 to 20";
@@ -189,7 +189,7 @@ export default function SpellForm() {
         isPublic: values.IsPublic,
         language: "en", //tymczasowo
         description: values.Description,
-        keySkill: values.KeySkill,
+        keyAttribute: values.KeyAttribute,
         minValue: values.MinValue,
         manaCost: values.ManaCost,
         effects: values.Effects,
@@ -279,31 +279,31 @@ export default function SpellForm() {
         <FormControl>
           <TextField
             select
-            id="KeySkill"
-            name="KeySkill"
+            id="KeyAttribute"
+            name="KeyAttribute"
             label="Crucial attribute*"
-            value={values.KeySkill}
+            value={values.KeyAttribute}
             onChange={handleChange}
             helperText="Choose the crucial attribute when casting this spell"
             variant="standard"
           >
             {attributes
               .filter(
-                (skill) =>
-                  skill.value === "charisma" || skill.value === "intelligence"
+                (attr) =>
+                  attr.value === "charisma" || attr.value === "intelligence"
               )
-              .map((skill) => (
+              .map((attr) => (
                 <MenuItem
-                  key={skill.label}
-                  skill={skill.value}
-                  value={skill.value}
+                  key={attr.label}
+                  attr={attr.value}
+                  value={attr.value}
                 >
-                  {skill.label}
+                  {attr.label}
                 </MenuItem>
               ))}
           </TextField>
-          {formErrors.KeySkill && (
-            <p className="text-warning">{formErrors.KeySkill}</p>
+          {formErrors.KeyAttribute && (
+            <p className="text-warning">{formErrors.KeyAttribute}</p>
           )}
         </FormControl>
 
