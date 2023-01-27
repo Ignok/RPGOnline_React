@@ -40,3 +40,14 @@ export function getUserFriends(uId) {
     method: "GET",
   });
 }
+
+export function manageFriendship({uId, targetUId, option}) {
+  return makeRequest(`Users/${uId}/Friends`, {
+    method: "POST",
+    data: {
+      uId: uId,
+      targetUId: targetUId,
+      option: option
+    },
+  });
+}

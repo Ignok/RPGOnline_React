@@ -21,6 +21,11 @@ const ColorButton = styled(Button)(() => ({
 
 export default function FriendsContents() {
   const [contents, setContents] = useState("friends");
+
+  const [statusChanged, setStatusChanged] = useState();
+
+  const [whatToDisplay, setWhatToDisplay] = useState("isFriend")
+
   const handleContentsChange = (pageName) => {
     setContents(pageName);
   };
@@ -34,25 +39,17 @@ export default function FriendsContents() {
     error,
     execute: getUserFriendsFn,
   } = useAsyncFn(getUserFriends);
-  // refreshList(){
-  //     getUsers()
-  //     .then(response=>response.json())
-  //     .then(data=>{
-  //         this.setState({users:data});
-  //         console.log(data);
-  //     });
-  // }
 
-  // componentDidMount(){
-  //     this.refreshList();
-  // }
+  function reload() {
+    setStatusChanged(1)
+  }
 
   useEffect(() => {
     let isMounted = true;
     //const controller = new AbortController();
 
     getUserFriendsFn(user.uId).then((data) => {
-      //console.log(data);
+      console.log(data);
       isMounted && setFriends(data);
     });
 
@@ -60,7 +57,7 @@ export default function FriendsContents() {
       isMounted = false;
       //controller.abort();
     };
-  }, []);
+  }, [statusChanged]);
 
 
   return (
@@ -95,31 +92,45 @@ export default function FriendsContents() {
           </Typography>
           {/* dodac FRIEND LIST kiedy sie jest w widoku requests/blocked */}
           <ColorButton
-            onClick={() => handleContentsChange("requests")}
+            onClick={() => {
+              handleContentsChange("requests")
+              setWhatToDisplay("isRequestReceived")
+            }}
             sx={{
               color: contents === "requests" ? "var(--accent-light)" : "white",
             }}
           >
             FRIEND REQUESTS
           </ColorButton>
+
           <Divider orientation="vertical" color="white" flexItem />
+
           <ColorButton
-            onClick={() => handleContentsChange("friends")}
+            onClick={() => {
+              handleContentsChange("friends")
+              setWhatToDisplay("isFriend")
+            }}
             sx={{
               color: contents === "friends" ? "var(--accent-light)" : "white",
             }}
           >
             FRIENDS LIST
           </ColorButton>
+
           <Divider orientation="vertical" color="white" flexItem />
+
           <ColorButton
-            onClick={() => handleContentsChange("blocked")}
+            onClick={() => {
+              handleContentsChange("blocked")
+              setWhatToDisplay("isBlocked")
+            }}
             sx={{
               color: contents === "blocked" ? "var(--accent-light)" : "white",
             }}
           >
             BLOCKED
           </ColorButton>
+
         </Stack>
       </Box>
       {loading ?
@@ -139,16 +150,18 @@ export default function FriendsContents() {
             px: 10,
           }}
         >
-          {friends.map((friend) => {
+          {friends.filter(friend => friend[whatToDisplay]).map((friend) => {
             return (
               <FriendItem
                key={friend.uId}
                 senderId={user.uId}
                 username={friend.username}
+                friendUId={friend.uId}
                 country={friend.country}
                 attitude={friend.attitude}
                 picture={friend.picture}
                 contents={contents}
+                reload={reload}
               />
             );
           })}
