@@ -22,7 +22,7 @@ const ColorButton = styled(Button)(() => ({
 export default function FriendsContents() {
   const [contents, setContents] = useState("friends");
 
-  const [statusChanged, setStatusChanged] = useState();
+  const [statusChanged, setStatusChanged] = useState(true);
 
   const [whatToDisplay, setWhatToDisplay] = useState("isFriend")
 
@@ -41,7 +41,7 @@ export default function FriendsContents() {
   } = useAsyncFn(getUserFriends);
 
   function reload() {
-    setStatusChanged(1)
+    setStatusChanged(!statusChanged)
   }
 
   useEffect(() => {
@@ -162,6 +162,7 @@ export default function FriendsContents() {
                 picture={friend.picture}
                 contents={contents}
                 reload={reload}
+                isFollowed={friend.isFollowed}
               />
             );
           })}

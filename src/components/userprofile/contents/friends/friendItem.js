@@ -44,8 +44,10 @@ const options = {
   unfriend: "unfriend",
   decline: "unfriend",
   unblock: "unblock",
-  add: "",
+  add: "friend",
   accept: "friend",
+  follow: "follow",
+  unfollow: "unfollow"
 };
 
 export default function FriendItem(props) {
@@ -96,7 +98,7 @@ export default function FriendItem(props) {
       console.log(res)
       Success.fire({
         icon: "success",
-        title: "Managed friend successfully",
+        title: "Managed friendship status successfully",
       });
       props.reload()
     }).catch((err) => {
@@ -172,7 +174,11 @@ export default function FriendItem(props) {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Follow">
-                <IconButton aria-label="follow">
+                <IconButton
+                  color={props.isFollowed ? "primary" : "default"}
+                  aria-label="follow"
+                  onClick={() => onManageFriendship(options[props.isFollowed ? "unfollow" : "follow"])}
+                >
                   <BookmarkIcon />
                 </IconButton>
               </Tooltip>
