@@ -10,7 +10,7 @@ import Register from "./services/User/Profile/Register";
 import Login from "./services/User/Profile/Login";
 import PostDiscussionForm from "./components/post/postForms/PostDiscussionForm";
 import SpellForm from "./components/market/create/spellForm";
-// import ItemForm from "./components/market/create/itemForm";
+import ItemForm from "./components/market/create/itemForm";
 import { PostProvider } from "./contexts/postContext";
 import { PostDetails } from "./components/post/postDetails";
 import {
@@ -97,7 +97,7 @@ function App() {
             }
           >
             <Route path="/assets/create/spell" element={<SpellForm />} />
-            {/* <Route path="/assets/create/item" element={<ItemForm />} /> */}
+            <Route path="/assets/create/item" element={<ItemForm />} />
           </Route>
 
           <Route

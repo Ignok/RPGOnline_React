@@ -28,10 +28,36 @@ export function unsaveAsset({
   });
 }
 
+export function createItem({
+  uId,
+  isPublic,
+  language,
+  name,
+  description,
+  keySkill,
+  skillMod,
+  goldMultiplier,
+}) {
+  return makeRequest(`Item`, {
+    method: "POST",
+    withCredentials: true,
+    data: {
+      uId: uId,
+      isPublic: isPublic,
+      language: language,
+      name: name,
+      description: description,
+      keySkill: keySkill,
+      skillMod: skillMod,
+      goldMultiplier: goldMultiplier,
+    },
+  });
+}
+
 export function createSpell({
   uId,
-  language,
   isPublic,
+  language,
   name,
   description,
   keySkill,
