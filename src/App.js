@@ -11,6 +11,7 @@ import Login from "./services/User/Profile/Login";
 import PostDiscussionForm from "./components/post/postForms/PostDiscussionForm";
 import SpellForm from "./components/market/create/spellForm";
 import ItemForm from "./components/market/create/itemForm";
+import RaceForm from "./components/market/create/raceForm";
 import { PostProvider } from "./contexts/postContext";
 import { PostDetails } from "./components/post/postDetails";
 import {
@@ -84,11 +85,6 @@ function App() {
               // </AssetProvider>
             }
           />
-          {/* <Route index element={<AssetMarket />} />
-            <Route path="item" element={<AssetMarket />} />
-            <Route path="race" element={<AssetMarket />} /> */}
-
-          {/* </Route> */}
           <Route
             element={
               <RequireAuth
@@ -98,6 +94,7 @@ function App() {
           >
             <Route path="/assets/create/spell" element={<SpellForm />} />
             <Route path="/assets/create/item" element={<ItemForm />} />
+            <Route path="/assets/create/race" element={<RaceForm />} />
           </Route>
 
           <Route

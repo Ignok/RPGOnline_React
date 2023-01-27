@@ -1,22 +1,30 @@
 export let attributes = [
   {
-    value: "companion",
-    label: "Companion",
+    value: "charisma",
+    label: "Charisma",
   },
   {
-    value: "gadget",
-    label: "Gadget",
+    value: "dexterity",
+    label: "Dexterity",
   },
   {
-    value: "psyche",
-    label: "Psyche",
+    value: "health",
+    label: "Health",
   },
   {
-    value: "shield",
-    label: "Shield",
+    value: "intelligence",
+    label: "Intelligence",
   },
   {
-    value: "weapon",
-    label: "Weapon",
+    value: "mana",
+    label: "Mana",
+  },
+  {
+    value: "strength",
+    label: "Strength",
+  },
+  {
+    value: "none",
+    label: "None",
   },
 ];

@@ -54,6 +54,32 @@ export function createItem({
   });
 }
 
+export function createRace({
+  uId,
+  isPublic,
+  language,
+  name,
+  description,
+  talent,
+  hiddenTalent,
+  keyAttribute,
+}) {
+  return makeRequest(`Race`, {
+    method: "POST",
+    withCredentials: true,
+    data: {
+      uId: uId,
+      isPublic: isPublic,
+      language: language,
+      name: name,
+      description: description,
+      talent: talent,
+      hiddenTalent: hiddenTalent,
+      keyAttribute: keyAttribute,
+    },
+  });
+}
+
 export function createSpell({
   uId,
   isPublic,

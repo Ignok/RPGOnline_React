@@ -36,7 +36,7 @@ import { createSpell } from "../../../services/assets";
 import { useAsyncFn } from "../../../hooks/useAsync";
 import { spell } from "../../../helpers/enums/assets";
 
-import { skills } from "../../../helpers/enums/skills";
+import { attributes } from "../../../helpers/enums/attributes";
 import { availabilities } from "../../../helpers/enums/assets";
 
 import { styled } from "@mui/material/styles";
@@ -88,8 +88,8 @@ export default function SpellForm() {
 
   const [counter, setCounter] = useState({
     ManaCost: 0,
-    MinValue: 0
-  })
+    MinValue: 0,
+  });
 
   const handleIncrement = (event) => {
     const target = event.currentTarget.id;
@@ -281,13 +281,13 @@ export default function SpellForm() {
             select
             id="KeySkill"
             name="KeySkill"
-            label="Crucial skill*"
+            label="Crucial attribute*"
             value={values.KeySkill}
             onChange={handleChange}
-            helperText="Choose the crucial skill when casting this spell"
+            helperText="Choose the crucial attribute when casting this spell"
             variant="standard"
           >
-            {skills
+            {attributes
               .filter(
                 (skill) =>
                   skill.value === "charisma" || skill.value === "intelligence"

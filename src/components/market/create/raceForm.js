@@ -6,6 +6,7 @@ import {
   Button,
   TextField,
   MenuItem,
+  Link,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Stack from "@mui/material/Stack";
@@ -15,36 +16,31 @@ import Swal from "sweetalert2";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import ButtonGroup from "@mui/material/ButtonGroup";
 
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../hooks/useAuth";
 
-import { createItem } from "../../../services/assets";
+import { createRace } from "../../../services/assets";
 import { useAsyncFn } from "../../../hooks/useAsync";
 
-import { skills } from "../../../helpers/enums/skills";
+import { attributes } from "../../../helpers/enums/attributes";
 
-const minValueInput = 0;
 
-export default function SpellForm() {
+export default function RaceForm() {
   const { auth } = useAuth();
   const [values, setValues] = useState({
     Name: "",
     Description: "",
-    KeySkill: "",
-    SkillMod: 0,
-    GoldMultiplier: 0,
+    KeyAttribute: "",
+    Talent: "",
+    HiddenTalent: "",
     IsPublic: true,
   });
 
-  const { execute: createItemFn } = useAsyncFn(createItem);
+  const { execute: createRaceFn } = useAsyncFn(createRace);
 
   const navigate = useNavigate();
 
@@ -65,57 +61,6 @@ export default function SpellForm() {
     }));
   };
 
-  const [counter, setCounter] = useState({
-    SkillMod: 0,
-    GoldMultiplier: 0,
-  });
-
-  const handleIncrement = (event) => {
-    const target = event.currentTarget.id;
-    const tmp = counter[target];
-    const maxValueInput = target === "GoldMultiplier" ? 100 : 6;
-    const newCount = tmp + 1 >= maxValueInput ? maxValueInput : tmp + 1;
-    setCounter((values) => ({
-      ...values,
-      [`${target}`]: newCount,
-    }));
-    setValues((values) => ({
-      ...values,
-      [target]: newCount,
-    }));
-  };
-
-  const handleDecrement = (event) => {
-    const target = event.currentTarget.id;
-    const tmp = counter[target];
-    const newCount = tmp - 1 <= minValueInput ? minValueInput : tmp - 1;
-    setCounter((values) => ({
-      ...values,
-      [`${target}`]: newCount,
-    }));
-    setValues((values) => ({
-      ...values,
-      [target]: newCount,
-    }));
-  };
-
-  const handleNumberChange = (event) => {
-    const maxValueInput = event.target.name === "GoldMultiplier" ? 100 : 20;
-    const value = event.target.value.replace(/\D/g, "");
-    const result = Math.max(
-      minValueInput,
-      Math.min(maxValueInput, Number(value))
-    );
-    setCounter((values) => ({
-      ...values,
-      [`${event.target.name}`]: result,
-    }));
-    setValues((values) => ({
-      ...values,
-      [event.target.name]: result,
-    }));
-  };
-
   function validateForm() {
     let errors = {};
     if (!values.Name) {
@@ -124,14 +69,18 @@ export default function SpellForm() {
     if (!values.Description) {
       errors.Description = "Description is required";
     }
-    if (!values.KeySkill) {
-      errors.KeySkill = "KeySkill is required";
+    if (!values.KeyAttribute) {
+      errors.KeyAttribute = "KeyAttribute is required";
     }
-    if (values.SkillMod < 0 || values.SkillMod > 6) {
-      errors.MinValue = "Allowed input: from 0 to 6";
+    if (!values.Talent) {
+      errors.Talent = "Talent is required";
+    } else if (values.Talent.length < 5) {
+      errors.Talent = "Talent description is too short";
     }
-    if (values.GoldMultiplier < 0 || values.GoldMultiplier > 100) {
-      errors.ManaCost = "Allowed input: from 0 to 100";
+    if (!values.HiddenTalent) {
+      errors.HiddenTalent = "Hidden talent is required";
+    } else if (values.HiddenTalent.length < 5) {
+      errors.Talent = "Hidden Talent description is too short";
     }
 
     setFormErrors(errors);
@@ -145,19 +94,19 @@ export default function SpellForm() {
   function handleSubmit(event) {
     if (event) event.preventDefault();
     if (validateForm(values)) {
-      createItemFn({
+      createRaceFn({
         uId: auth.uId,
         name: values.Name,
         isPublic: values.IsPublic,
         language: "en", //tymczasowo
         description: values.Description,
-        keySkill: values.KeySkill,
-        skillMod: values.SkillMod,
-        goldMultiplier: values.GoldMultiplier,
+        keyAttribute: values.KeyAttribute,
+        talent: values.Talent,
+        hiddenTalent: values.HiddenTalent,
       })
         .then((res) => {
           Swal.fire({
-            title: "Your custom item was added successfully!",
+            title: "Your custom race was added successfully!",
             width: 450,
             padding: "3em",
             color: "#716add",
@@ -187,6 +136,7 @@ export default function SpellForm() {
           flexDirection: "column",
           gap: 3,
           px: 2,
+          width: "50%",
         }}
         autoComplete="off"
         onSubmit={handleSubmit}
@@ -222,80 +172,57 @@ export default function SpellForm() {
 
         <FormControl>
           <TextField
-            select
-            id="KeySkill"
-            name="KeySkill"
-            label="Crucial skill*"
-            value={values.KeySkill}
+            id="Talent"
+            name="Talent"
+            label="Talent*"
+            multiline
+            rows={5}
+            inputProps={{ maxLength: 280 }}
             onChange={handleChange}
-            helperText="Choose which skill is affected by this item"
-            variant="standard"
-          >
-            {skills.map((skill) => (
-              <MenuItem
-                key={skill.label}
-                skill={skill.value}
-                value={skill.value}
-              >
-                {skill.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          {formErrors.KeySkill && (
-            <p className="text-warning">{formErrors.KeySkill}</p>
+            value={values.Talent}
+          />
+          {formErrors.Talent && (
+            <p className="text-warning">{formErrors.Talent}</p>
           )}
         </FormControl>
 
-        <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <FormControl sx={{ my: 2 }}>
-              <InputLabel>Modifer for chosen skill</InputLabel>
-              <Input
-                id="SkillMod"
-                name="SkillMod"
-                aria-describedby="my-helper-text"
-                inputProps={{ maxLength: 2 }}
-                onChange={handleNumberChange}
-                value={values.SkillMod}
-              />
-              {formErrors.SkillMod && (
-                <p className="text-warning">{formErrors.SkillMod}</p>
-              )}
-            </FormControl>
-            <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="SkillMod">
-                <KeyboardArrowUpIcon />
-              </IconButton>
-              <IconButton onClick={handleDecrement} id="SkillMod">
-                <KeyboardArrowDownIcon />
-              </IconButton>
-            </ButtonGroup>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <FormControl sx={{ my: 2 }}>
-              <InputLabel>Multiplier when selling</InputLabel>
-              <Input
-                id="GoldMultiplier"
-                name="GoldMultiplier"
-                aria-describedby="my-helper-text"
-                inputProps={{ maxLength: 2 }}
-                onChange={handleNumberChange}
-                value={values.GoldMultiplier}
-              />
-              {formErrors.GoldMultiplier && (
-                <p className="text-warning">{formErrors.GoldMultiplier}</p>
-              )}
-            </FormControl>
-            <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="GoldMultiplier">
-                <KeyboardArrowUpIcon />
-              </IconButton>
-              <IconButton onClick={handleDecrement} id="GoldMultiplier">
-                <KeyboardArrowDownIcon />
-              </IconButton>
-            </ButtonGroup>
-          </Box>
-        </Box>
+        <FormControl>
+          <TextField
+            id="HiddenTalent"
+            name="HiddenTalent"
+            label="Hidden talent*"
+            multiline
+            rows={5}
+            inputProps={{ maxLength: 280 }}
+            onChange={handleChange}
+            value={values.HiddenTalent}
+          />
+          {formErrors.HiddenTalent && (
+            <p className="text-warning">{formErrors.HiddenTalent}</p>
+          )}
+        </FormControl>
+
+        <FormControl>
+          <TextField
+            select
+            id="KeyAttribute"
+            name="KeyAttribute"
+            label="Crucial attribute*"
+            value={values.KeyAttribute}
+            onChange={handleChange}
+            helperText="Choose which attribute assigns this race"
+            variant="standard"
+          >
+            {attributes.map((attr) => (
+              <MenuItem key={attr.label} attr={attr.value} value={attr.value}>
+                {attr.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          {formErrors.KeyAttribute && (
+            <p className="text-warning">{formErrors.KeyAttribute}</p>
+          )}
+        </FormControl>
 
         <Box sx={{ py: 1 }}>
           <Typography variant="label">Make this asset public?</Typography>

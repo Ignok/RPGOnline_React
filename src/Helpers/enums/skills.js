@@ -1,30 +1,26 @@
 export let skills = [
   {
-    value: "charisma",
-    label: "Charisma",
+    value: "companion",
+    label: "Companion",
   },
   {
-    value: "dexterity",
-    label: "Dexterity",
+    value: "gadget",
+    label: "Gadget",
   },
   {
-    value: "health",
-    label: "Health",
+    value: "psyche",
+    label: "Psyche",
   },
   {
-    value: "intelligence",
-    label: "Intelligence",
+    value: "shield",
+    label: "Shield",
   },
   {
-    value: "mana",
-    label: "Mana",
+    value: "weapon",
+    label: "Weapon",
   },
   {
     value: "restistance",
     label: "Resistance",
-  },
-  {
-    value: "strength",
-    label: "Strength",
   },
 ];
