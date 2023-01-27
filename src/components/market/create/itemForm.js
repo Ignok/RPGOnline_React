@@ -32,9 +32,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../hooks/useAuth";
 
-import { createSpell } from "../../../services/assets";
+import { createItem } from "../../../services/assets";
 import { useAsyncFn } from "../../../hooks/useAsync";
-import { spell } from "../../../helpers/enums/assets";
 
 import { skills } from "../../../helpers/enums/skills";
 import { availabilities } from "../../../helpers/enums/assets";
@@ -42,58 +41,48 @@ import { availabilities } from "../../../helpers/enums/assets";
 import { styled } from "@mui/material/styles";
 
 const minValueInput = 0;
-const maxValueInput = 20;
 
 export default function SpellForm() {
   const { auth } = useAuth();
   const [values, setValues] = useState({
     Name: "",
     Description: "",
-    Effects: "",
     KeySkill: "",
-    MinValue: 0,
-    ManaCost: 0,
+    SkillMod: 0,
+    GoldMultiplier: 0,
     IsPublic: true,
   });
 
-  const { execute: createSpellFn } = useAsyncFn(createSpell);
+  const { execute: createItemFn } = useAsyncFn(createItem);
 
   const navigate = useNavigate();
 
   const [formErrors, setFormErrors] = useState({});
 
   const handleChange = (event) => {
-    console.log(
-      "handle change " + event.target.name + " - " + event.target.value
-    );
     setValues((values) => ({
       ...values,
       [event.target.name]: event.target.value,
     }));
   };
 
-  // const [checked, setChecked] = useState(values.IsPublic);
   const handleCheck = (event) => {
     const value = event.target.checked;
-    //setChecked(event.target.checked);
-    console.log(event.target.checked);
     setValues((values) => ({
       ...values,
       [event.target.name]: value,
     }));
   };
 
-  // const [counter, setCounter] = useState(0);
-  // const [manaCounter, setManaCounter] = useState(0);
-
   const [counter, setCounter] = useState({
-    ManaCost: 0,
-    MinValue: 0
-  })
+    SkillMod: 0,
+    GoldMultiplier: 0,
+  });
 
   const handleIncrement = (event) => {
     const target = event.currentTarget.id;
     const tmp = counter[target];
+    const maxValueInput = target === "GoldMultiplier" ? 100 : 6;
     const newCount = tmp + 1 >= maxValueInput ? maxValueInput : tmp + 1;
     setCounter((values) => ({
       ...values,
@@ -103,19 +92,6 @@ export default function SpellForm() {
       ...values,
       [target]: newCount,
     }));
-    // if (target === "ManaCost") {
-    //   setManaCounter((count) => (count + 1 >= 20 ? 20 : count + 1));
-    //   setValues((values) => ({
-    //     ...values,
-    //     [target]: manaCounter,
-    //   }));
-    // } else if (target === "MinValue") {
-    //   setCounter((count) => (count + 1 >= 20 ? 20 : count + 1));
-    //   setValues((values) => ({
-    //     ...values,
-    //     [target]: counter,
-    //   }));
-    // }
   };
 
   const handleDecrement = (event) => {
@@ -133,12 +109,12 @@ export default function SpellForm() {
   };
 
   const handleNumberChange = (event) => {
+    const maxValueInput = event.target.name === "GoldMultiplier" ? 100 : 20;
     const value = event.target.value.replace(/\D/g, "");
     const result = Math.max(
       minValueInput,
       Math.min(maxValueInput, Number(value))
     );
-    console.log("UWAG   " + event.target.name);
     setCounter((values) => ({
       ...values,
       [`${event.target.name}`]: result,
@@ -157,17 +133,14 @@ export default function SpellForm() {
     if (!values.Description) {
       errors.Description = "Description is required";
     }
-    if (!values.Effects) {
-      errors.Effects = "Effect is required";
-    }
     if (!values.KeySkill) {
       errors.KeySkill = "KeySkill is required";
     }
-    if (values.MinValue < 0 || values.MinValue > 20) {
-      errors.MinValue = "Allowed input: from 0 to 20";
+    if (values.SkillMod < 0 || values.SkillMod > 6) {
+      errors.MinValue = "Allowed input: from 0 to 6";
     }
-    if (values.MinValue < 0 || values.MinValue > 20) {
-      errors.ManaCost = "Allowed input: from 0 to 20";
+    if (values.GoldMultiplier < 0 || values.GoldMultiplier > 100) {
+      errors.ManaCost = "Allowed input: from 0 to 100";
     }
 
     setFormErrors(errors);
@@ -179,25 +152,21 @@ export default function SpellForm() {
   }
 
   function handleSubmit(event) {
-    console.log(event);
     if (event) event.preventDefault();
     if (validateForm(values)) {
-      console.log("udalo sb");
-      createSpellFn({
+      createItemFn({
         uId: auth.uId,
         name: values.Name,
         isPublic: values.IsPublic,
         language: "en", //tymczasowo
         description: values.Description,
         keySkill: values.KeySkill,
-        minValue: values.MinValue,
-        manaCost: values.ManaCost,
-        effects: values.Effects,
+        skillMod: values.SkillMod,
+        goldMultiplier: values.GoldMultiplier,
       })
         .then((res) => {
-          console.log(res);
           Swal.fire({
-            title: "Your custom spell was added successfully!",
+            title: "Your custom item was added successfully!",
             width: 450,
             padding: "3em",
             color: "#716add",
@@ -246,22 +215,6 @@ export default function SpellForm() {
 
         <FormControl>
           <TextField
-            id="Effects"
-            name="Effects"
-            label="Effects*"
-            multiline
-            rows={5}
-            inputProps={{ maxLength: 280 }}
-            onChange={handleChange}
-            value={values.Effects}
-          />
-          {formErrors.Effects && (
-            <p className="text-warning">{formErrors.Effects}</p>
-          )}
-        </FormControl>
-
-        <FormControl>
-          <TextField
             id="Description"
             name="Description"
             label="Description*"
@@ -284,23 +237,18 @@ export default function SpellForm() {
             label="Crucial skill*"
             value={values.KeySkill}
             onChange={handleChange}
-            helperText="Choose the crucial skill when casting this spell"
+            helperText="Choose which skill is affected by this item"
             variant="standard"
           >
-            {skills
-              .filter(
-                (skill) =>
-                  skill.value === "charisma" || skill.value === "intelligence"
-              )
-              .map((skill) => (
-                <MenuItem
-                  key={skill.label}
-                  skill={skill.value}
-                  value={skill.value}
-                >
-                  {skill.label}
-                </MenuItem>
-              ))}
+            {skills.map((skill) => (
+              <MenuItem
+                key={skill.label}
+                skill={skill.value}
+                value={skill.value}
+              >
+                {skill.label}
+              </MenuItem>
+            ))}
           </TextField>
           {formErrors.KeySkill && (
             <p className="text-warning">{formErrors.KeySkill}</p>
@@ -310,48 +258,48 @@ export default function SpellForm() {
         <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <FormControl sx={{ my: 2 }}>
-              <InputLabel>Minimal value for crucial skill</InputLabel>
+              <InputLabel>Modifer for chosen skill</InputLabel>
               <Input
-                id="MinValue"
-                name="MinValue"
+                id="SkillMod"
+                name="SkillMod"
                 aria-describedby="my-helper-text"
                 inputProps={{ maxLength: 2 }}
                 onChange={handleNumberChange}
-                value={values.MinValue}
+                value={values.SkillMod}
               />
-              {formErrors.MinValue && (
-                <p className="text-warning">{formErrors.MinValue}</p>
+              {formErrors.SkillMod && (
+                <p className="text-warning">{formErrors.SkillMod}</p>
               )}
             </FormControl>
             <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="MinValue">
+              <IconButton onClick={handleIncrement} id="SkillMod">
                 <KeyboardArrowUpIcon />
               </IconButton>
-              <IconButton onClick={handleDecrement} id="MinValue">
+              <IconButton onClick={handleDecrement} id="SkillMod">
                 <KeyboardArrowDownIcon />
               </IconButton>
             </ButtonGroup>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <FormControl sx={{ my: 2 }}>
-              <InputLabel>Mana cost</InputLabel>
+              <InputLabel>Multiplier when selling</InputLabel>
               <Input
-                id="ManaCost"
-                name="ManaCost"
+                id="GoldMultiplier"
+                name="GoldMultiplier"
                 aria-describedby="my-helper-text"
                 inputProps={{ maxLength: 2 }}
                 onChange={handleNumberChange}
-                value={values.ManaCost}
+                value={values.GoldMultiplier}
               />
-              {formErrors.ManaCost && (
-                <p className="text-warning">{formErrors.ManaCost}</p>
+              {formErrors.GoldMultiplier && (
+                <p className="text-warning">{formErrors.GoldMultiplier}</p>
               )}
             </FormControl>
             <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="ManaCost">
+              <IconButton onClick={handleIncrement} id="GoldMultiplier">
                 <KeyboardArrowUpIcon />
               </IconButton>
-              <IconButton onClick={handleDecrement} id="ManaCost">
+              <IconButton onClick={handleDecrement} id="GoldMultiplier">
                 <KeyboardArrowDownIcon />
               </IconButton>
             </ButtonGroup>
@@ -385,29 +333,6 @@ export default function SpellForm() {
             </Typography>
           </Stack>
         </Box>
-
-        {/* <FormControl>
-          <TextField
-            select
-            type={"bool"}
-            id="IsPublic"
-            name="IsPublic"
-            label="IsPublic"
-            value={values.IsPublic}
-            onChange={handleChange}
-            helperText="Choose whether you want this spell to be public or private"
-            variant="standard"
-          >
-            {availabilities.map((availability) => (
-              <MenuItem key={availability.label} value={availability.value}>
-                {availability.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          {formErrors.IsPublic && (
-            <p className="text-warning">{formErrors.IsPublic}</p>
-          )}
-        </FormControl> */}
 
         <Box
           sx={{
