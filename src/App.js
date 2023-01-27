@@ -12,6 +12,7 @@ import PostDiscussionForm from "./components/post/postForms/PostDiscussionForm";
 import SpellForm from "./components/market/create/spellForm";
 import ItemForm from "./components/market/create/itemForm";
 import RaceForm from "./components/market/create/raceForm";
+import ProfessionForm from "./components/market/create/professionForm";
 import { PostProvider } from "./contexts/postContext";
 import { PostDetails } from "./components/post/postDetails";
 import {
@@ -95,6 +96,7 @@ function App() {
             <Route path="/assets/create/spell" element={<SpellForm />} />
             <Route path="/assets/create/item" element={<ItemForm />} />
             <Route path="/assets/create/race" element={<RaceForm />} />
+            <Route path="/assets/create/profession" element={<ProfessionForm />} />
           </Route>
 
           <Route

@@ -163,11 +163,11 @@ export default function SpellForm() {
     if (!values.KeyAttribute) {
       errors.KeyAttribute = "Key Attribute is required";
     }
-    if (values.MinValue < 0 || values.MinValue > 20) {
-      errors.MinValue = "Allowed input: from 0 to 20";
+    if (values.MinValue < minValueInput || values.MinValue > maxValueInput) {
+      errors.MinValue = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
     }
-    if (values.MinValue < 0 || values.MinValue > 20) {
-      errors.ManaCost = "Allowed input: from 0 to 20";
+    if (values.ManaCost < minValueInput || values.ManaCost > maxValueInput) {
+      errors.ManaCost = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
     }
 
     setFormErrors(errors);
@@ -314,7 +314,6 @@ export default function SpellForm() {
               <Input
                 id="MinValue"
                 name="MinValue"
-                aria-describedby="my-helper-text"
                 inputProps={{ maxLength: 2 }}
                 onChange={handleNumberChange}
                 value={values.MinValue}
@@ -338,7 +337,6 @@ export default function SpellForm() {
               <Input
                 id="ManaCost"
                 name="ManaCost"
-                aria-describedby="my-helper-text"
                 inputProps={{ maxLength: 2 }}
                 onChange={handleNumberChange}
                 value={values.ManaCost}

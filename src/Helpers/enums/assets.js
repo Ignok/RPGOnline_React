@@ -23,7 +23,7 @@ export let race = [
 
 export let spell = [
   { label: "effect:", column: "effects" },
-  { label: "crucial skill:", column: "keySkill" },
+  { label: "crucial skill:", column: "keyAttribute" },
   { label: "minimal value:", column: "minValue" },
   { label: "mana cost:", column: "manaCost" },
 ];

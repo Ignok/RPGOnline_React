@@ -26,25 +26,31 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../hooks/useAuth";
 
-import { createItem } from "../../../services/assets";
+import { createProfession } from "../../../services/assets";
 import { useAsyncFn } from "../../../hooks/useAsync";
 
-import { skills } from "../../../helpers/enums/skills";
+import { attributes } from "../../../helpers/enums/attributes";
 
-const minValueInput = 0;
+const minValueInput = -6;
+const maxValueInput = 6;
 
-export default function SpellForm() {
+export default function ProfessionForm() {
   const { auth } = useAuth();
   const [values, setValues] = useState({
     Name: "",
     Description: "",
-    KeySkill: "",
-    SkillMod: 0,
-    GoldMultiplier: 0,
+    KeyAttribute: "",
+    Talent: "",
+    HiddenTalent: "",
+    WeaponMod: 0,
+    ArmorMod: 0,
+    GadgetMod: 0,
+    CompanionMod: 0,
+    PsycheMod: 0,
     IsPublic: true,
   });
 
-  const { execute: createItemFn } = useAsyncFn(createItem);
+  const { execute: createProfessionFn } = useAsyncFn(createProfession);
 
   const navigate = useNavigate();
 
@@ -59,6 +65,7 @@ export default function SpellForm() {
 
   const handleCheck = (event) => {
     const value = event.target.checked;
+    console.log(event.target.checked);
     setValues((values) => ({
       ...values,
       [event.target.name]: value,
@@ -66,14 +73,16 @@ export default function SpellForm() {
   };
 
   const [counter, setCounter] = useState({
-    SkillMod: 0,
-    GoldMultiplier: 0,
+    WeaponMod: 0,
+    ArmorMod: 0,
+    GadgetMod: 0,
+    CompanionMod: 0,
+    PsycheMod: 0,
   });
 
   const handleIncrement = (event) => {
     const target = event.currentTarget.id;
     const tmp = counter[target];
-    const maxValueInput = target === "GoldMultiplier" ? 100 : 6;
     const newCount = tmp + 1 >= maxValueInput ? maxValueInput : tmp + 1;
     setCounter((values) => ({
       ...values,
@@ -100,7 +109,6 @@ export default function SpellForm() {
   };
 
   const handleNumberChange = (event) => {
-    const maxValueInput = event.target.name === "GoldMultiplier" ? 100 : 20;
     const value = event.target.value.replace(/\D/g, "");
     const result = Math.max(
       minValueInput,
@@ -123,15 +131,36 @@ export default function SpellForm() {
     }
     if (!values.Description) {
       errors.Description = "Description is required";
+    } else if (values.Description.length < 5) {
+      errors.Talent = "Description is too short";
     }
-    if (!values.KeySkill) {
-      errors.KeySkill = "KeySkill is required";
+    if (!values.Talent) {
+      errors.Talent = "Talent is required";
+    } else if (values.Talent.length < 5) {
+      errors.Talent = "Talent description is too short";
     }
-    if (values.SkillMod < minValueInput || values.SkillMod > 6) {
-      errors.SkillMod = "Allowed input: from 0 to 6";
+    if (!values.HiddenTalent) {
+      errors.HiddenTalent = "Hidden talent is required";
+    } else if (values.HiddenTalent.length < 5) {
+      errors.Talent = "Hidden Talent description is too short";
     }
-    if (values.GoldMultiplier < minValueInput || values.GoldMultiplier > 100) {
-      errors.GoldMultiplier = "Allowed input: from 0 to 100";
+    if (!values.KeyAttribute) {
+      errors.KeyAttribute = "Key Attribute is required";
+    }
+    if (values.WeaponMod < minValueInput || values.WeaponMod > maxValueInput) {
+      errors.WeaponMod = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
+    }
+    if (values.ArmorMod < minValueInput || values.ArmorMod > maxValueInput) {
+      errors.ArmorMod = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
+    }
+    if (values.GadgetMod < minValueInput || values.GadgetMod > maxValueInput) {
+      errors.GadgetMod = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
+    }
+    if (values.CompanionMod < minValueInput || values.CompanionMod > maxValueInput) {
+      errors.CompanionMod = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
+    }
+    if (values.PsycheMod < minValueInput || values.PsycheMod > maxValueInput) {
+      errors.PsycheMod = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
     }
 
     setFormErrors(errors);
@@ -145,19 +174,25 @@ export default function SpellForm() {
   function handleSubmit(event) {
     if (event) event.preventDefault();
     if (validateForm(values)) {
-      createItemFn({
+      createProfessionFn({
         uId: auth.uId,
         name: values.Name,
         isPublic: values.IsPublic,
         language: "en", //tymczasowo
         description: values.Description,
-        keySkill: values.KeySkill,
-        skillMod: values.SkillMod,
-        goldMultiplier: values.GoldMultiplier,
+        talent: values.Talent,
+        hiddenTalent: values.HiddenTalent,
+        keyAttribute: values.KeyAttribute,
+        keyAttribute: values.KeyAttribute,
+        weaponMod: values.WeaponMod,
+        armorMod: values.ArmorMod,
+        gadgetMod: values.GadgetMod,
+        companionMod: values.CompanionMod,
+        psycheMod: values.PsycheMod,
       })
         .then((res) => {
           Swal.fire({
-            title: "Your custom item was added successfully!",
+            title: "Your custom profession was added successfully!",
             width: 450,
             padding: "3em",
             color: "#716add",
@@ -222,73 +257,170 @@ export default function SpellForm() {
 
         <FormControl>
           <TextField
-            select
-            id="KeySkill"
-            name="KeySkill"
-            label="Crucial skill*"
-            value={values.KeySkill}
+            id="Talent"
+            name="Talent"
+            label="Talent*"
+            multiline
+            rows={5}
+            inputProps={{ maxLength: 280 }}
             onChange={handleChange}
-            helperText="Choose which skill is affected by this item"
+            value={values.Talent}
+          />
+          {formErrors.Talent && (
+            <p className="text-warning">{formErrors.Talent}</p>
+          )}
+        </FormControl>
+
+        <FormControl>
+          <TextField
+            id="HiddenTalent"
+            name="HiddenTalent"
+            label="Hidden talent*"
+            multiline
+            rows={5}
+            inputProps={{ maxLength: 280 }}
+            onChange={handleChange}
+            value={values.HiddenTalent}
+          />
+          {formErrors.HiddenTalent && (
+            <p className="text-warning">{formErrors.HiddenTalent}</p>
+          )}
+        </FormControl>
+
+        <FormControl>
+          <TextField
+            select
+            id="KeyAttribute"
+            name="KeyAttribute"
+            label="Crucial attribute*"
+            value={values.KeyAttribute}
+            onChange={handleChange}
+            helperText="Choose which attribute assigns this profession"
             variant="standard"
           >
-            {skills.map((skill) => (
-              <MenuItem
-                key={skill.label}
-                skill={skill.value}
-                value={skill.value}
-              >
-                {skill.label}
+            {attributes.map((attr) => (
+              <MenuItem key={attr.label} attr={attr.value} value={attr.value}>
+                {attr.label}
               </MenuItem>
             ))}
           </TextField>
-          {formErrors.KeySkill && (
-            <p className="text-warning">{formErrors.KeySkill}</p>
+          {formErrors.KeyAttribute && (
+            <p className="text-warning">{formErrors.KeyAttribute}</p>
           )}
         </FormControl>
 
         <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <FormControl sx={{ my: 2 }}>
-              <InputLabel>Modifer for chosen skill</InputLabel>
+              <InputLabel>Modifier for Weapon Proficiency</InputLabel>
               <Input
-                id="SkillMod"
-                name="SkillMod"
+                id="WeaponMod"
+                name="WeaponMod"
                 inputProps={{ maxLength: 2 }}
                 onChange={handleNumberChange}
-                value={values.SkillMod}
+                value={values.WeaponMod}
               />
-              {formErrors.SkillMod && (
-                <p className="text-warning">{formErrors.SkillMod}</p>
+              {formErrors.WeaponMod && (
+                <p className="text-warning">{formErrors.WeaponMod}</p>
               )}
             </FormControl>
             <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="SkillMod">
+              <IconButton onClick={handleIncrement} id="WeaponMod">
                 <KeyboardArrowUpIcon />
               </IconButton>
-              <IconButton onClick={handleDecrement} id="SkillMod">
+              <IconButton onClick={handleDecrement} id="WeaponMod">
                 <KeyboardArrowDownIcon />
               </IconButton>
             </ButtonGroup>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <FormControl sx={{ my: 2 }}>
-              <InputLabel>Multiplier when selling</InputLabel>
+              <InputLabel>Modifier for Armor Proficiency</InputLabel>
               <Input
-                id="GoldMultiplier"
-                name="GoldMultiplier"
+                id="ArmorMod"
+                name="ArmorMod"
                 inputProps={{ maxLength: 2 }}
                 onChange={handleNumberChange}
-                value={values.GoldMultiplier}
+                value={values.ArmorMod}
               />
-              {formErrors.GoldMultiplier && (
-                <p className="text-warning">{formErrors.GoldMultiplier}</p>
+              {formErrors.ArmorMod && (
+                <p className="text-warning">{formErrors.ArmorMod}</p>
               )}
             </FormControl>
             <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="GoldMultiplier">
+              <IconButton onClick={handleIncrement} id="ArmorMod">
                 <KeyboardArrowUpIcon />
               </IconButton>
-              <IconButton onClick={handleDecrement} id="GoldMultiplier">
+              <IconButton onClick={handleDecrement} id="ArmorMod">
+                <KeyboardArrowDownIcon />
+              </IconButton>
+            </ButtonGroup>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <FormControl sx={{ my: 2 }}>
+              <InputLabel>Modifier for Gadget Proficiency</InputLabel>
+              <Input
+                id="GadgetMod"
+                name="GadgetMod"
+                inputProps={{ maxLength: 2 }}
+                onChange={handleNumberChange}
+                value={values.GadgetMod}
+              />
+              {formErrors.GadgetMod && (
+                <p className="text-warning">{formErrors.GadgetMod}</p>
+              )}
+            </FormControl>
+            <ButtonGroup size="small" orientation="vertical">
+              <IconButton onClick={handleIncrement} id="GadgetMod">
+                <KeyboardArrowUpIcon />
+              </IconButton>
+              <IconButton onClick={handleDecrement} id="GadgetMod">
+                <KeyboardArrowDownIcon />
+              </IconButton>
+            </ButtonGroup>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <FormControl sx={{ my: 2 }}>
+              <InputLabel>Modifier for Companion Proficiency</InputLabel>
+              <Input
+                id="CompanionMod"
+                name="CompanionMod"
+                inputProps={{ maxLength: 2 }}
+                onChange={handleNumberChange}
+                value={values.CompanionMod}
+              />
+              {formErrors.CompanionMod && (
+                <p className="text-warning">{formErrors.CompanionMod}</p>
+              )}
+            </FormControl>
+            <ButtonGroup size="small" orientation="vertical">
+              <IconButton onClick={handleIncrement} id="CompanionMod">
+                <KeyboardArrowUpIcon />
+              </IconButton>
+              <IconButton onClick={handleDecrement} id="CompanionMod">
+                <KeyboardArrowDownIcon />
+              </IconButton>
+            </ButtonGroup>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <FormControl sx={{ my: 2 }}>
+              <InputLabel>Modifier for Psyche Proficiency</InputLabel>
+              <Input
+                id="PsycheMod"
+                name="PsycheMod"
+                inputProps={{ maxLength: 2 }}
+                onChange={handleNumberChange}
+                value={values.PsycheMod}
+              />
+              {formErrors.PsycheMod && (
+                <p className="text-warning">{formErrors.PsycheMod}</p>
+              )}
+            </FormControl>
+            <ButtonGroup size="small" orientation="vertical">
+              <IconButton onClick={handleIncrement} id="PsycheMod">
+                <KeyboardArrowUpIcon />
+              </IconButton>
+              <IconButton onClick={handleDecrement} id="PsycheMod">
                 <KeyboardArrowDownIcon />
               </IconButton>
             </ButtonGroup>

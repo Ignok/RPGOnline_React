@@ -54,6 +54,42 @@ export function createItem({
   });
 }
 
+export function createProfession({
+  uId,
+  isPublic,
+  language,
+  name,
+  description,
+  talent,
+  hiddenTalent,
+  keyAttribute,
+  weaponMod,
+  armorMod,
+  gadgetMod,
+  companionMod,
+  psycheMod
+}) {
+  return makeRequest(`Profession`, {
+    method: "POST",
+    withCredentials: true,
+    data: {
+      uId: uId,
+      isPublic: isPublic,
+      language: language,
+      name: name,
+      description: description,
+      talent: talent,
+      hiddenTalent: hiddenTalent,
+      keyAttribute: keyAttribute,
+      weaponMod: weaponMod,
+      armorMod: armorMod,
+      gadgetMod: gadgetMod,
+      companionMod: companionMod,
+      psycheMod: psycheMod,
+    },
+  });
+}
+
 export function createRace({
   uId,
   isPublic,
