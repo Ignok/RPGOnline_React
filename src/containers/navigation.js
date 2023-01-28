@@ -16,6 +16,7 @@ import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import Avatar from "@mui/material/Avatar";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import MailIcon from "@mui/icons-material/Mail";
@@ -29,6 +30,8 @@ import Stack from "@mui/material/Stack";
 import Collapse from "@mui/material/Collapse";
 import Slide from "@mui/material/Slide";
 import { TransitionGroup } from "react-transition-group";
+import { getImage } from "../helpers/functions/getImage";
+
 import { getNewMessages } from "../services/messages";
 import { useNavigate } from "react-router-dom";
 
@@ -388,17 +391,26 @@ export default function Navigation() {
               onClick={handleMenu1Open}
               color="inherit"
             >
-              <AccountCircle />
+              {isLoggedIn() ? (
+                <Avatar alt={auth.username} src={getImage(auth.avatar).img} />
+              ) : (
+                <AccountCircle />
+              )}
             </IconButton>
-            {auth.uId &&
-              <IconButton size="large" aria-label="mails" color="inherit" onClick={() => {
-                navigate(`/profile/${auth.uId}/messages`)
-              }}>
+            {auth.uId && (
+              <IconButton
+                size="large"
+                aria-label="mails"
+                color="inherit"
+                onClick={() => {
+                  navigate(`/profile/${auth.uId}/messages`);
+                }}
+              >
                 <Badge badgeContent={newMessagesCount} color="error">
-                  <MailIcon />
+                  <MailIcon sx={{ width: 35 }} />
                 </Badge>
               </IconButton>
-            }
+            )}
 
             <IconButton size="large" aria-label="language" color="inherit">
               <TranslateIcon />

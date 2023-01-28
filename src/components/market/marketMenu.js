@@ -14,37 +14,48 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Checkbox from "@mui/material/Checkbox";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 
 import SearchBar from "../forum/forumSearch";
-
+import InputLabel from "@mui/material/InputLabel";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import { FormGroup } from "@mui/material";
+
+import { attributes } from "../../helpers/enums/attributes";
+import { skills } from "../../helpers/enums/skills";
+
+function getOptions(cat) {
+  switch (cat) {
+    case "item":
+      return skills;
+    case "profession":
+      return attributes;
+    case "race":
+      return attributes;
+    case "spell":
+      return attributes;
+    default:
+      return attributes;
+  }
+}
 
 export default function AssetsMenu({
   params,
   onParamChange,
   onLanguageChange,
+  onKeyValueChange,
+  assetName,
+  keyValue,
 }) {
-  //const [params, setParams] = useState({});
-
-  const [value, setValue] = useState("");
-  const handleSelect = (e) => {
+  const [sortType, setSortType] = useState("");
+  const handleSelectSort = (e) => {
     console.log(e);
-    setValue(e.target.value ?? "");
+    setSortType(e.target.value ?? "");
     //pass value
   };
-
-  // let helper = () => {
-  //   const lang = checked.pl
-  //     ? checked.en
-  //       ? "BOTH"
-  //       : "POLISH"
-  //     : checked.en
-  //       ? "ENGLISH"
-  //       : "BOTH";
-  //   console.log(lang);
-  // };
 
   const sortingRadio = (
     <FormControl>
@@ -56,19 +67,19 @@ export default function AssetsMenu({
         }}
       >
         <FormLabel>Sort by</FormLabel>
-        <IconButton aria-label="cancel" onClick={handleSelect} size="small">
+        <IconButton aria-label="cancel" onClick={handleSelectSort} size="small">
           <ClearIcon fontSize="small" />
         </IconButton>
       </Box>
-      <RadioGroup value={value} row>
+      <RadioGroup value={sortType} row>
         <FormControlLabel
           value="date"
-          control={<Radio size="small" onClick={handleSelect} />}
+          control={<Radio size="small" onClick={handleSelectSort} />}
           label="Date"
         />
         <FormControlLabel
           value="likes"
-          control={<Radio size="small" onClick={handleSelect} />}
+          control={<Radio size="small" onClick={handleSelectSort} />}
           label="Likes"
         />
       </RadioGroup>
@@ -109,14 +120,64 @@ export default function AssetsMenu({
     </FormGroup>
   );
 
+  const options = getOptions(assetName.assetName);
+  
+  const handleSelectKeyValue = (e) => {
+    // console.log(keyValue);
+    onKeyValueChange(e.target.value);
+    //pass value
+  };
+
+  const selectKeyValue = (
+    <FormControl sx={{ width: 200 }}>
+      <TextField
+        select
+        id="keyValue"
+        label="Choose key value"
+        value={keyValue.keyValue ?? ""}
+        onChange={handleSelectKeyValue}
+      >
+        <MenuItem key={"No filter"} option={""} value={""}>
+          {"No filter"}
+        </MenuItem>
+        {assetName.assetName === "spell"
+          ? options
+              .filter(
+                (attr) =>
+                  attr.value === "charisma" ||
+                  attr.value === "intelligence"
+              )
+              .map((option) => (
+                <MenuItem
+                  key={option.label}
+                  option={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </MenuItem>
+              ))
+          : options.map((option) => (
+              <MenuItem
+                key={option.label}
+                option={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </MenuItem>
+            ))}
+      </TextField>
+    </FormControl>
+  );
+
   return (
-    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-      <Box sx={{ width: 100, flexGrow: 1, pt: 2.5, mr: 3 }}>
+    <Box sx={{ display: "flex", flexWrap: "wrap", }}>
+      <Box sx={{ width: 200, flexGrow: 1, pt: 2.5, mr: 3 }}>
         <SearchBar params={params} onParamChange={onParamChange} />
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", flexGrow: 0, gap: 4 }}>
         {sortingRadio}
         {checkLanguage}
+        {assetName === "-" ? "" : selectKeyValue}
       </Box>
     </Box>
   );

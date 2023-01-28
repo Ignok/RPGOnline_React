@@ -10,29 +10,48 @@ import "../App.css";
 import useFetchAssets from "../helpers/functions/useFetchAssets";
 
 export function AssetMarket() {
-  const [params, setParams] = useState({})
-  const [page, setPage] = useState(1)
+  const [params, setParams] = useState({});
+  const [page, setPage] = useState(1);
   const [assetName, setAssetName] = useState("-");
   const [prefferedLanguage, setPrefferedLanguage] = useState("BOTH");
-  const { assets, loading, error, pageCount, initial } = useFetchAssets(params, page, assetName, prefferedLanguage);
+  const [keyValue, setKeyValue] = useState("");
+  const { assets, loading, error, pageCount, initial } = useFetchAssets(
+    params,
+    page,
+    assetName,
+    prefferedLanguage,
+    keyValue.keyValue
+  );
+
+  function handleKeyValueChange(value) {
+    console.log(value);
+    setKeyValue(() => {
+      return { keyValue: value };
+    });
+  }
 
   function handleAssetNameChange(e) {
     e.preventDefault();
-    console.log(e.target);
+    //console.log(e.target);
     const param = e.target.getAttribute("name");
     const value = e.target.value ?? e.target.getAttribute("name");
-    console.log(param)
-    console.log(value)
-    setPage(1)
+    //console.log(param)
+    //console.log(value)
+    setPage(1);
+    setKeyValue("");
     setAssetName(() => {
-      return {assetName: value}
-    })
+      return { assetName: value };
+    });
   }
 
   function handleLanguageChange(checked) {
-    console.log(checked);
-    const lang = (checked.pl ? (checked.en ? "BOTH" : "POLISH") : (checked.en ? "ENGLISH" : "BOTH"));
-    console.log(lang);
+    const lang = checked.pl
+      ? checked.en
+        ? "BOTH"
+        : "POLISH"
+      : checked.en
+      ? "ENGLISH"
+      : "BOTH";
     setPage(1);
     setPrefferedLanguage(() => {
       return { prefferedLanguage: lang };
@@ -41,16 +60,16 @@ export function AssetMarket() {
 
   function handleParamChange(e) {
     e.preventDefault();
-    console.log(e)
-    const param = e.target.getAttribute('name')
-    const value = e.target.value
-    console.log("--------")
-    console.log(param)
-    console.log(value)
-    setPage(1)
-    setParams(prevParams => {
-      return { ...prevParams, [param]: value }
-    })
+    console.log(e);
+    const param = e.target.getAttribute("name");
+    const value = e.target.value;
+    console.log("--------");
+    console.log(param);
+    console.log(value);
+    setPage(1);
+    setParams((prevParams) => {
+      return { ...prevParams, [param]: value };
+    });
   }
 
   return (
@@ -81,7 +100,14 @@ export function AssetMarket() {
           flexGrow: 1,
         }}
       >
-        <MarketMenu params={params} onParamChange={handleParamChange} onLanguageChange={handleLanguageChange} />
+        <MarketMenu
+          params={params}
+          onParamChange={handleParamChange}
+          onLanguageChange={handleLanguageChange}
+          onKeyValueChange={handleKeyValueChange}
+          assetName={assetName}
+          keyValue={keyValue}
+        />
         {initial && (
           <h4>
             Welcome in asset market. Here you can find a variety of things you
@@ -90,7 +116,7 @@ export function AssetMarket() {
         )}
         {!initial &&
           (loading ? (
-            <Box sx={{ width: "100%", mt: 7,}}>
+            <Box sx={{ width: "100%", mt: 7 }}>
               <LinearProgress color="secondary" />
             </Box>
           ) : assets?.length ? (
