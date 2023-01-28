@@ -31,7 +31,7 @@ export async function makeRequest(url, options) {
         }
         else
         {
-            Promise.reject(error?.response ?? "Error")
+            Promise.reject(error ?? "Error")
         }
     })
 }

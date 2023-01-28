@@ -1,24 +1,14 @@
-//Login.js
-
-import React, { useState, useContext, useEffect } from "react";
-import AuthContext from "../../../contexts/AuthProvider.js";
-
+import React, { useState } from "react";
 import { useAsyncFn } from "../../../hooks/useAsync.js";
-
 import { Link, useNavigate, useLocation } from "react-router-dom";
-
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Alert from "react-bootstrap/Alert";
-
-import { useCookies } from 'react-cookie'
-import axios from 'axios';
 import { login } from "../../account.js";
-import useRefreshToken from "../../../hooks/useRefreshToken.js";
 import useAuth from "../../../hooks/useAuth.js";
+import { CircularProgress, Button } from "@mui/material";
+import { LoginRounded } from "@mui/icons-material";
 
 
 export default function Login() {
@@ -29,7 +19,6 @@ export default function Login() {
     const location = useLocation();
 
     const from = location.state?.from?.pathname || "/";
-
 
     const { loading, error, execute: loginFn } = useAsyncFn(login)
     function onLogin(username, pswd) {
@@ -69,12 +58,7 @@ export default function Login() {
         Pswd: ""
     });
 
-    const [success, setSuccess] = useState(false);
-
     const [formErrors, setFormErrors] = useState({});
-
-    const [Error, setError] = useState("");
-
 
     const handleChange = (event) => {
 
@@ -117,31 +101,19 @@ export default function Login() {
 
     return (
         <>
-            {/* {success ?
-                (
-                    <div>
-                        <h1>You are logged in!</h1>
-                        <br />
-                        <p>
-                            <a href="/">Go to Home page</a>
-                        </p>
-                    </div>
-                )
-                :
-                ( */}
             <div className="">
                 <header className="">
-                    <h1 className=""> {/* Do uzupełnienia className */}
+                    <h1 className="">
                         Login
                     </h1>
                     <p>
-                        or <Link to={'/register'} className="">Register</Link> {/* Do uzupełnienia className */}
+                        or <Link to={'/register'} className="">Register</Link>
                     </p>
                 </header>
                 <Container className="p-3">
                     <Container>
                         <Row>
-                            <Col>{error}</Col>
+                            <Col></Col>
                             <Col>
                                 <Form onSubmit={handleSubmit}>
 
@@ -178,8 +150,18 @@ export default function Login() {
                                         }
                                     </Form.Group>
 
-                                    <Button block="true" size="lg" type="submit">
-                                        Login
+                                    <Button
+                                        sx={{
+                                            width: "100%",
+                                            marginTop: 2
+                                        }}
+                                        color="secondary"
+                                        disabled={loading}
+                                        type="submit"
+                                        startIcon={!loading && <LoginRounded />}
+                                        variant={loading ? "outlined" : "contained"}
+                                    >
+                                        {loading ? <CircularProgress size={20}/> : "LOGIN"}
                                     </Button>
 
                                 </Form>
@@ -189,8 +171,6 @@ export default function Login() {
                     </Container>
                 </Container>
             </div>
-            {/* )
-            } */}
         </>
     );
 }

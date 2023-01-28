@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-
 import { Link } from "react-router-dom";
-
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Alert from "react-bootstrap/Alert";
-
-import { register } from "../../../Api_RPGOnline.js";
-
-//import "./Login.css";
+import { useNavigate } from "react-router-dom";
+import { register } from "../../account.js";
+import { useAsyncFn } from "../../../hooks/useAsync.js";
+import { Success } from "../../../helpers/pop-ups/success";
+import { CircularProgress, Button } from "@mui/material";
+import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
 
 export default function Register() {
 
+    const navigate = useNavigate();
 
     const [values, setValues] = useState({
         Username: "",
@@ -24,8 +23,39 @@ export default function Register() {
 
     const [formErrors, setFormErrors] = useState({});
 
-    const [Error, setError] = useState("");
+    const { loading, error, execute: registerFn } = useAsyncFn(register)
+    function onRegister(username, email, pswd) {
+        return registerFn({ username, email, pswd })
+            .then((res) => {
+                if (res) {
+                    console.log(res)
+                    setValues({ Username: "", Email: "", Pswd: "" });
+                    Success.fire({
+                        icon: "success",
+                        title: "Successfully registered. You can log in now.",
+                    })
+                    navigate('/login');
+                } else {
+                    let errors = {};
+                    errors.Pswd = "Something is wrong on the server''s side";
+                    setFormErrors(errors);
+                }
 
+            }).catch((error) => {
+                console.log(error)
+                let errors = {};
+                if (Object.keys(error.response.data).includes("Username")) {
+                    errors.Username = error.response.data.Username;
+                }
+                if (Object.keys(error.response.data).includes("Email")) {
+                    errors.Email = error.response.data.Email;
+                }
+                if (Object.keys(error.response.data).includes("Pswd")) {
+                    errors.Pswd = error.response.data.Pswd;
+                }
+                setFormErrors(errors);
+            })
+    }
 
     const handleChange = (event) => {
         // console.log(
@@ -58,7 +88,7 @@ export default function Register() {
         //password field
         if (!values.Pswd) {
             errors.Pswd = "Password is required";
-        } else if(values.Pswd.length < 8 || values.Pswd.length > 30){
+        } else if (values.Pswd.length < 8 || values.Pswd.length > 30) {
             errors.Pswd = "Password must have min of 8 and max of 30 characters";
         }
 
@@ -74,62 +104,19 @@ export default function Register() {
     function handleSubmit(event) {
         if (event) event.preventDefault();
         if (validateForm(values)) {
-            const data = {
-                Username: values.Username,
-                Email: values.Email,
-                Pswd: values.Pswd
-            }
-            console.log(data);
-            let response;
-            let promise;
-            promise = register(data);
-            if (promise) {
-                promise
-                    .then(res => {
-                        console.log(res)
-                        response = res
-                        return res.json()
-                    })
-                    .then(
-                        (data) => {
-                            console.log(data)
-                            if (response.status === 400) {
-                                let errors = {};
-
-                                if (Object.keys(data).includes("Username")){
-                                    errors.Username = data.Username;
-                                }
-                                if (Object.keys(data).includes("Email")){
-                                    errors.Email = data.Email;
-                                }
-                                if (Object.keys(data).includes("Pswd")){
-                                    errors.Pswd = data.Pswd;
-                                }
-
-                                setFormErrors(errors);
-                            }
-                            if (response.status === 200) { //rejestracja poprawna
-                                const userString = JSON.stringify(data);
-                                console.log(userString);
-                            }
-                        },
-                        (error) => {
-                            console.log("error");
-                            console.log(error);
-                            setError(error);
-                        })
-            }
+            console.log(values)
+            onRegister(values.Username, values.Email, values.Pswd)
         }
     }
 
     return (
         <div className="pp">
             <header className="">
-            <h1 className=""> {/* Do uzupełnienia className */}
+                <h1 className="">
                     Register
                 </h1>
                 <p>
-                    or <Link to={'/login'} className="">Login</Link> {/* Do uzupełnienia className */}
+                    or <Link to={'/login'} className="">Login</Link>
                 </p>
             </header>
             <Container className="p-3">
@@ -189,9 +176,19 @@ export default function Register() {
                                     }
                                 </Form.Group>
 
-                                <Button block="true" size="lg" type="submit">
-                                    Register
-                                </Button>
+                                <Button
+                                        sx={{
+                                            width: "100%",
+                                            marginTop: 2
+                                        }}
+                                        color="secondary"
+                                        disabled={loading}
+                                        type="submit"
+                                        startIcon={!loading && <PersonAddRoundedIcon />}
+                                        variant={loading ? "outlined" : "contained"}
+                                    >
+                                        {loading ? <CircularProgress size={20}/> : "REGISTER"}
+                                    </Button>
 
                             </Form>
                         </Col>
