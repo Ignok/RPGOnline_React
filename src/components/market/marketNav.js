@@ -26,16 +26,16 @@ import { TransitionGroup } from "react-transition-group";
 import Collapse from "@mui/material/Collapse";
 
 const categories = [
-  { label: "character", icon: <CharacterIcon fontSize="small" /> },
-  { label: "npc", icon: <NPCIcon fontSize="small" /> },
-  { label: "monster", icon: <MonsterIcon fontSize="small" /> },
-  { label: "race", icon: <RaceIcon fontSize="small" /> },
-  { label: "profession", icon: <ProfessionIcon fontSize="small" /> },
-  { label: "item", icon: <ItemIcon fontSize="small" /> },
-  { label: "spell", icon: <SpellIcon fontSize="small" /> },
+  { label: "character", icon: <CharacterIcon fontSize="small" id={"character"} />, },
+  { label: "npc", icon: <NPCIcon fontSize="small" id={"npc"} /> },
+  { label: "monster", icon: <MonsterIcon fontSize="small" id={"monster"} /> },
+  { label: "race", icon: <RaceIcon fontSize="small" id={"race"} /> },
+  { label: "profession", icon: <ProfessionIcon fontSize="small" id={"profession"} />, },
+  { label: "item", icon: <ItemIcon fontSize="small" id={"item"} /> },
+  { label: "spell", icon: <SpellIcon fontSize="small" id={"spell"} /> },
 ];
 
-export default function MarketNavbar({onAssetNameChange}) {
+export default function MarketNavbar({ onAssetNameChange }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,7 +79,7 @@ export default function MarketNavbar({onAssetNameChange}) {
     const param = e.target.getAttribute("name");
     const value = e.target.value;
     // setPage(1)
-    onAssetNameChange(e)
+    onAssetNameChange(e);
     setParams((prevParams) => {
       return { ...prevParams, [param]: value };
     });
@@ -91,7 +91,9 @@ export default function MarketNavbar({onAssetNameChange}) {
         return (
           <Button
             key={label}
-            startIcon={activeButton === label ? <ArrowRightIcon /> : icon}
+            startIcon={
+              activeButton === label ? <ArrowRightIcon id={label} /> : icon
+            }
             value={label}
             name={label}
             id={label}

@@ -3,7 +3,7 @@ import MarketMenu from "../components/market/marketMenu";
 import MarketNavbar from "../components/market/marketNav";
 import MarketContents from "../components/market/marketContents";
 import Box from "@mui/material/Box";
-
+import LinearProgress from "@mui/material/LinearProgress";
 import { Pagination } from "@mui/material";
 
 import "../App.css";
@@ -18,8 +18,9 @@ export function AssetMarket() {
 
   function handleAssetNameChange(e) {
     e.preventDefault();
-    const param = e.target.getAttribute('name')
-    const value = e.target.value
+    console.log(e.target);
+    const param = e.target.getAttribute("id");
+    const value = e.target.value ?? e.target.getAttribute("id");
     console.log(param)
     console.log(value)
     setPage(1)
@@ -31,7 +32,7 @@ export function AssetMarket() {
   function handleParamChange(e) {
     e.preventDefault();
     console.log(e)
-    const param = e.target.getAttribute('name')
+    const param = e.target.getAttribute('id')
     const value = e.target.value
     console.log("--------")
     console.log(param)
@@ -61,7 +62,7 @@ export function AssetMarket() {
           height: "100%",
         }}
       >
-        <MarketNavbar onAssetNameChange={handleAssetNameChange}/>
+        <MarketNavbar onAssetNameChange={handleAssetNameChange} />
       </Box>
       <Box
         sx={{
@@ -70,19 +71,26 @@ export function AssetMarket() {
           flexGrow: 1,
         }}
       >
-        <MarketMenu params={params} onParamChange={handleParamChange}/>
-        {initial && <h1>Welcome in asset market. Here you can find a variety of things you can youse in your RPG Game.</h1>}
-        {!initial && (loading ?
-          <h1>Loading . . .</h1>
-          :
-          (assets?.length ? (
+        <MarketMenu params={params} onParamChange={handleParamChange} />
+        {initial && (
+          <h4>
+            Welcome in asset market. Here you can find a variety of things you
+            can use in your RPG Game.
+          </h4>
+        )}
+        {!initial &&
+          (loading ? (
+            <Box sx={{ width: "100%", mt: 7,}}>
+              <LinearProgress color="secondary" />
+            </Box>
+          ) : assets?.length ? (
             <>
               <Pagination
                 count={pageCount}
                 page={page}
                 onChange={(e, p) => {
                   setPage(p);
-                  window.scrollTo(0, 0)
+                  window.scrollTo(0, 0);
                 }}
                 color="secondary"
                 size="large"
@@ -111,6 +119,7 @@ export function AssetMarket() {
                     <MarketContents
                       key={asset.assetId}
                       assetName={assetName}
+                      id={assetName}
                       asset={asset}
                     />
                   );
@@ -121,7 +130,7 @@ export function AssetMarket() {
                 page={page}
                 onChange={(e, p) => {
                   setPage(p);
-                  window.scrollTo(0, 0)
+                  window.scrollTo(0, 0);
                 }}
                 color="secondary"
                 size="large"
@@ -137,8 +146,7 @@ export function AssetMarket() {
             </>
           ) : (
             <h4>No items to display</h4>
-          )))}
-
+          ))}
       </Box>
     </Box>
   );

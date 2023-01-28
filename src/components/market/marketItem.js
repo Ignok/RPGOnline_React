@@ -31,9 +31,8 @@ function getCategory(cat) {
   }
 }
 
-export default function MarketItem({assetName, asset}) {
+export default function MarketItem({ assetName, asset }) {
   const category = getCategory(assetName.assetName);
-
   return (
     <Box
       sx={{
@@ -44,7 +43,7 @@ export default function MarketItem({assetName, asset}) {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        {category.map(({ label, column }) => {
+        {category?.map(({ label, column }) => {
           return (
             <Box
               key={label}
