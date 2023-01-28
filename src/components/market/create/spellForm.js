@@ -19,10 +19,12 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import FormGroup from "@mui/material/FormGroup";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormLabel from "@mui/material/FormLabel";
 
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -54,6 +56,7 @@ export default function SpellForm() {
     MinValue: 0,
     ManaCost: 0,
     IsPublic: true,
+    Language: "en",
   });
 
   const { execute: createSpellFn } = useAsyncFn(createSpell);
@@ -187,7 +190,7 @@ export default function SpellForm() {
         uId: auth.uId,
         name: values.Name,
         isPublic: values.IsPublic,
-        language: "en", //tymczasowo
+        language: values.Language,
         description: values.Description,
         keyAttribute: values.KeyAttribute,
         minValue: values.MinValue,
@@ -293,11 +296,7 @@ export default function SpellForm() {
                   attr.value === "charisma" || attr.value === "intelligence"
               )
               .map((attr) => (
-                <MenuItem
-                  key={attr.label}
-                  attr={attr.value}
-                  value={attr.value}
-                >
+                <MenuItem key={attr.label} attr={attr.value} value={attr.value}>
                   {attr.label}
                 </MenuItem>
               ))}
@@ -306,7 +305,7 @@ export default function SpellForm() {
             <p className="text-warning">{formErrors.KeyAttribute}</p>
           )}
         </FormControl>
-
+        
         <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <FormControl sx={{ my: 2 }}>
@@ -357,7 +356,22 @@ export default function SpellForm() {
         </Box>
 
         <Box sx={{ py: 1 }}>
-          <Typography variant="label">Make this asset public?</Typography>
+          <FormLabel>Choose language</FormLabel>
+          <RadioGroup
+            row
+            defaultValue="en"
+            id="Language"
+            name="Language"
+            onChange={handleChange}
+            value={values.Language}
+          >
+            <FormControlLabel value="en" control={<Radio />} label="English" />
+            <FormControlLabel value="pl" control={<Radio />} label="Polish" />
+          </RadioGroup>
+        </Box>
+
+        <Box sx={{ py: 1 }}>
+          <FormLabel>Make this asset public?</FormLabel>
           <Stack direction="row" spacing={2} alignItems="center">
             <Typography variant="label" sx={{ fontSize: "small", mr: 3 }}>
               Private
@@ -383,30 +397,6 @@ export default function SpellForm() {
             </Typography>
           </Stack>
         </Box>
-
-        {/* <FormControl>
-          <TextField
-            select
-            type={"bool"}
-            id="IsPublic"
-            name="IsPublic"
-            label="IsPublic"
-            value={values.IsPublic}
-            onChange={handleChange}
-            helperText="Choose whether you want this spell to be public or private"
-            variant="standard"
-          >
-            {availabilities.map((availability) => (
-              <MenuItem key={availability.label} value={availability.value}>
-                {availability.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          {formErrors.IsPublic && (
-            <p className="text-warning">{formErrors.IsPublic}</p>
-          )}
-        </FormControl> */}
-
         <Box
           sx={{
             display: "flex",

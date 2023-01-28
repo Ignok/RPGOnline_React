@@ -17,6 +17,9 @@ import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormLabel from "@mui/material/FormLabel";
 
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -42,6 +45,7 @@ export default function SpellForm() {
     SkillMod: 0,
     GoldMultiplier: 0,
     IsPublic: true,
+    Language: "en",
   });
 
   const { execute: createItemFn } = useAsyncFn(createItem);
@@ -149,7 +153,7 @@ export default function SpellForm() {
         uId: auth.uId,
         name: values.Name,
         isPublic: values.IsPublic,
-        language: "en", //tymczasowo
+        language: values.Language,
         description: values.Description,
         keySkill: values.KeySkill,
         skillMod: values.SkillMod,
@@ -296,7 +300,22 @@ export default function SpellForm() {
         </Box>
 
         <Box sx={{ py: 1 }}>
-          <Typography variant="label">Make this asset public?</Typography>
+          <FormLabel>Choose language</FormLabel>
+          <RadioGroup
+            row
+            defaultValue="en"
+            id="Language"
+            name="Language"
+            onChange={handleChange}
+            value={values.Language}
+          >
+            <FormControlLabel value="en" control={<Radio />} label="English" />
+            <FormControlLabel value="pl" control={<Radio />} label="Polish" />
+          </RadioGroup>
+        </Box>
+
+        <Box sx={{ py: 1 }}>
+          <FormLabel>Make this asset public?</FormLabel>
           <Stack direction="row" spacing={2} alignItems="center">
             <Typography variant="label" sx={{ fontSize: "small", mr: 3 }}>
               Private

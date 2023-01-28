@@ -34,7 +34,7 @@ function reducer(state, action) {
 export default function useFetchAssets(params, page, assetName, prefferedLanguage) {
     const [state, dispatch] = useReducer(reducer, { assets: [], loading: true })
     //console.log(assetName)
-
+    console.log(prefferedLanguage);
 
     useEffect(() => {
         if(assetName === '-'){
@@ -43,25 +43,37 @@ export default function useFetchAssets(params, page, assetName, prefferedLanguag
         }
         const cancelToken = axios.CancelToken.source()
         dispatch({type: ACTIONS.MAKE_REQUEST})
-        axios.get(BASE_URL + assetName.assetName, {
-            headers: { 'Content-Type': 'application/json' },
+        axios
+          .get(BASE_URL + assetName.assetName, {
+            headers: { "Content-Type": "application/json" },
             cancelToken: cancelToken.token,
             withCredentials: true,
-            params: {page: page, PrefferedLanguage: LANGUAGEOPTIONS[prefferedLanguage], ...params }
-            
-        }).then(res => {
-            console.log(res.data)
-            dispatch({type: ACTIONS.GET_DATA, payload: {assets: res.data.item1, pageCount: res.data.pageCount}})
-        }).catch(e => {
-            if (axios.isCancel(e)) return
-            dispatch({type:ACTIONS.ERROR, payload : {error: e}})
-        })
+            params: {
+              page: page,
+              prefferedLanguage: LANGUAGEOPTIONS[prefferedLanguage.prefferedLanguage],
+              ...params,
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+            dispatch({
+              type: ACTIONS.GET_DATA,
+              payload: {
+                assets: res.data.item1,
+                pageCount: res.data.pageCount,
+              },
+            });
+          })
+          .catch((e) => {
+            if (axios.isCancel(e)) return;
+            dispatch({ type: ACTIONS.ERROR, payload: { error: e } });
+          });
 
         return () => {
             cancelToken.cancel()
         }
 
-    }, [params, page, assetName])
+    }, [params, page, assetName, prefferedLanguage])
 
     return state
 }

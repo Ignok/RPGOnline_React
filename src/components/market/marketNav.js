@@ -26,13 +26,13 @@ import { TransitionGroup } from "react-transition-group";
 import Collapse from "@mui/material/Collapse";
 
 const categories = [
-  { label: "character", icon: <CharacterIcon fontSize="small" id={"character"} />, },
-  { label: "npc", icon: <NPCIcon fontSize="small" id={"npc"} /> },
-  { label: "monster", icon: <MonsterIcon fontSize="small" id={"monster"} /> },
-  { label: "race", icon: <RaceIcon fontSize="small" id={"race"} /> },
-  { label: "profession", icon: <ProfessionIcon fontSize="small" id={"profession"} />, },
-  { label: "item", icon: <ItemIcon fontSize="small" id={"item"} /> },
-  { label: "spell", icon: <SpellIcon fontSize="small" id={"spell"} /> },
+  { label: "character", icon: <CharacterIcon fontSize="small" name={"character"} />, },
+  { label: "npc", icon: <NPCIcon fontSize="small" name={"npc"} /> },
+  { label: "monster", icon: <MonsterIcon fontSize="small" name={"monster"} /> },
+  { label: "race", icon: <RaceIcon fontSize="small" name={"race"} /> },
+  { label: "profession", icon: <ProfessionIcon fontSize="small" name={"profession"} />, },
+  { label: "item", icon: <ItemIcon fontSize="small" name={"item"} /> },
+  { label: "spell", icon: <SpellIcon fontSize="small" name={"spell"} /> },
 ];
 
 export default function MarketNavbar({ onAssetNameChange }) {
@@ -56,7 +56,7 @@ export default function MarketNavbar({ onAssetNameChange }) {
           <MenuItem
             key={label}
             component={NavLink}
-            to={`create/${label}`} //nie udało się zrobić /assets/item, albo wychodziło /assets/assets/item albo samo /item
+            to={`create/${label}`}
             onClick={handleMenuClose}
             sx={{
               textTransform: label === "npc" ? "uppercase" : "capitalize",
@@ -92,7 +92,7 @@ export default function MarketNavbar({ onAssetNameChange }) {
           <Button
             key={label}
             startIcon={
-              activeButton === label ? <ArrowRightIcon id={label} /> : icon
+              activeButton === label ? <ArrowRightIcon name={label} /> : icon
             }
             value={label}
             name={label}

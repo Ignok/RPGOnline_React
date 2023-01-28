@@ -13,14 +13,14 @@ export function AssetMarket() {
   const [params, setParams] = useState({})
   const [page, setPage] = useState(1)
   const [assetName, setAssetName] = useState("-");
-  const [PrefferedLanguage, setPrefferedLanguage] = useState("BOTH"); // do dodanie przyciski zmieniające preffered language
-  const { assets, loading, error, pageCount, initial } = useFetchAssets(params, page, assetName, PrefferedLanguage);
+  const [prefferedLanguage, setPrefferedLanguage] = useState("BOTH");
+  const { assets, loading, error, pageCount, initial } = useFetchAssets(params, page, assetName, prefferedLanguage);
 
   function handleAssetNameChange(e) {
     e.preventDefault();
     console.log(e.target);
-    const param = e.target.getAttribute("id");
-    const value = e.target.value ?? e.target.getAttribute("id");
+    const param = e.target.getAttribute("name");
+    const value = e.target.value ?? e.target.getAttribute("name");
     console.log(param)
     console.log(value)
     setPage(1)
@@ -29,10 +29,20 @@ export function AssetMarket() {
     })
   }
 
+  function handleLanguageChange(checked) {
+    console.log(checked);
+    const lang = (checked.pl ? (checked.en ? "BOTH" : "POLISH") : (checked.en ? "ENGLISH" : "BOTH"));
+    console.log(lang);
+    setPage(1);
+    setPrefferedLanguage(() => {
+      return { prefferedLanguage: lang };
+    });
+  }
+
   function handleParamChange(e) {
     e.preventDefault();
     console.log(e)
-    const param = e.target.getAttribute('id')
+    const param = e.target.getAttribute('name')
     const value = e.target.value
     console.log("--------")
     console.log(param)
@@ -71,7 +81,7 @@ export function AssetMarket() {
           flexGrow: 1,
         }}
       >
-        <MarketMenu params={params} onParamChange={handleParamChange} />
+        <MarketMenu params={params} onParamChange={handleParamChange} onLanguageChange={handleLanguageChange} />
         {initial && (
           <h4>
             Welcome in asset market. Here you can find a variety of things you

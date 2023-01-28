@@ -1,4 +1,9 @@
-import React, { Component, useEffect, useState } from "react";
+import React, {
+  Component,
+  useEffect,
+  useState,
+  componentDidUpdate,
+} from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -16,7 +21,11 @@ import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import { FormGroup } from "@mui/material";
 
-export default function AssetsMenu({ params, onParamChange }) {
+export default function AssetsMenu({
+  params,
+  onParamChange,
+  onLanguageChange,
+}) {
   //const [params, setParams] = useState({});
 
   const [value, setValue] = useState("");
@@ -25,6 +34,17 @@ export default function AssetsMenu({ params, onParamChange }) {
     setValue(e.target.value ?? "");
     //pass value
   };
+
+  // let helper = () => {
+  //   const lang = checked.pl
+  //     ? checked.en
+  //       ? "BOTH"
+  //       : "POLISH"
+  //     : checked.en
+  //       ? "ENGLISH"
+  //       : "BOTH";
+  //   console.log(lang);
+  // };
 
   const sortingRadio = (
     <FormControl>
@@ -56,9 +76,13 @@ export default function AssetsMenu({ params, onParamChange }) {
   );
 
   const [checked, setChecked] = React.useState({
-    en: true,
+    en: false,
     pl: false,
   });
+
+  useEffect(() => {
+    onLanguageChange(checked);
+  }, [checked]);
 
   const handleCheck = (event) => {
     setChecked({
@@ -72,15 +96,9 @@ export default function AssetsMenu({ params, onParamChange }) {
   const checkLanguage = (
     <FormGroup>
       <FormLabel>Choose preferred languages:</FormLabel>
-      <Box sx={{display: "flex", flexDirection: "row"}}>
+      <Box sx={{ display: "flex", flexDirection: "row" }}>
         <FormControlLabel
-          control={
-            <Checkbox
-              checked={en}
-              onChange={handleCheck}
-              name="en"
-            />
-          }
+          control={<Checkbox checked={en} onChange={handleCheck} name="en" />}
           label="English"
         />
         <FormControlLabel
@@ -93,7 +111,7 @@ export default function AssetsMenu({ params, onParamChange }) {
 
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-      <Box sx={{ width: 250, flexGrow: 1, pt: 2.5, mr: 3 }}>
+      <Box sx={{ width: 100, flexGrow: 1, pt: 2.5, mr: 3 }}>
         <SearchBar params={params} onParamChange={onParamChange} />
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", flexGrow: 0, gap: 4 }}>
