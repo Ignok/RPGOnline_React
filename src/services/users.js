@@ -13,13 +13,13 @@ export function getUser(uId) {
   });
 }
 
-export function editProfile({ uId, country, city, aboutme, attitude }) {
+export function editProfile({ uId, country, city, aboutMe, attitude }) {
   return makeRequest(`Users/${uId}/Details`, {
     method: "PUT",
     data: {
       country: country,
       city: city,
-      aboutMe: aboutme,
+      aboutMe: aboutMe,
       attitude: attitude,
     },
   });

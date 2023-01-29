@@ -10,8 +10,8 @@ import { getImage } from "../../helpers/functions/getImage";
 import Grid from "@mui/material/Unstable_Grid2";
 export default function UserItem({ user }) {
   return (
-    <Grid md={2} lg={4}>
-      <Card sx={{ maxWidth: 450, maxHeight: 180, mb: 3 }}>
+    <Grid>
+      <Card sx={{ width:400, height: 180, mb: 3 }}>
         <CardContent
           sx={{
             display: "flex",
@@ -19,7 +19,7 @@ export default function UserItem({ user }) {
             p: 1,
           }}
         >
-          <Box align="center" sx={{ p: 1, minWidth: 120 }}>
+          <Box align="center" sx={{ p: 1, width: 200 }}>
             <CardMedia
               component="img"
               image={getImage(user.picture).img}
@@ -33,11 +33,15 @@ export default function UserItem({ user }) {
             />
             <Rating size="small" precision={0.5} value={4.5} readOnly />
           </Box>
-          <Box sx={{ px: 2 }}>
-            <Typography
-              variant="h6"
-              component="div"
-            >
+          <Box
+            sx={{
+              px: 2,
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+            }}
+          >
+            <Typography variant="h6" component="div">
               {user.username}
             </Typography>
             <Typography sx={{ mb: 1 }} color="text.secondary">
@@ -54,12 +58,7 @@ export default function UserItem({ user }) {
                   WebkitBoxOrient: "vertical",
                 }}
               >
-                bio Lorem Ipsum is siimply dummy te te te a a a aa tesiimply
-                dummy te te te tesiimply dummy tesiimply dummy tesiimply dummy
-                tesiimply dummy tesiimply dummy te te te tesiimply dummy
-                tesiimply dummy tesiimply dummy tesiimply dummy tesiimply dummy
-                tesiimply dummy te tesiimply dummy tesiimply dummy tesiimply
-                dummy tesiimply dummy tesiimply dummy tesiimply dummy te
+                {user.aboutMe}
               </Typography>
             </Box>
             <Button size="small" sx={{ width: "100%", mt: 1 }}>

@@ -20,7 +20,7 @@ function valuetext(value) {
 }
 
 export default function UserNav() {
-  const [attitude, setAttitude] = useState();
+  const [attitude, setAttitude] = useState("");
   const [params, setParams] = useState({});
 
   const handleChange = (e) => {
@@ -62,8 +62,8 @@ export default function UserNav() {
             onChange={handleChange}
             label="Attitude"
           >
-            <MenuItem value="none">
-              <em>None</em>
+            <MenuItem value="">
+              <em>No filter</em>
             </MenuItem>
             {attitudes.map((option) => (
             <MenuItem key={option.value} value={option.value}>

@@ -52,14 +52,15 @@ export default function UsersList() {
         pb: 10,
       }}
     >
-      <UserNav/>
+      <UserNav />
       {loading ? (
         <h1>Loading . . .</h1>
       ) : users?.length ? (
         <Grid
           container
-          spacing={{ md: 2, lg: 3 }}
+            spacing={{ md: 2, lg: 3 }}
           columns={{ md: 4, lg: 12 }}
+          justifyContent="center"
         >
           {users.map((user) => (
             <UserItem key={user.uId} user={user} />
