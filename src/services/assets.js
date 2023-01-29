@@ -28,6 +28,15 @@ export function unsaveAsset({
   });
 }
 
+
+export function getSpellsForCharacter({ uId }) {
+  return makeRequest(`Spell/character/${uId}`, {
+    method: "GET",
+    withCredentials: true,
+  });
+}
+
+
 export function createItem({
   uId,
   isPublic,
@@ -67,7 +76,8 @@ export function createProfession({
   armorMod,
   gadgetMod,
   companionMod,
-  psycheMod
+  psycheMod,
+  spellId,
 }) {
   return makeRequest(`Profession`, {
     method: "POST",
@@ -86,6 +96,7 @@ export function createProfession({
       gadgetMod: gadgetMod,
       companionMod: companionMod,
       psycheMod: psycheMod,
+      spellId: spellId,
     },
   });
 }

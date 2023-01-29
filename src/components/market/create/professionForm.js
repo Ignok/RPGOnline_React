@@ -29,6 +29,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../hooks/useAuth";
 
+import SpellDataTable from "./equipment/selectSpell";
+
 import { createProfession } from "../../../services/assets";
 import { useAsyncFn } from "../../../hooks/useAsync";
 
@@ -52,6 +54,7 @@ export default function ProfessionForm() {
     PsycheMod: 0,
     IsPublic: true,
     Language: "en",
+    SpellId: 0,
   });
 
   const { execute: createProfessionFn } = useAsyncFn(createProfession);
@@ -66,6 +69,14 @@ export default function ProfessionForm() {
       [event.target.name]: event.target.value,
     }));
   };
+
+  function handleSpellSelect(value) {
+    console.log(value ?? 0);
+    setValues((values) => ({
+      ...values,
+      ["SpellId"]: value,
+    }));
+  }
 
   const handleCheck = (event) => {
     const value = event.target.checked;
@@ -160,7 +171,10 @@ export default function ProfessionForm() {
     if (values.GadgetMod < minValueInput || values.GadgetMod > maxValueInput) {
       errors.GadgetMod = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
     }
-    if (values.CompanionMod < minValueInput || values.CompanionMod > maxValueInput) {
+    if (
+      values.CompanionMod < minValueInput ||
+      values.CompanionMod > maxValueInput
+    ) {
       errors.CompanionMod = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
     }
     if (values.PsycheMod < minValueInput || values.PsycheMod > maxValueInput) {
@@ -193,6 +207,7 @@ export default function ProfessionForm() {
         gadgetMod: values.GadgetMod,
         companionMod: values.CompanionMod,
         psycheMod: values.PsycheMod,
+        spellId: values.SpellId,
       })
         .then((res) => {
           Swal.fire({
@@ -473,6 +488,8 @@ export default function ProfessionForm() {
             </Typography>
           </Stack>
         </Box>
+
+        <SpellDataTable uId={auth.uId} handleSpellSelect={handleSpellSelect} />
 
         <Box
           sx={{
