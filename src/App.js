@@ -71,7 +71,7 @@ function App() {
               }
             >
               <Route index element={<AboutMeContents />} />
-              <Route path="aboutme" element={<AboutMeContents />} />
+              <Route path="about" element={<AboutMeContents />} />
               <Route path="messages" element={<MessagesContents />} />
               <Route path="friends" element={<FriendsContents />} />
             </Route>

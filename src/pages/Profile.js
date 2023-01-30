@@ -23,6 +23,7 @@ import MessagesContents from "../components/userprofile/contents/messages/messag
 
 import { getImage } from "../helpers/functions/getImage";
 import { getFlag } from "../helpers/functions/getFlag";
+import { useEffect } from "react";
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 50,
@@ -47,16 +48,19 @@ const Sidebar = styled(Box)(({ theme }) => ({
 
 export function Profile() {
   const {
+    uId,
     user,
     updateLocalUser,
     updateLocalAvatar,
+    friendship,
     avatar = user.picture,
     country = user.country,
     city = user.city,
     aboutMe = user.aboutMe,
     attitude = user.attitude,
+    isOwner
   } = useUser();
-  const { loading, error } = useAsyncFn();
+  
 
   return (
     <Grid
@@ -106,7 +110,9 @@ export function Profile() {
           </Stack>
           <Box sx={{ typography: "subtitle2", mt: 1, mb: 2 }}>{user.email}</Box>
         </Box>
-        <ProfileNav/>
+
+        <ProfileNav isSameUser={isOwner} />
+        
       </Sidebar>
 
       <GridBox sx={{ backgroundColor: "transparent" }}>
@@ -114,7 +120,7 @@ export function Profile() {
           username={user.username}
           date={DatetimeToLocaleDateString(user.creationDate)}
         />
-        <Outlet context={[user, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar]}/>
+        <Outlet context={[user, friendship, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar, isOwner ]}/>
       </GridBox>
     </Grid>
   );

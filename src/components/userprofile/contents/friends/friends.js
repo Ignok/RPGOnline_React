@@ -32,7 +32,8 @@ export default function FriendsContents() {
 
   const [friends, setFriends] = useState();
 
-  const [user] = useOutletContext();
+  const [user, friendship] = useOutletContext();
+  
 
   const {
     loading,
@@ -45,18 +46,13 @@ export default function FriendsContents() {
   }
 
   useEffect(() => {
-    let isMounted = true;
-    //const controller = new AbortController();
-
-    getUserFriendsFn(user.uId).then((data) => {
+    console.log(user)
+    console.log(friendship)
+    getUserFriendsFn(user.uId)
+    .then((data) => {
       console.log(data);
-      isMounted && setFriends(data);
+      setFriends(data);
     });
-
-    return () => {
-      isMounted = false;
-      //controller.abort();
-    };
   }, [statusChanged]);
 
 

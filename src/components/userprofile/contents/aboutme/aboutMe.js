@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "../../../../App.css";
 import { useAsync, useAsyncFn } from "../../../../hooks/useAsync";
@@ -24,6 +24,8 @@ import { AvatarForm } from "./avatarForm";
 import { avatars } from "../../../../helpers/enums/avatars";
 import { useParams, useOutletContext } from "react-router-dom";
 import { Success } from "../../../../helpers/pop-ups/success";
+import useAuth from "../../../../hooks/useAuth";
+import OtherAboutMe from "./otherAboutMe";
 
 const style = {
   position: "absolute",
@@ -55,7 +57,9 @@ const CustomDisableInput = styled(TextField)(() => ({
 export default function AboutMeContents() {
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const [user, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar] = useOutletContext();
+  const { auth } = useAuth();
+
+  const [user, friendship, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar, isOwner ] = useOutletContext();
 
   const [values, setValues] = useState({
     country: country,
@@ -72,6 +76,15 @@ export default function AboutMeContents() {
       [e.target.name]: e.target.value,
     }));
   };
+
+  useEffect(() => {
+    setValues({
+      country: country,
+      city: city,
+      aboutMe: aboutMe,
+      attitude: attitude
+    })
+  }, [isOwner])
 
 
   const { execute: editProfileFn } = useAsyncFn(editProfile);
@@ -112,66 +125,71 @@ export default function AboutMeContents() {
   return (
     <Box>
       {/* USER MENU */}
-      <Box
-        position="static"
-        sx={{
-          bgcolor: "var(--accent)",
-          boxShadow: 1,
-          padding: 1.5,
-        }}
-      >
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          spacing={4}
-          sx={{ bgColor: "#da57b3", mx: 2 }}
+      {auth.uId === user.uId ?
+        <Box
+          position="static"
+          sx={{
+            bgcolor: "var(--accent)",
+            boxShadow: 1,
+            padding: 1.5,
+          }}
         >
-          <Typography
-            variant="h6"
-            align="center"
-            sx={{
-              flexGrow: 1,
-              display: { xs: "none", sm: "none", md: "inline" },
-              color: "white",
-              fontStyle: "italic",
-              fontWeight: "bold",
-            }}
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={4}
+            sx={{ bgColor: "#da57b3", mx: 2 }}
           >
-            MY PROFILE
-          </Typography>
+            <Typography
+              variant="h6"
+              align="center"
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", sm: "none", md: "inline" },
+                color: "white",
+                fontStyle: "italic",
+                fontWeight: "bold",
+              }}
+            >
+              MY PROFILE
+            </Typography>
 
-          <ColorButton
-            onClick={() => {
-              console.log(user.uId)
-              console.log(user)
-              onProfileEdit({
-                country: values.country,
-                city: values.city,
-                attitude: values.attitude,
-                aboutMe: values.aboutMe,
-              });
-            }}
-            sx={{ flexGrow: 2, fontWeight: "bold" }}
+            <ColorButton
+              onClick={() => {
+                console.log(user.uId)
+                console.log(user)
+                onProfileEdit({
+                  country: values.country,
+                  city: values.city,
+                  attitude: values.attitude,
+                  aboutMe: values.aboutMe,
+                });
+              }}
+              sx={{ flexGrow: 2, fontWeight: "bold" }}
             // loading={updateAboutmeFn.loading}
             // error={updateAboutmeFn.error}
-          >
-            SAVE CHANGES
-          </ColorButton>
-          <Box display="flex">
-            <ColorButton sx={{ mx: 1 }} onClick={() => setEditAvatarForm(true)}>
-              EDIT AVATAR
-            </ColorButton>
-            <Divider orientation="vertical" color="white" flexItem />
-            <ColorButton
-              onClick={() => setIsDisabled((prev) => !prev)}
-              sx={{ mx: 1 }}
             >
-              {isDisabled ? "EDIT PROFILE" : "CANCEL EDIT"}
+              SAVE CHANGES
             </ColorButton>
-          </Box>
-        </Stack>
-      </Box>
+            <Box display="flex">
+              <ColorButton sx={{ mx: 1 }} onClick={() => setEditAvatarForm(true)}>
+                EDIT AVATAR
+              </ColorButton>
+              <Divider orientation="vertical" color="white" flexItem />
+              <ColorButton
+                onClick={() => setIsDisabled((prev) => !prev)}
+                sx={{ mx: 1 }}
+              >
+                {isDisabled ? "EDIT PROFILE" : "CANCEL EDIT"}
+              </ColorButton>
+            </Box>
+          </Stack>
+        </Box>
+        :
+        <OtherAboutMe friendship={friendship}/>
+      }
+
       <Box
         sx={{
           border: 1,
@@ -231,7 +249,7 @@ export default function AboutMeContents() {
           margin="dense"
           sx={{ mb: 3 }}
           multiline
-          // maxRows={4}
+        // maxRows={4}
         />
         <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
           Attitude

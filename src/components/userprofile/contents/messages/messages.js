@@ -31,7 +31,8 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import Tooltip from "@mui/material/Tooltip";
 import Pagination from "@mui/material/Pagination";
 import { Collapse } from "@mui/material";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import useAuth from "../../../../hooks/useAuth";
 
 
 const ColorButton = styled(Button)(() => ({
@@ -44,6 +45,10 @@ const ColorButton = styled(Button)(() => ({
 
 export default function MessagesContents() {
   const [messages, setMessages] = useState();
+
+  const { auth } = useAuth();
+
+  const navigate = useNavigate();
 
   const [user] = useOutletContext();
 
@@ -107,11 +112,16 @@ export default function MessagesContents() {
   }
 
   function onGetMessages({ isMounted, page }) {
-    return getUserMessagesFn({uId: user.uId, page }).then((data) => {
-      //console.log(data);
-      setPageCount(data.pageCount);
-      isMounted && setMessages(data.item1);
-    });
+    if(auth.uId !== user.uId){
+      navigate(`/Profile/${auth.uId}/messages`)
+    }else{
+      return getUserMessagesFn({uId: user.uId, page }).then((data) => {
+        //console.log(data);
+        setPageCount(data.pageCount);
+        isMounted && setMessages(data.item1);
+      });
+    }
+    
   }
 
   function replying({ initialTitle, initialReceiver }) {
