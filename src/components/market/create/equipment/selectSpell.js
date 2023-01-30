@@ -6,6 +6,7 @@ import FormLabel from "@mui/material/FormLabel";
 
 import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
 import ClearIcon from "@mui/icons-material/Clear";
+import { Alert } from "@mui/material";
 
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { getSpellsForCharacter } from "../../../../services/assets";
@@ -84,11 +85,7 @@ export default function SpellDataTable({
       });
   }, []);
 
-  function findSpell(array, id) {
-    return array.find((e) => {
-      return e.spellId === id;
-    });
-  }
+  const [isWarning, setIsWarning] = useState(false);
 
   const [select, setSelect] = useState([]);
 
@@ -104,7 +101,7 @@ export default function SpellDataTable({
       >
         <Box>
           <FormLabel sx={{ mb: 2 }}>
-            Choose starting spell for this profession
+            Choose up to 3 starting spells for this profession
           </FormLabel>
           <HelperTooltip
             text={
@@ -112,11 +109,18 @@ export default function SpellDataTable({
             }
           />
         </Box>
+        {isWarning &&
+          <Alert variant="outlined" severity="warning">
+            This is a warning alert — check it out!
+          </Alert>
+        }
+
         <Button
           endIcon={<ClearIcon />}
           onClick={(e) => {
+            setIsWarning(false)
             handleSpellSelect(0, "");
-            setSelect(0);
+            setSelect([]);
           }}
         >
           Reset Choice
@@ -133,13 +137,18 @@ export default function SpellDataTable({
             pageSize={10}
             rowsPerPageOptions={[10]}
             onSelectionModelChange={(e) => {
-              const id = e[0];
-              handleSpellSelect(id, findSpell(data, id)?.name);
-              setSelect(id);
+              const selectedSpells = data.filter(d => e.includes(d.spellId))
+              if(selectedSpells.length > 3){
+                setIsWarning(true)
+              }else{
+                setIsWarning(false)
+                handleSpellSelect(e, selectedSpells);
+                setSelect(e);
+              }
             }}
             selectionModel={select}
             hideFooterSelectedRowCount
-            //checkboxSelection
+            checkboxSelection
             getRowHeight={() => "auto"}
             getEstimatedRowHeight={() => 200}
             sx={{

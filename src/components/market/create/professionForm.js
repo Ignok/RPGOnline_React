@@ -75,11 +75,20 @@ export default function ProfessionForm() {
   };
 
   const [spellName, setSpellName] = useState("");
-  function handleSpellSelect(value, spellName) {
-    setSpellName(spellName ?? "");
+  function handleSpellSelect(e, selectedSpells) {
+    let spellName = "";
+    if(selectedSpells !== ""){
+      selectedSpells.forEach(element => {
+        spellName === "" ?
+        spellName += element.name
+        :
+        spellName += ", "+element.name
+      });
+    }
+    setSpellName(spellName)
     setValues((values) => ({
       ...values,
-      ["SpellId"]: value ?? 0,
+      ["SpellId"]: e,
     }));
   }
 
