@@ -1,41 +1,99 @@
 import * as React from "react";
-import { styled, Stack } from "@mui/system";
-import Button, { ButtonProps } from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Stack } from "@mui/system";
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 
 import "../../../../App.css";
-import { useAsync, useAsyncFn } from "../../../../hooks/useAsync";
-import { editProfile } from "../../../../services/users";
-
-import { attitudes } from "../../../../helpers/enums/attitudes";
-import { countries } from "../../../../helpers/enums/countries";
-import Modal from "@mui/material/Modal";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import Badge from "@mui/material/Badge";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { AvatarForm } from "./avatarForm";
-
-import { avatars } from "../../../../helpers/enums/avatars";
-import { useParams, useOutletContext } from "react-router-dom";
+import { useAsyncFn } from "../../../../hooks/useAsync";
 import { Success } from "../../../../helpers/pop-ups/success";
 
-const ColorButton = styled(Button)(() => ({
-  color: "white",
-  "&:hover": {
-    color: "#f37653",
-    backgroundColor: "transparent",
-  },
-}));
+import IconButton from "@mui/material/IconButton";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import DoNotDisturbOffIcon from "@mui/icons-material/DoNotDisturbOff";
+import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import PersonOffIcon from '@mui/icons-material/PersonOff';
+import PersonAddDisabledIcon from '@mui/icons-material/PersonAddDisabled';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+
+import { manageFriendship } from "../../../../services/users";
+import Tooltip from "@mui/material/Tooltip";
+import { ListItemIcon } from "@mui/material";
+import Swal from "sweetalert2";
 
 
-export default function OtherAboutMe({ friendship }) {
-  const [isDisabled, setIsDisabled] = useState(true);
+
+const options = {
+  block: "block",
+  unfriend: "unfriend",
+  decline: "unfriend",
+  unblock: "unblock",
+  add: "friend",
+  accept: "friend",
+  follow: "follow",
+  unfollow: "unfollow",
+  cancel: "unfriend"
+};
+
+const optionMessage = {
+  block: "Are you sure you want to block this user?",
+  unfriend: "Are you sure you want to unfriend this user?",
+  decline: "Are you sure you want to decline this user's invitation?",
+  unblock: "Are you sure you want to unblock this user?",
+  add: "Are you sure you want to send request to this user?",
+  accept: "Are you sure you want to accept this user's invitation?",
+  follow: "Are you sure you want to follow this user?",
+  unfollow: "Are you sure you want to unfollow this user?",
+  cancel: "Are you sure you want to cancel friend request?"
+}
+
+
+
+export default function OtherAboutMe({ uId, targetUId, friendship }) {
+
+  const [values, setValues] = useState(friendship)
+
+  const handleClick = (buttonAction) => {
+    Swal.fire({
+      title: optionMessage[buttonAction],
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, do it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onManageFriendship(options[buttonAction])
+      }
+    })
+  };
+
+
+  const {loading, error, execute: manageFriendshipFn } = useAsyncFn(manageFriendship);
+  function onManageFriendship(option) {
+    console.log(option)
+    return manageFriendshipFn({
+      uId: uId,
+      targetUId: targetUId,
+      option: option
+    }).then((res) => {
+      if(res){
+        console.log(res)
+        Success.fire({
+          icon: "success",
+          title: "Managed friendship status successfully",
+        });
+        setValues(res)
+      }
+    }).catch((err) => {
+      console.log(err)
+      Success.fire({
+        icon: "error",
+        title: "Something went wrong",
+      });
+    })
+  }
+
 
   return (
     <Box>
@@ -50,47 +108,114 @@ export default function OtherAboutMe({ friendship }) {
       >
         <Stack
           direction="row"
-          justifyContent="center"
+          justifyContent="flex-end"
           alignItems="center"
           spacing={4}
           sx={{ bgColor: "#da57b3", mx: 2 }}
         >
-          <Typography
-            variant="h6"
-            align="center"
-            sx={{
-              flexGrow: 1,
-              display: { xs: "none", sm: "none", md: "inline" },
-              color: "white",
-              fontStyle: "italic",
-              fontWeight: "bold",
-            }}
-          >
-            MY PROFILE
-          </Typography>
+          
 
-          <ColorButton
-            onClick={() => {
-              console.log(friendship)
-            }}
-            sx={{ flexGrow: 2, fontWeight: "bold" }}
-            // loading={updateAboutmeFn.loading}
-            // error={updateAboutmeFn.error}
-          >
-            SAVE CHANGES
-          </ColorButton>
-          <Box display="flex">
-            <ColorButton sx={{ mx: 1 }} onClick={() => console.log(friendship)}>
-              EDIT AVATAR
-            </ColorButton>
-            <Divider orientation="vertical" color="white" flexItem />
-            <ColorButton
-              onClick={() => setIsDisabled((prev) => !prev)}
-              sx={{ mx: 1 }}
-            >
-              {isDisabled ? "EDIT PROFILE" : "CANCEL EDIT"}
-            </ColorButton>
-          </Box>
+          <ListItemIcon>
+
+            {/* Follow status */}
+            {values.isFollowed ?
+              <Tooltip title="Unollow">
+                <IconButton
+                  color={"primary"}
+                  aria-label="unfollow"
+                  onClick={() => handleClick("unfollow")}
+                >
+                  <BookmarkIcon />
+                </IconButton>
+              </Tooltip>
+              :
+              <Tooltip title="Follow">
+                <IconButton
+                  color={"default"}
+                  aria-label="follow"
+                  onClick={() => handleClick("follow")}
+                >
+                  <BookmarkIcon />
+                </IconButton>
+              </Tooltip>
+            }
+
+            {/* Friend status */}
+            {values.isFriend ?
+              <Tooltip title="Unfriend">
+                <IconButton
+                  aria-label="unfriend"
+                  onClick={() => handleClick("unfriend")}
+                >
+                  <PersonRemoveIcon />
+                </IconButton>
+              </Tooltip>
+              :
+              values.isRequestSent ?
+              <Tooltip title="Cancel invitation">
+                <IconButton
+                  aria-label="cancel invitation"
+                  onClick={() => handleClick("cancel")}
+                >
+                  <PersonAddDisabledIcon />
+                </IconButton>
+              </Tooltip>
+              :
+              values.isRequestReceived ?
+              <>
+              <Tooltip title="Accept invitation">
+                <IconButton
+                  aria-label="request received"
+                  onClick={() => handleClick("accept")}
+                >
+                  <PersonAddIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Decline invitation">
+                <IconButton
+                  aria-label="request received"
+                  onClick={() => handleClick("decline")}
+                >
+                  <PersonOffIcon />
+                </IconButton>
+              </Tooltip>
+              </>
+              
+              :
+              <Tooltip title="Send request">
+                <IconButton
+                  aria-label="send request"
+                  onClick={() => handleClick("add")}
+                >
+                  <PersonAddIcon />
+                </IconButton>
+              </Tooltip>
+            }
+
+
+
+            {/* Block status */}
+            {values.isBlocked ?
+              <Tooltip title="Unlock">
+                <IconButton
+                  aria-label="unblock"
+                  onClick={() => handleClick("unblock")}
+                >
+                  <DoNotDisturbOffIcon />
+                </IconButton>
+              </Tooltip>
+              :
+              <Tooltip title="Block">
+                <IconButton
+                  aria-label="block"
+                  onClick={() => handleClick("block")}
+                >
+                  <DoNotDisturbOnIcon />
+                </IconButton>
+              </Tooltip>
+            }
+
+          </ListItemIcon>
         </Stack>
       </Box>
     </Box>

@@ -125,7 +125,7 @@ export default function AboutMeContents() {
   return (
     <Box>
       {/* USER MENU */}
-      {auth.uId === user.uId ?
+      {isOwner ?
         <Box
           position="static"
           sx={{
@@ -187,7 +187,7 @@ export default function AboutMeContents() {
           </Stack>
         </Box>
         :
-        <OtherAboutMe friendship={friendship}/>
+        <OtherAboutMe uId={auth.uId} targetUId={user.uId} friendship={friendship}/>
       }
 
       <Box

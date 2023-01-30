@@ -41,6 +41,9 @@ export function getUserFriends(uId) {
 }
 
 export function manageFriendship({uId, targetUId, option}) {
+  console.log(uId)
+  console.log(targetUId)
+  console.log(option)
   return makeRequest(`Friendship/`, {
     method: "POST",
     data: {
