@@ -134,7 +134,7 @@ export default function SpellDataTable({
             rowsPerPageOptions={[10]}
             onSelectionModelChange={(e) => {
               const id = e[0];
-              handleSpellSelect(id, findSpell(data, id).name);
+              handleSpellSelect(id, findSpell(data, id)?.name);
               setSelect(id);
             }}
             selectionModel={select}
