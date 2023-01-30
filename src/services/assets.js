@@ -36,6 +36,13 @@ export function getSpellsForCharacter({ uId }) {
   });
 }
 
+export function getItemsForCharacter({ uId }) {
+  return makeRequest(`Item/character/${uId}`, {
+    method: "GET",
+    withCredentials: true,
+  });
+}
+
 
 export function createItem({
   uId,
@@ -78,6 +85,7 @@ export function createProfession({
   companionMod,
   psycheMod,
   spellId,
+  itemId,
 }) {
   return makeRequest(`Profession`, {
     method: "POST",
@@ -97,6 +105,7 @@ export function createProfession({
       companionMod: companionMod,
       psycheMod: psycheMod,
       spellId: spellId,
+      itemId: itemId,
     },
   });
 }

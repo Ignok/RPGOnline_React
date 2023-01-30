@@ -32,6 +32,7 @@ import HelperTooltip from "../../../helpers/pop-ups/helperTooltip";
 import ClearIcon from "@mui/icons-material/Clear";
 
 import SpellDataTable from "./equipment/selectSpell";
+import ItemDataTable from "./equipment/selectItem";
 
 import { createProfession } from "../../../services/assets";
 import { useAsyncFn } from "../../../hooks/useAsync";
@@ -57,6 +58,7 @@ export default function ProfessionForm() {
     IsPublic: true,
     Language: "en",
     SpellId: 0,
+    ItemId: 0,
   });
 
   const { execute: createProfessionFn } = useAsyncFn(createProfession);
@@ -81,6 +83,16 @@ export default function ProfessionForm() {
     }));
   }
 
+    const [itemName, setItemName] = useState("");
+    function handleItemSelect(value, itemName) {
+      setItemName(itemName ?? "");
+      console.log(value ?? 0);
+      setValues((values) => ({
+        ...values,
+        ["ItemId"]: value ?? 0,
+      }));
+  }
+  
   const handleCheck = (event) => {
     const value = event.target.checked;
     console.log(event.target.checked);
@@ -211,6 +223,7 @@ export default function ProfessionForm() {
         companionMod: values.CompanionMod,
         psycheMod: values.PsycheMod,
         spellId: values.SpellId,
+        itemId: values.ItemId,
       })
         .then((res) => {
           Swal.fire({
@@ -331,7 +344,7 @@ export default function ProfessionForm() {
           )}
         </FormControl>
 
-        <Box sx={{mt: 2}}>
+        <Box sx={{ mt: 2 }}>
           <FormLabel>Proficiency modifiers:</FormLabel>
           <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -493,6 +506,15 @@ export default function ProfessionForm() {
               Public
             </Typography>
           </Stack>
+        </Box>
+
+        <Box sx={{ my: 1 }}>
+          <ItemDataTable uId={auth.uId} handleItemSelect={handleItemSelect} />
+          <FormLabel sx={{ mt: 1 }}>
+            {itemName === "" || itemName === "undefined"
+              ? ""
+              : `You have chosen an item: ${itemName}`}
+          </FormLabel>
         </Box>
 
         <Box sx={{ my: 1 }}>

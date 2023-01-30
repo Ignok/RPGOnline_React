@@ -8,10 +8,9 @@ import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
 import ClearIcon from "@mui/icons-material/Clear";
 
 import { useAsyncFn } from "../../../../hooks/useAsync";
-import { getSpellsForCharacter } from "../../../../services/assets";
+import { getItemsForCharacter } from "../../../../services/assets";
 
 const columns = [
-  // { field: "assetId", headerName: "ID", type: "number", maxWidth: 40, flex: 1 },
   { field: "prefferedLanguage", headerName: "Language", maxWidth: 90, flex: 1 },
   {
     field: "name",
@@ -21,7 +20,6 @@ const columns = [
     flex: 1,
     fontWeight: "bold",
   },
-  { field: "effects", headerName: "Effect", minWidth: 250, flex: 1 },
   {
     field: "description",
     headerName: "Description",
@@ -29,25 +27,25 @@ const columns = [
     flex: 1,
   },
   {
-    field: "keyAttribute",
-    headerName: "Key attribute",
+    field: "keySkill",
+    headerName: "Key skill",
     maxWidth: 120,
     minWidth: 100,
     flex: 1,
   },
   {
-    field: "minValue",
-    headerName: "Min. value",
+    field: "skillMod",
+    headerName: "Skill modifier",
     type: "number",
-    maxWidth: 90,
+    maxWidth: 110,
     minWidth: 60,
     flex: 1,
   },
   {
-    field: "manaCost",
-    headerName: "Mana cost",
+    field: "goldMultiplier",
+    headerName: "Gold Multiplier",
     type: "number",
-    maxWidth: 90,
+    maxWidth: 110,
     flex: 1,
   },
   {
@@ -59,24 +57,18 @@ const columns = [
   },
 ];
 
-export default function SpellDataTable({
-  uId,
-  handleSpellSelect,
-}) {
+export default function ItemDataTable({ uId, handleItemSelect }) {
   const [data, setData] = useState();
 
   const {
     loading,
     error,
-    execute: getSpellsForCharacterFn,
-  } = useAsyncFn(getSpellsForCharacter);
-
-  //const [select, setSelection] = useState([]);
+    execute: getItemsForCharacterFn,
+  } = useAsyncFn(getItemsForCharacter);
 
   useEffect(() => {
-    getSpellsForCharacterFn({ uId })
+    getItemsForCharacterFn({ uId })
       .then((data) => {
-        //console.log(data);
         setData(data);
       })
       .catch((error) => {
@@ -84,9 +76,9 @@ export default function SpellDataTable({
       });
   }, []);
 
-  function findSpell(array, id) {
+  function findItem(array, id) {
     return array.find((e) => {
-      return e.spellId === id;
+      return e.itemId === id;
     });
   }
 
@@ -104,18 +96,18 @@ export default function SpellDataTable({
       >
         <Box>
           <FormLabel sx={{ mb: 2 }}>
-            Choose starting spell for this profession
+            Choose starting item for this profession
           </FormLabel>
           <HelperTooltip
             text={
-              "For spellcasting professions (sorcerer, mage, priest etc.), you can choose one starting spell"
+              "If you want to, you can choose one starting item for your profession"
             }
           />
         </Box>
         <Button
           endIcon={<ClearIcon />}
           onClick={(e) => {
-            handleSpellSelect(0, "");
+            handleItemSelect(0, "");
             setSelect(0);
           }}
         >
@@ -129,17 +121,16 @@ export default function SpellDataTable({
           <DataGrid
             rows={data}
             columns={columns}
-            getRowId={(row) => row.spellId}
+            getRowId={(row) => row.itemId}
             pageSize={10}
             rowsPerPageOptions={[10]}
             onSelectionModelChange={(e) => {
               const id = e[0];
-              handleSpellSelect(id, findSpell(data, id)?.name);
+              handleItemSelect(id, findItem(data, id)?.name);
               setSelect(id);
             }}
             selectionModel={select}
             hideFooterSelectedRowCount
-            //checkboxSelection
             getRowHeight={() => "auto"}
             getEstimatedRowHeight={() => 200}
             sx={{
@@ -159,7 +150,7 @@ export default function SpellDataTable({
             }}
           />
         ) : (
-          <h5>Sorry, no available spells!</h5>
+          <h5>Sorry, no available items!</h5>
         )}
       </Box>
     </Box>
