@@ -28,6 +28,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../hooks/useAuth";
+import HelperTooltip from "../../../helpers/pop-ups/helperTooltip";
+import ClearIcon from "@mui/icons-material/Clear";
 
 import SpellDataTable from "./equipment/selectSpell";
 
@@ -70,11 +72,12 @@ export default function ProfessionForm() {
     }));
   };
 
-  function handleSpellSelect(value) {
-    console.log(value ?? 0);
+  const [spellName, setSpellName] = useState("");
+  function handleSpellSelect(value, spellName) {
+    setSpellName(spellName ?? "");
     setValues((values) => ({
       ...values,
-      ["SpellId"]: value,
+      ["SpellId"]: value ?? 0,
     }));
   }
 
@@ -328,121 +331,124 @@ export default function ProfessionForm() {
           )}
         </FormControl>
 
-        <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <FormControl sx={{ my: 2 }}>
-              <InputLabel>Modifier for Weapon Proficiency</InputLabel>
-              <Input
-                id="WeaponMod"
-                name="WeaponMod"
-                inputProps={{ maxLength: 2 }}
-                onChange={handleNumberChange}
-                value={values.WeaponMod}
-              />
-              {formErrors.WeaponMod && (
-                <p className="text-warning">{formErrors.WeaponMod}</p>
-              )}
-            </FormControl>
-            <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="WeaponMod">
-                <KeyboardArrowUpIcon />
-              </IconButton>
-              <IconButton onClick={handleDecrement} id="WeaponMod">
-                <KeyboardArrowDownIcon />
-              </IconButton>
-            </ButtonGroup>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <FormControl sx={{ my: 2 }}>
-              <InputLabel>Modifier for Armor Proficiency</InputLabel>
-              <Input
-                id="ArmorMod"
-                name="ArmorMod"
-                inputProps={{ maxLength: 2 }}
-                onChange={handleNumberChange}
-                value={values.ArmorMod}
-              />
-              {formErrors.ArmorMod && (
-                <p className="text-warning">{formErrors.ArmorMod}</p>
-              )}
-            </FormControl>
-            <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="ArmorMod">
-                <KeyboardArrowUpIcon />
-              </IconButton>
-              <IconButton onClick={handleDecrement} id="ArmorMod">
-                <KeyboardArrowDownIcon />
-              </IconButton>
-            </ButtonGroup>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <FormControl sx={{ my: 2 }}>
-              <InputLabel>Modifier for Gadget Proficiency</InputLabel>
-              <Input
-                id="GadgetMod"
-                name="GadgetMod"
-                inputProps={{ maxLength: 2 }}
-                onChange={handleNumberChange}
-                value={values.GadgetMod}
-              />
-              {formErrors.GadgetMod && (
-                <p className="text-warning">{formErrors.GadgetMod}</p>
-              )}
-            </FormControl>
-            <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="GadgetMod">
-                <KeyboardArrowUpIcon />
-              </IconButton>
-              <IconButton onClick={handleDecrement} id="GadgetMod">
-                <KeyboardArrowDownIcon />
-              </IconButton>
-            </ButtonGroup>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <FormControl sx={{ my: 2 }}>
-              <InputLabel>Modifier for Companion Proficiency</InputLabel>
-              <Input
-                id="CompanionMod"
-                name="CompanionMod"
-                inputProps={{ maxLength: 2 }}
-                onChange={handleNumberChange}
-                value={values.CompanionMod}
-              />
-              {formErrors.CompanionMod && (
-                <p className="text-warning">{formErrors.CompanionMod}</p>
-              )}
-            </FormControl>
-            <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="CompanionMod">
-                <KeyboardArrowUpIcon />
-              </IconButton>
-              <IconButton onClick={handleDecrement} id="CompanionMod">
-                <KeyboardArrowDownIcon />
-              </IconButton>
-            </ButtonGroup>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <FormControl sx={{ my: 2 }}>
-              <InputLabel>Modifier for Psyche Proficiency</InputLabel>
-              <Input
-                id="PsycheMod"
-                name="PsycheMod"
-                inputProps={{ maxLength: 2 }}
-                onChange={handleNumberChange}
-                value={values.PsycheMod}
-              />
-              {formErrors.PsycheMod && (
-                <p className="text-warning">{formErrors.PsycheMod}</p>
-              )}
-            </FormControl>
-            <ButtonGroup size="small" orientation="vertical">
-              <IconButton onClick={handleIncrement} id="PsycheMod">
-                <KeyboardArrowUpIcon />
-              </IconButton>
-              <IconButton onClick={handleDecrement} id="PsycheMod">
-                <KeyboardArrowDownIcon />
-              </IconButton>
-            </ButtonGroup>
+        <Box sx={{mt: 2}}>
+          <FormLabel>Proficiency modifiers:</FormLabel>
+          <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <FormControl sx={{ my: 2 }}>
+                <InputLabel>Weapon</InputLabel>
+                <Input
+                  id="WeaponMod"
+                  name="WeaponMod"
+                  inputProps={{ maxLength: 2 }}
+                  onChange={handleNumberChange}
+                  value={values.WeaponMod}
+                />
+                {formErrors.WeaponMod && (
+                  <p className="text-warning">{formErrors.WeaponMod}</p>
+                )}
+              </FormControl>
+              <ButtonGroup size="small" orientation="vertical">
+                <IconButton onClick={handleIncrement} id="WeaponMod">
+                  <KeyboardArrowUpIcon />
+                </IconButton>
+                <IconButton onClick={handleDecrement} id="WeaponMod">
+                  <KeyboardArrowDownIcon />
+                </IconButton>
+              </ButtonGroup>
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <FormControl sx={{ my: 2 }}>
+                <InputLabel>Armor</InputLabel>
+                <Input
+                  id="ArmorMod"
+                  name="ArmorMod"
+                  inputProps={{ maxLength: 2 }}
+                  onChange={handleNumberChange}
+                  value={values.ArmorMod}
+                />
+                {formErrors.ArmorMod && (
+                  <p className="text-warning">{formErrors.ArmorMod}</p>
+                )}
+              </FormControl>
+              <ButtonGroup size="small" orientation="vertical">
+                <IconButton onClick={handleIncrement} id="ArmorMod">
+                  <KeyboardArrowUpIcon />
+                </IconButton>
+                <IconButton onClick={handleDecrement} id="ArmorMod">
+                  <KeyboardArrowDownIcon />
+                </IconButton>
+              </ButtonGroup>
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <FormControl sx={{ my: 2 }}>
+                <InputLabel>Gadget</InputLabel>
+                <Input
+                  id="GadgetMod"
+                  name="GadgetMod"
+                  inputProps={{ maxLength: 2 }}
+                  onChange={handleNumberChange}
+                  value={values.GadgetMod}
+                />
+                {formErrors.GadgetMod && (
+                  <p className="text-warning">{formErrors.GadgetMod}</p>
+                )}
+              </FormControl>
+              <ButtonGroup size="small" orientation="vertical">
+                <IconButton onClick={handleIncrement} id="GadgetMod">
+                  <KeyboardArrowUpIcon />
+                </IconButton>
+                <IconButton onClick={handleDecrement} id="GadgetMod">
+                  <KeyboardArrowDownIcon />
+                </IconButton>
+              </ButtonGroup>
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <FormControl sx={{ my: 2 }}>
+                <InputLabel>Companion</InputLabel>
+                <Input
+                  id="CompanionMod"
+                  name="CompanionMod"
+                  inputProps={{ maxLength: 2 }}
+                  onChange={handleNumberChange}
+                  value={values.CompanionMod}
+                />
+                {formErrors.CompanionMod && (
+                  <p className="text-warning">{formErrors.CompanionMod}</p>
+                )}
+              </FormControl>
+              <ButtonGroup size="small" orientation="vertical">
+                <IconButton onClick={handleIncrement} id="CompanionMod">
+                  <KeyboardArrowUpIcon />
+                </IconButton>
+                <IconButton onClick={handleDecrement} id="CompanionMod">
+                  <KeyboardArrowDownIcon />
+                </IconButton>
+              </ButtonGroup>
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <FormControl sx={{ my: 2 }}>
+                <InputLabel>Psyche</InputLabel>
+                <Input
+                  id="PsycheMod"
+                  name="PsycheMod"
+                  inputProps={{ maxLength: 2 }}
+                  onChange={handleNumberChange}
+                  value={values.PsycheMod}
+                />
+                {formErrors.PsycheMod && (
+                  <p className="text-warning">{formErrors.PsycheMod}</p>
+                )}
+              </FormControl>
+              <ButtonGroup size="small" orientation="vertical">
+                <IconButton onClick={handleIncrement} id="PsycheMod">
+                  <KeyboardArrowUpIcon />
+                </IconButton>
+                <IconButton onClick={handleDecrement} id="PsycheMod">
+                  <KeyboardArrowDownIcon />
+                </IconButton>
+              </ButtonGroup>
+            </Box>
           </Box>
         </Box>
 
@@ -489,7 +495,17 @@ export default function ProfessionForm() {
           </Stack>
         </Box>
 
-        <SpellDataTable uId={auth.uId} handleSpellSelect={handleSpellSelect} />
+        <Box sx={{ my: 1 }}>
+          <SpellDataTable
+            uId={auth.uId}
+            handleSpellSelect={handleSpellSelect}
+          />
+          <FormLabel sx={{ mt: 1 }}>
+            {spellName === "" || spellName === "undefined"
+              ? ""
+              : `You have chosen spell: ${spellName}`}
+          </FormLabel>
+        </Box>
 
         <Box
           sx={{

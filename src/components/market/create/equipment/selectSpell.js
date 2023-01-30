@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import FormLabel from "@mui/material/FormLabel";
+
+import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
+import ClearIcon from "@mui/icons-material/Clear";
 
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { getSpellsForCharacter } from "../../../../services/assets";
@@ -55,7 +59,10 @@ const columns = [
   },
 ];
 
-export default function SpellDataTable({ uId, handleSpellSelect }) {
+export default function SpellDataTable({
+  uId,
+  handleSpellSelect,
+}) {
   const [data, setData] = useState();
 
   const {
@@ -69,7 +76,7 @@ export default function SpellDataTable({ uId, handleSpellSelect }) {
   useEffect(() => {
     getSpellsForCharacterFn({ uId })
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setData(data);
       })
       .catch((error) => {
@@ -77,43 +84,84 @@ export default function SpellDataTable({ uId, handleSpellSelect }) {
       });
   }, []);
 
+  function findSpell(array, id) {
+    return array.find((e) => {
+      return e.spellId === id;
+    });
+  }
+
+  const [select, setSelect] = useState([]);
+
   return (
-    <Box style={{ height: 380, width: "100%" }}>
-      {loading ? (
-        <div>loading...</div>
-      ) : data?.length ? (
-        <DataGrid
-          rows={data}
-          columns={columns}
-          getRowId={(row) => row.spellId}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          onSelectionModelChange={(e) => {
-            handleSpellSelect(e[0]);
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+          width: "100%",
+        }}
+      >
+        <Box>
+          <FormLabel sx={{ mb: 2 }}>
+            Choose starting spell for this profession
+          </FormLabel>
+          <HelperTooltip
+            text={
+              "For spellcasting professions (such as sorcerer, mage, priest), you can choose one starting spell"
+            }
+          />
+        </Box>
+        <Button
+          endIcon={<ClearIcon />}
+          onClick={(e) => {
+            handleSpellSelect(0, "");
+            setSelect(0);
           }}
-          //selectionModel={select}
-          //checkboxSelection
-          getRowHeight={() => "auto"}
-          getEstimatedRowHeight={() => 200}
-          sx={{
-            "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
-              py: "8px",
-            },
-            "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
-              py: "15px",
-            },
-            "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
-              py: "22px",
-            },
-            ".MuiDataGrid-columnHeaderTitle": {
-              fontWeight: "bold !important",
-              overflow: "visible !important",
-            },
-          }}
-        />
-      ) : (
-        <div>No items:/</div>
-      )}
+        >
+          Reset Choice
+        </Button>
+      </Box>
+      <Box style={{ height: 550, width: "100%" }}>
+        {loading ? (
+          <div>loading...</div>
+        ) : data?.length ? (
+          <DataGrid
+            rows={data}
+            columns={columns}
+            getRowId={(row) => row.spellId}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
+            onSelectionModelChange={(e) => {
+              const id = e[0];
+              handleSpellSelect(id, findSpell(data, id).name);
+              setSelect(id);
+            }}
+            selectionModel={select}
+            hideFooterSelectedRowCount
+            //checkboxSelection
+            getRowHeight={() => "auto"}
+            getEstimatedRowHeight={() => 200}
+            sx={{
+              "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
+                py: "8px",
+              },
+              "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
+                py: "15px",
+              },
+              "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
+                py: "22px",
+              },
+              ".MuiDataGrid-columnHeaderTitle": {
+                fontWeight: "bold !important",
+                overflow: "visible !important",
+              },
+            }}
+          />
+        ) : (
+          <div>No items:/</div>
+        )}
+      </Box>
     </Box>
   );
 }
