@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAsync, useAsyncFn } from "../hooks/useAsync";
 import useAuth from "../hooks/useAuth";
 import { getUser, getFriendship } from "../services/users";
+import Swal from "sweetalert2";
 
 const Context = React.createContext();
 
@@ -15,53 +16,40 @@ export function UserProvider({ children }) {
 
   const { auth } = useAuth();
 
-  //const { loading, error, value: user } = useAsync(() => getUser(uId), [uId]);
+  const navigate = useNavigate();
 
-  //const { value: friendship } = useAsync(() => getFriendship({uId: auth.uId, targetUId: uId}), [uId])
-
-  const [friendship, setFriendship] = useState();
-  const { execute: getFriendshipFn } = useAsyncFn(getFriendship);
 
   const [user, setUser] = useState();
   const { error, execute: getUserFn } = useAsyncFn(getUser);
 
-  const [ isOwner, setIsOwner ] = useState(false)
+  const [isOwner, setIsOwner] = useState(false)
 
+  const [friendship, setFriendship] = useState();
 
-  const [loading, setLoading] = useState(true);
-  const [loadingUser, setLoadingUser] = useState(true);
-  const [loadingFriendship, setLoadingFriendship] = useState(true);
+  const [fetching, setFetching] = useState(true)
 
   useEffect(() => {
-    setLoadingUser(true)
+    setFetching(true)
     getUserFn(uId)
       .then((res) => {
+        console.log(res)
+        setIsOwner(auth.uId == uId)
         setUser(res);
-        setLoadingUser(false)
+        setFriendship(res.friendshipStatus)
+        setFetching(false)
+      })
+      .catch((err) => {
+        err.response?.data === "Blocked"
+          &&
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `It seems like this user has blocked you ¯\\_(ツ)_/¯`
+          })
+        navigate("/Users")
       })
   }, [uId])
 
-  useEffect(() => {
-    setLoadingFriendship(true)
-    getFriendshipFn({ uId: auth.uId, targetUId: uId })
-      .then((res) => {
-        setFriendship(res)
-        setLoadingFriendship(false)
-      })
-  }, [uId]);
-
-  useEffect(() => {
-
-    if(!loadingUser && !loadingFriendship){
-      if(auth.uId == uId){
-        setIsOwner(true)
-      } else {
-        setIsOwner(false)
-      }
-      setLoading(false)
-    }
-
-  }, [loadingUser, loadingFriendship])
 
   const [avatar, setAvatar] = useState();
 
@@ -83,9 +71,6 @@ export function UserProvider({ children }) {
     setAttitude(attitude);
   }
 
- 
-
-  //console.log(user);
 
   return (
     <Context.Provider
@@ -103,7 +88,7 @@ export function UserProvider({ children }) {
         isOwner: isOwner
       }}
     >
-      {loading ? (
+      {fetching ? (
         <h1>Loading</h1>
       ) : error ? (
         <h1 className="error-msg">{error}</h1>

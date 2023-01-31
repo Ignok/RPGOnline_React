@@ -19,24 +19,24 @@ function valuetext(value) {
   return `${value} Stars`;
 }
 
-export default function UserNav() {
-  const [attitude, setAttitude] = useState("");
-  const [params, setParams] = useState({});
+export default function UserNav({ params, attitude, rating, onParamChange, onAttitudeChange, onRatingChange }) {
+  //const [attitude, setAttitude] = useState("");
+  //const [params, setParams] = useState({});
 
-  const handleChange = (e) => {
-    setAttitude(e.target.value);
-  };
+  // const handleChange = (e) => {
+  //   setAttitude(e.target.value);
+  // };
 
-  function handleParamChange(e) {
-    e.preventDefault();
-    console.log(e);
-    const param = e.target.getAttribute("name");
-    const value = e.target.value;
-    // setPage(1)
-    setParams(prevParams => {
-      return { ...prevParams, [param]: value }
-    })
-  }
+  // function handleParamChange(e) {
+  //   e.preventDefault();
+  //   console.log(e);
+  //   const param = e.target.getAttribute("name");
+  //   const value = e.target.value;
+  //   // setPage(1)
+  //   setParams(prevParams => {
+  //     return { ...prevParams, [param]: value }
+  //   })
+  // }
 
   return (
     <Box
@@ -51,7 +51,7 @@ export default function UserNav() {
       }}
     >
       <Box sx={{ width: 300, flexGrow: 1, pt: 2.5, mr: 5 }}>
-        <SearchBar params={params} onParamChange={handleParamChange} />
+        <SearchBar params={params} onParamChange={onParamChange} />
       </Box>
       <Box sx={{display:"flex", alignItems: 'center', flexGrow: 0 }}><Stack direction="row" spacing={{ xs: 2, sm: 5 }}  justifyContent="space-around">
         <FormControl variant="standard" sx={{ minWidth: 120, mt: 1 }}>
@@ -59,7 +59,8 @@ export default function UserNav() {
           <Select
             id="attitude-select"
             value={attitude}
-            onChange={handleChange}
+            name="Attitude"
+            onChange={onAttitudeChange}
             label="Attitude"
           >
             <MenuItem value="">

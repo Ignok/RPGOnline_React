@@ -9,12 +9,14 @@ import Rating from "@mui/material/Rating";
 import { getImage } from "../../helpers/functions/getImage";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 export default function UserItem({ user }) {
 
   const navigate = useNavigate()
   return (
     <Grid>
-      <Card sx={{ width:400, height: 180, mb: 3 }}>
+      <Card sx={{ width: 400, height: 180, mb: 3 }}>
         <CardContent
           sx={{
             display: "flex",
@@ -64,7 +66,17 @@ export default function UserItem({ user }) {
                 {user.aboutMe}
               </Typography>
             </Box>
-            <Button size="small" sx={{ width: "100%", mt: 1 }} onClick={() => navigate(`/Profile/${user.uId}`)}>
+            <Button size="small" sx={{ width: "100%", mt: 1 }} onClick={() => {
+              console.log(user)
+              user.hasBlockedMe ?
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `It seems like this user has blocked you ¯\\_(ツ)_/¯`
+              })
+                :
+                navigate(`/Profile/${user.uId}`)
+            }}>
               View Profile
             </Button>
           </Box>
