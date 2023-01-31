@@ -104,8 +104,8 @@ export function createProfession({
       gadgetMod: gadgetMod,
       companionMod: companionMod,
       psycheMod: psycheMod,
-      spellId: spellId,
-      itemId: itemId,
+      spells: spellId,
+      items: itemId,
     },
   });
 }

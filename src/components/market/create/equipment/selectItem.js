@@ -6,9 +6,12 @@ import FormLabel from "@mui/material/FormLabel";
 
 import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
 import ClearIcon from "@mui/icons-material/Clear";
+import Snackbar from "@mui/material/Snackbar";
+import { Alert } from "@mui/material";
 
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { getItemsForCharacter } from "../../../../services/assets";
+
 
 const columns = [
   { field: "prefferedLanguage", headerName: "Language", maxWidth: 90, flex: 1 },
@@ -57,6 +60,8 @@ const columns = [
   },
 ];
 
+const maxItems = 3;
+
 export default function ItemDataTable({ uId, handleItemSelect }) {
   const [data, setData] = useState();
 
@@ -76,11 +81,8 @@ export default function ItemDataTable({ uId, handleItemSelect }) {
       });
   }, []);
 
-  function findItem(array, id) {
-    return array.find((e) => {
-      return e.itemId === id;
-    });
-  }
+
+  const [isWarning, setIsWarning] = useState(false);
 
   const [select, setSelect] = useState([]);
 
@@ -96,19 +98,29 @@ export default function ItemDataTable({ uId, handleItemSelect }) {
       >
         <Box>
           <FormLabel sx={{ mb: 2 }}>
-            Choose starting item for this profession
+            Choose starting up to {maxItems} for this profession
           </FormLabel>
           <HelperTooltip
-            text={
-              "If you want to, you can choose one starting item for your profession"
-            }
+            text={`If you want to, you can choose up to ${maxItems} starting items for profession`}
           />
         </Box>
+        {isWarning && (
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={isWarning}
+            autoHideDuration={30}
+          >
+            <Alert severity="error" sx={{ boxShadow: 2 }}>
+              You can choose a maximum of {maxItems} items!
+            </Alert>
+          </Snackbar>
+        )}
         <Button
           endIcon={<ClearIcon />}
           onClick={(e) => {
+            setIsWarning(false);
             handleItemSelect(0, "");
-            setSelect(0);
+            setSelect([]);
           }}
         >
           Reset Choice
@@ -125,12 +137,18 @@ export default function ItemDataTable({ uId, handleItemSelect }) {
             pageSize={10}
             rowsPerPageOptions={[10]}
             onSelectionModelChange={(e) => {
-              const id = e[0];
-              handleItemSelect(id, findItem(data, id)?.name);
-              setSelect(id);
+              const selectedItems = data.filter((d) => e.includes(d.itemId));
+              if (selectedItems.length > maxItems) {
+                setIsWarning(true);
+              } else {
+                setIsWarning(false);
+                handleItemSelect(e, selectedItems);
+                setSelect(e);
+              }
             }}
             selectionModel={select}
             hideFooterSelectedRowCount
+            checkboxSelection
             getRowHeight={() => "auto"}
             getEstimatedRowHeight={() => 200}
             sx={{

@@ -6,6 +6,7 @@ import FormLabel from "@mui/material/FormLabel";
 
 import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
 import ClearIcon from "@mui/icons-material/Clear";
+import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
 
 import { useAsyncFn } from "../../../../hooks/useAsync";
@@ -60,10 +61,9 @@ const columns = [
   },
 ];
 
-export default function SpellDataTable({
-  uId,
-  handleSpellSelect,
-}) {
+const maxSpells = 3;
+
+export default function SpellDataTable({ uId, handleSpellSelect }) {
   const [data, setData] = useState();
 
   const {
@@ -101,24 +101,27 @@ export default function SpellDataTable({
       >
         <Box>
           <FormLabel sx={{ mb: 2 }}>
-            Choose up to 3 starting spells for this profession
+            Choose up to {maxSpells} starting spells for this profession
           </FormLabel>
           <HelperTooltip
-            text={
-              "For spellcasting professions (sorcerer, mage, priest etc.), you can choose one starting spell"
-            }
+            text={`For spellcasting professions (sorcerer, mage, priest etc.), you can choose up to ${maxSpells} starting spells`}
           />
         </Box>
-        {isWarning &&
-          <Alert variant="outlined" severity="warning">
-            This is a warning alert — check it out!
-          </Alert>
-        }
-
+        {isWarning && (
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={isWarning}
+            autoHideDuration={30}
+          >
+            <Alert severity="error" sx={{boxShadow: 2}}>
+              You can choose a maximum of {maxSpells} spells!
+            </Alert>
+          </Snackbar>
+        )}
         <Button
           endIcon={<ClearIcon />}
           onClick={(e) => {
-            setIsWarning(false)
+            setIsWarning(false);
             handleSpellSelect(0, "");
             setSelect([]);
           }}
@@ -137,11 +140,11 @@ export default function SpellDataTable({
             pageSize={10}
             rowsPerPageOptions={[10]}
             onSelectionModelChange={(e) => {
-              const selectedSpells = data.filter(d => e.includes(d.spellId))
-              if(selectedSpells.length > 3){
-                setIsWarning(true)
-              }else{
-                setIsWarning(false)
+              const selectedSpells = data.filter((d) => e.includes(d.spellId));
+              if (selectedSpells.length > maxSpells) {
+                setIsWarning(true);
+              } else {
+                setIsWarning(false);
                 handleSpellSelect(e, selectedSpells);
                 setSelect(e);
               }

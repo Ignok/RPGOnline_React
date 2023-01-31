@@ -77,31 +77,37 @@ export default function ProfessionForm() {
   const [spellName, setSpellName] = useState("");
   function handleSpellSelect(e, selectedSpells) {
     let spellName = "";
-    if(selectedSpells !== ""){
-      selectedSpells.forEach(element => {
-        spellName === "" ?
-        spellName += element.name
-        :
-        spellName += ", "+element.name
+    if (selectedSpells !== "") {
+      selectedSpells.forEach((element) => {
+        spellName === ""
+          ? (spellName += element.name)
+          : (spellName += ", " + element.name);
       });
     }
-    setSpellName(spellName)
+    setSpellName(spellName);
     setValues((values) => ({
       ...values,
       ["SpellId"]: e,
     }));
   }
 
-    const [itemName, setItemName] = useState("");
-    function handleItemSelect(value, itemName) {
-      setItemName(itemName ?? "");
-      console.log(value ?? 0);
-      setValues((values) => ({
-        ...values,
-        ["ItemId"]: value ?? 0,
-      }));
+  const [itemName, setItemName] = useState("");
+  function handleItemSelect(e, selectedItems) {
+    let itemName = "";
+    if (selectedItems !== "") {
+      selectedItems.forEach((element) => {
+        itemName === ""
+          ? (itemName += element.name)
+          : (itemName += ", " + element.name);
+      });
+    }
+    setItemName(itemName);
+    setValues((values) => ({
+      ...values,
+      ["ItemId"]: e,
+    }));
   }
-  
+
   const handleCheck = (event) => {
     const value = event.target.checked;
     console.log(event.target.checked);
@@ -522,7 +528,7 @@ export default function ProfessionForm() {
           <FormLabel sx={{ mt: 1 }}>
             {itemName === "" || itemName === "undefined"
               ? ""
-              : `You have chosen an item: ${itemName}`}
+              : `You have chosen items: ${itemName}`}
           </FormLabel>
         </Box>
 
@@ -534,7 +540,7 @@ export default function ProfessionForm() {
           <FormLabel sx={{ mt: 1 }}>
             {spellName === "" || spellName === "undefined"
               ? ""
-              : `You have chosen spell: ${spellName}`}
+              : `You have chosen spells: ${spellName}`}
           </FormLabel>
         </Box>
 
