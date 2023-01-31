@@ -8,11 +8,14 @@ export let profession = [
   { label: "talent:", column: "talent" },
   { label: "hidden talent:", column: "hiddenTalent" },
   { label: "crucial attribute:", column: "keyAttribute" },
-  { label: "weapon modifier:", column: "weaponMod" },
-  { label: "armor modifier:", column: "armorMod" },
-  { label: "gadget modifier:", column: "gadgetMod" },
-  { label: "companion modifier:", column: "companionMod" },
-  { label: "psyche modifier:", column: "psycheMod" },
+];
+
+export let professionModifier = [
+  { label: "weapon:", column: "weaponMod" },
+  { label: "armor:", column: "armorMod" },
+  { label: "gadget:", column: "gadgetMod" },
+  { label: "companion:", column: "companionMod" },
+  { label: "psyche:", column: "psycheMod" },
 ];
 
 export let race = [
@@ -28,13 +31,26 @@ export let spell = [
   { label: "mana cost:", column: "manaCost" },
 ];
 
-export let availabilities = [
-  {
-    value: true,
-    label: "Public",
-  },
-  {
-    value: false,
-    label: "Private",
-  },
+export let simplifiedItem = [
+  { label: "name:", column: "name" },
+  { label: "description:", column: "description" },
+  { label: "crucial skill:", column: "keySkill" },
 ];
+
+export let simplifiedSpell = [
+  { label: "name:", column: "name" },
+  { label: "description:", column: "description" },
+  { label: "crucial attribute:", column: "keyAttribute" },
+  { label: "effect:", column: "effects" },
+];
+
+// export let availabilities = [
+//   {
+//     value: true,
+//     label: "Public",
+//   },
+//   {
+//     value: false,
+//     label: "Private",
+//   },
+// ];

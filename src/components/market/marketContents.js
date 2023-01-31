@@ -169,18 +169,17 @@ export default function MarketContents({ assetName, asset }) {
 
         {/* wlasciwe pola assetu */}
 
-        <CardContent sx={{ px: 2, pb: 0 }}>
+        <CardContent sx={{ px: 2, ml: 1, pb: 0 }}>
           <MarketItem assetName={assetName} asset={asset} />
         </CardContent>
         {/* zaleza od kategorii */}
 
-        <CardActions sx={{ justifyContent: "flex-end", height: 30, mb: 2 }}>
+        <CardActions sx={{ justifyContent: "flex-end", height: 30, mb: 2, mt: 1 }}>
           <StyledToggleButton
             value="check"
             selected={selected}
             disabled={waiting}
             onChange={() => {
-              //add to favorites
               selected ? onUnsaveAsset() : onSaveAsset();
             }}
           >
