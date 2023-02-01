@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useMemo, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useAsync } from "../hooks/useAsync"
 import { getPost } from "../services/posts"
+import Swal from "sweetalert2"
 
 const Context = React.createContext()
 
@@ -10,9 +11,21 @@ export function usePost() {
 }
 
 export function PostProvider({ children }) {
-  const { postId } = useParams()
+  const { postId } = useParams();
 
-  const { loading, error, value: post } = useAsync(() => getPost(postId), [postId])
+  const navigate = useNavigate();
+
+  const { loading, error, value: post } = useAsync(() =>
+    getPost(postId).catch((err) => {
+      err.response?.data === "Blocked"
+        &&
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `It seems like the post's author has blocked you ¯\\_(ツ)_/¯`
+        })
+      navigate("/forum")
+    }), [postId])
   const [comments, setComments] = useState([])
   const commentsByParentId = useMemo(() => {
     const group = {}
