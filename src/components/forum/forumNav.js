@@ -37,8 +37,15 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 import { styled } from "@mui/system";
 import "../../App.css";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
-export default function ForumNavbar({ params, onParamChange }) {
+export default function ForumNavbar({ params, onTagChange, onPageOptionChange }) {
+
+  const {auth} = useAuth();
+
+  const navigate = useNavigate()
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleMenuOpen = (event) => {
@@ -52,7 +59,7 @@ export default function ForumNavbar({ params, onParamChange }) {
     <Button
       key="fanart"
       startIcon={<FanartIcon />}
-      onClick={onParamChange}
+      onClick={onTagChange}
       value="fanart"
       name="fanart"
       id="fanart"
@@ -62,7 +69,7 @@ export default function ForumNavbar({ params, onParamChange }) {
     <Button
       key="cosplay"
       startIcon={<CosplayIcon />}
-      onClick={onParamChange}
+      onClick={onTagChange}
       value="cosplay"
       name="cosplay"
       id="cosplay"
@@ -72,7 +79,7 @@ export default function ForumNavbar({ params, onParamChange }) {
     <Button
       key="lore"
       startIcon={<HelpIcon />}
-      onClick={onParamChange}
+      onClick={onTagChange}
       value="lore"
       name="lore"
       id="lore"
@@ -82,7 +89,7 @@ export default function ForumNavbar({ params, onParamChange }) {
     <Button
       key="notice"
       startIcon={<FmdBadIcon />}
-      onClick={onParamChange}
+      onClick={onTagChange}
       value="notice"
       name="notice"
       id="notice"
@@ -92,7 +99,7 @@ export default function ForumNavbar({ params, onParamChange }) {
     <Button
       key="help"
       startIcon={<MenuBookIcon />}
-      onClick={onParamChange}
+      onClick={onTagChange}
       value="help"
       name="help"
       id="help"
@@ -131,7 +138,13 @@ export default function ForumNavbar({ params, onParamChange }) {
   );
 
   const nav = [
-    <Button key="home" startIcon={<HomeIcon />} sx={{ minHeight: 50 }}>
+    <Button
+      name="homePage"
+      key="home"
+      startIcon={<HomeIcon />}
+      sx={{ minHeight: 50 }}
+      onClick={onPageOptionChange}
+    >
       Home
     </Button>,
     <Button
@@ -142,10 +155,32 @@ export default function ForumNavbar({ params, onParamChange }) {
     >
       Tags
     </Button>,
-    <Button key="followed" startIcon={<EyeIcon />} sx={{ minHeight: 50 }}>
+    <Button
+      name="followed"
+      key="followed"
+      startIcon={<EyeIcon />}
+      sx={{ minHeight: 50 }}
+      onClick={(e) => {
+        auth.username ?
+        onPageOptionChange(e)
+        :
+        navigate('/login')
+      }}
+    >
       Followed
     </Button>,
-    <Button key="favorite" startIcon={<FavoriteIcon />} sx={{ minHeight: 50 }}>
+    <Button
+      name="favorite"
+      key="favorite"
+      startIcon={<FavoriteIcon />}
+      sx={{ minHeight: 50 }}
+      onClick={(e) => {
+        auth.username ?
+        onPageOptionChange(e)
+        :
+        navigate('/login')
+      }}
+    >
       Favorite
     </Button>,
   ];

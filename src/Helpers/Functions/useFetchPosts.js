@@ -22,7 +22,7 @@ function reducer(state, action) {
     }
 }
 
-export default function useFetchPosts(params, page) {
+export default function useFetchPosts(params, page, pageOption) {
     const [state, dispatch] = useReducer(reducer, { posts: [], loading: true })
 
     useEffect(() => {
@@ -32,9 +32,8 @@ export default function useFetchPosts(params, page) {
             headers: { 'Content-Type': 'application/json' },
             cancelToken: cancelToken.token,
             withCredentials: true,
-            params: {page: page, ...params }
+            params: {page: page, onlyFollowed: pageOption.followed, onlyFavourite: pageOption.favourite, ...params }
         }).then(res => {
-            // console.log(res.data)
             dispatch({type: ACTIONS.GET_DATA, payload: {posts: res.data.item1, pageCount: res.data.pageCount}})
         }).catch(e => {
             if (axios.isCancel(e)) return
@@ -45,7 +44,7 @@ export default function useFetchPosts(params, page) {
             cancelToken.cancel()
         }
 
-    }, [params, page])
+    }, [params, page, pageOption])
 
     return state
 }

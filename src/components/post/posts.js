@@ -22,7 +22,14 @@ import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConv
 export default function Posts() {
   const [params, setParams] = useState({})
   const [page, setPage] = useState(1)
-  const { posts, loading, error, pageCount } = useFetchPosts(params, page);
+
+  const [pageOption, setPageOption] = useState({
+    homePage: true,
+    followed: false,
+    favourite: false
+  })
+
+  const { posts, loading, error, pageCount } = useFetchPosts(params, page, pageOption);
 
   const ResponsiveBox = styled(Box)(({ theme }) => ({
     [theme.breakpoints.up("md")]: {
@@ -47,6 +54,51 @@ export default function Posts() {
     })
   }
 
+  function handleTagChange(e) {
+    e.preventDefault();
+    console.log(e);
+    const param = e.target.getAttribute('name')
+    const value = e.target.value
+    console.log("--------")
+    console.log(param)
+    console.log(value)
+  }
+
+  function handlePageOptionChange(e) {
+    e.preventDefault();
+    const name = e.target.name
+    console.log(name)
+
+    name === "homePage" ?
+    setPageOption({
+      homePage: true,
+      followed: false,
+      favourite: false
+    })
+    :
+    name === "followed" ?
+    setPageOption({
+      homePage: false,
+      followed: true,
+      favourite: false
+    })
+    :
+    name === "favourite" ?
+    setPageOption({
+      homePage: false,
+      followed: false,
+      favourite: true
+    })
+    :
+    setPageOption({
+      homePage: true,
+      followed: false,
+      favourite: false
+    })
+
+    setPage(1)
+  }
+
   return (
     <Box>
       <ForumSearch params={params} onParamChange={handleParamChange} />
@@ -55,7 +107,7 @@ export default function Posts() {
         display="flex"
       //sx={{ flexWrap: "wrap", alignItems: "baseline", }}
       >
-        <ForumNavbar params={params} onParamChange={handleParamChange} />
+        <ForumNavbar params={params} onTagChange={handleTagChange} onPageOptionChange={handlePageOptionChange}/>
         <Container maxWidth="md" sx={{ pb: 5 }} >
           <>
             <ForumMenu />
