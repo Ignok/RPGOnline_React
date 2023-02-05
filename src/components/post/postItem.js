@@ -17,19 +17,91 @@ import CommentIcon from "@mui/icons-material/Comment";
 import { PersonAddAlt1 } from "@mui/icons-material";
 import { Chip, CardActionArea } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import { useAsyncFn } from "../../hooks/useAsync";
+import { Fail } from "../../helpers/pop-ups/failed";
+import { Success } from "../../helpers/pop-ups/success";
+import { likePost, unlikePost } from "../../services/posts";
 
 import "../../App.css";
 import { getImage } from "../../helpers/functions/getImage";
 
 export default function PostItem(props) {
   
-  const [flag, setFlag] = React.useState(true);
-  const [flagFollow, setFlagFollow] = React.useState(true);
+  const [flag, setFlag] = useState(true);
+  const [flagFollow, setFlagFollow] = useState(true);
 
-  const handleClick = () => {
-    setFlag(!flag);
-  };
+  const [selected, setSelected] = useState(props.isLiked);
+  const [waiting, setWaiting] = useState(false);
+
+  const navigate = useNavigate();
+  const { auth } = useAuth();
+
+  const {execute: likePostFn } = useAsyncFn(likePost)
+  const {execute: unlikePosttFn } = useAsyncFn(unlikePost)
+
+  const [likes, setLikes] = useState(props.likes);
+
+  function onLikePost() {
+    console.log("like")
+    if(!auth.username){
+      return Fail.fire()
+      .then(result =>{
+        if(result.isConfirmed){
+          navigate('/login', { replace: true });
+        }
+      });
+    }else{
+      setWaiting(true);
+      return likePostFn({ uId: auth.uId, postId: props.id })
+        .then(res => {
+          console.log(res);
+          setSelected(true);
+          setWaiting(false);
+          Success.fire({
+            icon: "success",
+            title: "Post liked successfully",
+          })
+          setLikes(likes + 1);
+        })
+        .catch(err => {
+          console.log(err);
+          setWaiting(false);
+        });
+    }
+  }
+
+  function onUnlikePost() {
+    console.log("unlike")
+    if(!auth.username){
+      return Fail.fire()
+      .then(result =>{
+        if(result.isConfirmed){
+          navigate('/login', { replace: true });
+        }
+      });
+    }else{
+      setWaiting(true);
+      return unlikePosttFn({uId: auth.uId, postId: props.id })
+      .then(res => {
+        console.log(res);
+        setSelected(false);
+        setWaiting(false);
+        Success.fire({
+          icon: "success",
+          title: "Post unliked successfully",
+        })
+        setLikes(likes - 1);
+      })
+      .catch(err => {
+        console.log(err);
+        setWaiting(false);
+      })
+    }
+  }
+
 
   const handleClickFollow = () => {
     setFlagFollow(!flagFollow);
@@ -125,12 +197,16 @@ export default function PostItem(props) {
       >
         <IconButton
           aria-label="add to favorites"
-          onClick={handleClick}
-          sx={{ color: flag ? "#572348" : "#b50c3b" }}
+          onClick={() => {
+            selected ? onUnlikePost() : onLikePost();
+          }}
+          //selected={selected}
+          disabled={waiting}
+          sx={{ color: !selected ? "#572348" : "#b50c3b" }}
         >
           <FavoriteIcon />
         </IconButton>
-        <div>{props.likes}</div>
+        <div>{likes}</div>
         <IconButton
           aria-label="comment"
           sx={{ ml: "auto" }}

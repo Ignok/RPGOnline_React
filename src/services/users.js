@@ -44,7 +44,7 @@ export function manageFriendship({uId, targetUId, option}) {
   console.log(uId)
   console.log(targetUId)
   console.log(option)
-  return makeRequest(`Friendship/`, {
+  return makeRequest(`Friendship/Manage`, {
     method: "POST",
     data: {
       uId: uId,

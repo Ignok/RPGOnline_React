@@ -29,3 +29,23 @@ export function createPost({ uId, title, content, postId, tag }) {
      },
   })
 }
+
+export function likePost({
+  uId,
+  postId
+}) {
+  return makeRequest(`Users/${uId}/Posts/${postId}`, {
+    method: "POST",
+    withCredentials: true,
+  });
+}
+
+export function unlikePost({
+  uId,
+  postId
+}) {
+  return makeRequest(`Users/${uId}/Posts/${postId}`, {
+    method: "DELETE",
+    withCredentials: true,
+  });
+}

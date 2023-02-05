@@ -60,6 +60,7 @@ export function PostDetails() {
             imgAlt="picture"
             // tag1="fanart"
             // tag2="NPC"
+            isLiked={post.isLiked}
             likes={post.likes}
             comments={post.comments.length}
           />

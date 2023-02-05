@@ -50,7 +50,7 @@ export default function Navigation() {
       uId: uId,
     })
       .then((res) => {
-        setNewMessagesCount(res.newMessagesCount);
+        setNewMessagesCount(res.newMessagesCount ?? 0);
       })
       .catch((err) => {
         console.log(err);
