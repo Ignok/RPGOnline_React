@@ -98,7 +98,7 @@ export default function MarketNavbar({ onAssetNameChange }) {
             name={label}
             id={label}
             sx={{ minHeight: 45 }}
-            onClick={handleChange}
+            onClick={onAssetNameChange}
             color={activeButton === label ? "secondary" : "primary"}
           >
             {label}

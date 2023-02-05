@@ -27,6 +27,8 @@ import { FormGroup } from "@mui/material";
 import { attributes } from "../../helpers/enums/attributes";
 import { skills } from "../../helpers/enums/skills";
 
+const exclude = ["character", "monster", "npc"]
+
 function getOptions(cat) {
   switch (cat) {
     case "item":
@@ -123,9 +125,7 @@ export default function AssetsMenu({
   const options = getOptions(assetName.assetName);
   
   const handleSelectKeyValue = (e) => {
-    // console.log(keyValue);
     onKeyValueChange(e.target.value);
-    //pass value
   };
 
   const selectKeyValue = (
@@ -177,7 +177,7 @@ export default function AssetsMenu({
       <Box sx={{ display: "flex", alignItems: "center", flexGrow: 0, gap: 4 }}>
         {sortingRadio}
         {checkLanguage}
-        {assetName === "-" ? "" : selectKeyValue}
+        {assetName === "-" || exclude.includes(assetName.assetName) ? "" : selectKeyValue}
       </Box>
     </Box>
   );

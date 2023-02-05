@@ -1,3 +1,24 @@
+export let character = [
+  { label: "gold owned:", column: "gold" },
+];
+
+export let characterAttributes = [
+  { label: "strength:", column: "strength" },
+  { label: "dexterity:", column: "dexterity" },
+  { label: "intelligence:", column: "intelligence" },
+  { label: "charisma:", column: "charisma" },
+  { label: "health:", column: "health" },
+  { label: "mana:", column: "mana" },
+];
+
+export let characterSkillset = [
+  { label: "weapon:", column: "weapon" },
+  { label: "armor:", column: "armor" },
+  { label: "gadget:", column: "gadget" },
+  { label: "companion:", column: "companion" },
+  { label: "psyche:", column: "psyche" },
+];
+
 export let item = [
   { label: "crucial skill:", column: "keySkill" },
   { label: "skill modifier:", column: "skillMod" },

@@ -18,6 +18,13 @@ import Divider from "@mui/material/Divider";
 import { Stack } from "@mui/material";
 
 import {
+  getMotivation,
+  getCharacteristics,
+} from "../../helpers/functions/getLore";
+import {
+  character,
+  characterAttributes,
+  characterSkillset,
   item,
   profession,
   professionModifier,
@@ -29,6 +36,8 @@ import {
 
 function getCategory(cat) {
   switch (cat) {
+    case "character":
+      return character;
     case "item":
       return item;
     case "profession":
@@ -44,33 +53,96 @@ function getCategory(cat) {
   }
 }
 
-// const modifiersTable = (
-//   <Box>
-//     <Typography
-//       variant="overline"
-//       color="text.primary"
-//       sx={{
-//         fontWeight: "light",
-//         textTransform: "uppercase",
-//       }}
-//     >
-//       Skill modifiers:
-//     </Typography>
-//     <Typography
-//       variant="body2"
-//       color="text.primary"
-//       key={column}
-//       sx={{
-//         fontWeight: "medium",
-//         mt: 1,
-//         mr: 2,
-//         textTransform: column.includes("key") ? "uppercase" : "normal",
-//       }}
-//     >
-//       {asset[`${column}`] ?? 0}
-//     </Typography>
-//   </Box>
-// );
+function loreInfo(title, text) {
+  return (
+    <Box sx={{ my: 2 }}>
+      <Divider
+        textAlign="right"
+        role="presentation"
+        sx={{
+          fontWeight: "light",
+          typography: "caption",
+          color: "gray",
+        }}
+      >
+        {title}
+      </Divider>
+      <Typography
+        variant="body2"
+        color="text.primary"
+        key={title}
+        sx={{
+          fontWeight: "light",
+          my: 1,
+        }}
+      >
+        {text}
+      </Typography>
+    </Box>
+  );
+}
+
+function valuesTable(title, array, asset) {
+  return (
+    <Box>
+      <Divider
+        textAlign="right"
+        role="presentation"
+        sx={{
+          fontWeight: "light",
+          typography: "caption",
+          color: "gray",
+        }}
+      >
+        {title}
+      </Divider>
+      <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+        {array?.map(({ label, column }) => {
+          return (
+            <Box
+              key={label}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                mr: 3,
+              }}
+            >
+              <Box>
+                <Typography
+                  variant="overline"
+                  color="text.primary"
+                  key={label}
+                  sx={{
+                    fontWeight: "light",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {label}
+                </Typography>
+              </Box>
+
+              <Box>
+                <Typography
+                  variant="body2"
+                  color="text.primary"
+                  key={column}
+                  sx={{
+                    fontWeight: "light",
+                    mt: 1,
+                    ml: 1,
+                  }}
+                >
+                  {asset[`${column}`] ?? 0}
+                </Typography>
+              </Box>
+            </Box>
+          );
+        })}
+      </Box>
+    </Box>
+  );
+}
 
 export default function MarketItem({ assetName, asset }) {
   const category = getCategory(assetName.assetName ?? assetName);
@@ -83,6 +155,9 @@ export default function MarketItem({ assetName, asset }) {
         //ml: 2,
       }}
     >
+      {/* {console.log(asset.jsonResponse?.attributes)} */}
+      {/* {console.log(asset)} */}
+
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         {category?.map(({ label, column }) => {
           return (
@@ -135,6 +210,38 @@ export default function MarketItem({ assetName, asset }) {
         })}
 
         {category === profession && (
+          <Box>{valuesTable("Skill modifiers", professionModifier, asset)}</Box>
+        )}
+
+        {category === character && (
+          <Box>
+            {/* {console.log(asset)} */}
+            {asset.jsonResponse &&
+              valuesTable(
+                "Attributes",
+                characterAttributes,
+                asset.jsonResponse?.attributes
+              )}
+            {asset.jsonResponse &&
+              valuesTable(
+                "Skillset",
+                characterSkillset,
+                asset.jsonResponse?.skillset
+              )}
+            {asset.jsonResponse?.characteristics !== undefined &&
+              loreInfo(
+                "Characteristics",
+                getCharacteristics(asset.jsonResponse?.characteristics)
+              )}
+            {asset.jsonResponse?.motivation !== undefined &&
+              loreInfo(
+                "Motivation",
+                getMotivation(asset.jsonResponse?.motivation)
+              )}
+          </Box>
+        )}
+
+        {asset.race !== undefined && asset.race !== null && (
           <Box>
             <Divider
               textAlign="right"
@@ -143,131 +250,110 @@ export default function MarketItem({ assetName, asset }) {
                 fontWeight: "light",
                 typography: "caption",
                 color: "gray",
-                mr: 1.5,
               }}
             >
-              Skill modifiers
+              Race: {asset.race.name}
             </Divider>
-            <Box
-              sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+            <MarketItem
+              key={asset.race}
+              assetName={"race"}
+              asset={asset.race}
+            />
+          </Box>
+        )}
+
+        {asset.profession !== undefined && asset.profession !== null && (
+          <Box>
+            <Divider
+              textAlign="right"
+              role="presentation"
+              sx={{
+                fontWeight: "light",
+                typography: "caption",
+                color: "gray",
+              }}
             >
-              {professionModifier?.map(({ label, column }) => {
-                return (
-                  <Box
-                    key={label}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      mr: 3,
-                    }}
-                  >
-                    <Box>
-                      <Typography
-                        variant="overline"
-                        color="text.primary"
-                        key={label}
-                        sx={{
-                          fontWeight: "light",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {label}
-                      </Typography>
-                    </Box>
+              Profession: {asset.profession.name}
+            </Divider>
+            <MarketItem
+              key={asset.profession}
+              assetName={"profession"}
+              asset={asset.profession}
+            />
+          </Box>
+        )}
 
-                    <Box>
-                      <Typography
-                        variant="body2"
-                        color="text.primary"
-                        key={column}
-                        sx={{
-                          fontWeight: "light",
-                          mt: 1,
-                          ml: 1,
-                        }}
-                      >
-                        {asset[`${column}`] ?? 0}
-                      </Typography>
-                    </Box>
-                  </Box>
-                );
-              })}
-            </Box>
+        {asset.itemList?.length > 0 && (
+          <Box>
+            <Divider
+              textAlign="right"
+              role="presentation"
+              sx={{
+                fontWeight: "light",
+                typography: "caption",
+                color: "gray",
+              }}
+            >
+              Owned items: {asset.itemList?.length}
+            </Divider>
+            {asset.itemList?.map(function (row, index) {
+              return (
+                <Box key={index} sx={{ mb: 1 }}>
+                  {index === 0 ? (
+                    ""
+                  ) : (
+                    <Divider
+                      sx={{
+                        my: 1,
+                        bgcolor: "secondary.light",
+                      }}
+                    />
+                  )}
+                  <MarketItem
+                    key={row}
+                    assetName={"simplifiedItem"}
+                    asset={row}
+                  />
+                </Box>
+              );
+            })}
+          </Box>
+        )}
 
-            {asset.itemList?.length > 0 && (
-              <Box sx={{ border: 0, borderColor: "red" }}>
-                <Divider
-                  textAlign="right"
-                  role="presentation"
-                  sx={{
-                    fontWeight: "light",
-                    typography: "caption",
-                    color: "gray",
-                  }}
-                >
-                  Starting items: {asset.itemList?.length}
-                </Divider>
-                {asset.itemList?.map(function (row, index) {
-                  return (
-                    <Box key={index} sx={{ mb: 1 }}>
-                      {index === 0 ? (
-                        ""
-                      ) : (
-                        <Divider
-                          sx={{
-                            my: 1,
-                            bgcolor: "secondary.light",
-                          }}
-                        />
-                      )}
-                      <MarketItem
-                        key={row}
-                        assetName={"simplifiedItem"}
-                        asset={row}
-                      />
-                    </Box>
-                  );
-                })}
-              </Box>
-            )}
-
-            {asset.spellList?.length > 0 && (
-              <Box sx={{ border: 0, borderColor: "red" }}>
-                <Divider
-                  textAlign="right"
-                  role="presentation"
-                  sx={{
-                    fontWeight: "light",
-                    typography: "caption",
-                    color: "gray",
-                  }}
-                >
-                  Starting spells: {asset.spellList?.length}
-                </Divider>
-                {asset.spellList?.map(function (row, index) {
-                  return (
-                    <Box key={index} sx={{ mb: 1 }}>
-                      {index === 0 ? (
-                        ""
-                      ) : (
-                        <Divider
-                          sx={{
-                            my: 1,
-                            bgcolor: "secondary.light",
-                          }}
-                        />
-                      )}
-                      <MarketItem
-                        key={row}
-                        assetName={"simplifiedSpell"}
-                        asset={row}
-                      />
-                    </Box>
-                  );
-                })}
-              </Box>
-            )}
+        {asset.spellList?.length > 0 && (
+          <Box>
+            <Divider
+              textAlign="right"
+              role="presentation"
+              sx={{
+                fontWeight: "light",
+                typography: "caption",
+                color: "gray",
+              }}
+            >
+              Owned spells: {asset.spellList?.length}
+            </Divider>
+            {asset.spellList?.map(function (row, index) {
+              return (
+                <Box key={index} sx={{ mb: 2 }}>
+                  {index === 0 ? (
+                    ""
+                  ) : (
+                    <Divider
+                      sx={{
+                        my: 1,
+                        bgcolor: "secondary.light",
+                      }}
+                    />
+                  )}
+                  <MarketItem
+                    key={row}
+                    assetName={"simplifiedSpell"}
+                    asset={row}
+                  />
+                </Box>
+              );
+            })}
           </Box>
         )}
       </Box>
