@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet, useParams } from "react-router-dom";
 import ProfileNav from "../components/userprofile/profileNav";
 import { getUsersAbout } from "../Api_RPGOnline";
 import { DatetimeToLocaleDateString } from "../helpers/functions/DateTimeConverter";
 import ReactDOM from "react-dom";
 import Box from "@mui/material/Box";
-import { Stack } from "@mui/material";
+import { Stack, Rating, Button } from "@mui/material";
 import UserHeading from "../components/userprofile/userHeading";
 import AboutMeContents from "../components/userprofile/contents/aboutme/aboutMe";
 
@@ -16,10 +16,11 @@ import Grid from "@mui/material/Unstable_Grid2";
 
 import "../App.css";
 import { useAsyncFn } from "../hooks/useAsync";
-import { editProfile } from "../services/users";
+import { editProfile, rateFriend } from "../services/users";
 import { useUser } from "../contexts/userContext";
 import FriendsContents from "../components/userprofile/contents/friends/friends";
 import MessagesContents from "../components/userprofile/contents/messages/messages";
+import { Success } from "../helpers/pop-ups/success";
 
 import { getImage } from "../helpers/functions/getImage";
 import { getFlag } from "../helpers/functions/getFlag";
@@ -60,7 +61,76 @@ export function Profile() {
     attitude = user.attitude,
     isOwner
   } = useUser();
+
+  const [ ratingPrecision, setRatingPrecision ] = useState(0.1);
+  const [ disableRating, setDisableRating ] = useState(true);
+
+  const [ displayedRatingValue, setDisplayedRatingValue ] = useState(friendship.averageRating)
+  const [ myRatingValue, setMyRatingValue ] = useState(friendship.myRating);
+
+  const {loading, error, execute: rateFriendFn } = useAsyncFn(rateFriend)
+
+  function handleRate(e, value){
+    e.preventDefault();
+
+    console.log(e)
+    console.log(value)
+    if(value){
+      return rateFriendFn({
+        uId: uId,
+        targetUId: user.uId,
+        rating: value
+      }).then((res) => {
+        console.log(res)
+        setMyRatingValue(value);
+        setRatingPrecision(0.1);
+        setDisableRating(true);
+        setDisplayedRatingValue(friendship.averageRating);
+        Success.fire({
+          icon: "success",
+          title: `Successfully rated ${value}`,
+        })
+      }).catch((err) => {
+        console.log(err)
+        setMyRatingValue(0);
+        setRatingPrecision(0.1);
+        setDisableRating(true);
+        setDisplayedRatingValue(friendship.averageRating);
   
+        if(err.response?.status === 400){
+          const errMessage = err.response?.data;
+          Success.fire({
+            icon: "error",
+            title: errMessage,
+          })
+        }
+      })
+    } else {
+      Success.fire({
+        icon: "error",
+        title: "Cannot give the same rating",
+      })
+    }
+  }
+
+  function handleRatingChange(e){
+    e.preventDefault();
+
+    const eventName = e.target.name;
+    console.log(eventName);
+
+    if(eventName === "allow rating") {
+      setRatingPrecision(1);
+      setDisableRating(false);
+      setDisplayedRatingValue(myRatingValue);
+    } else if(eventName === "cancel rating") {
+      setRatingPrecision(0.1);
+      setDisableRating(true);
+      setDisplayedRatingValue(friendship.averageRating);
+    }
+    
+  }
+
 
   return (
     <Grid
@@ -108,11 +178,43 @@ export function Profile() {
               />
             )}
           </Stack>
-          <Box sx={{ typography: "subtitle2", mt: 1, mb: 2 }}>{user.email}</Box>
+          {isOwner &&
+            <Box sx={{ typography: "subtitle2", mt: 1, mb: 0 }}>
+              {user.email}
+            </Box>
+          }
+
+          <Stack  sx={{
+                typography: "subtitle2",
+                mt: 1,
+                mb: 2,
+                textAlign: "center"
+                
+              }}>
+            <Rating
+              size="large"
+              precision={ratingPrecision}
+              value={displayedRatingValue}
+              disabled={ loading || disableRating}
+              onChange={handleRate}
+            />
+            {friendship.isFriend &&
+            <Button
+              name={disableRating ? "allow rating" : "cancel rating"}
+              size="small"
+              color={disableRating ? "primary" : "error"}
+              onClick={handleRatingChange}
+            >
+              {disableRating ? "Rate your friend!" : "Cancel"}
+            </Button>
+            }
+            
+          </Stack>
+
         </Box>
 
         <ProfileNav isSameUser={isOwner} />
-        
+
       </Sidebar>
 
       <GridBox sx={{ backgroundColor: "transparent" }}>
@@ -120,7 +222,7 @@ export function Profile() {
           username={user.username}
           date={DatetimeToLocaleDateString(user.creationDate)}
         />
-        <Outlet context={[user, friendship, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar, isOwner ]}/>
+        <Outlet context={[user, friendship, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar, isOwner]} />
       </GridBox>
     </Grid>
   );

@@ -59,3 +59,17 @@ export function getFriendship({uId, targetUId}) {
     method: "GET",
   });
 }
+
+export function rateFriend({uId, targetUId, rating}) {
+  console.log(uId)
+  console.log(targetUId)
+  console.log(rating)
+  return makeRequest(`Friendship/Rate`, {
+    method: "POST",
+    data: {
+      uId: uId,
+      targetUId: targetUId,
+      rating: rating
+    },
+  });
+}

@@ -36,7 +36,7 @@ export default function UserItem({ user }) {
                 mb: 1,
               }}
             />
-            <Rating size="small" precision={0.5} value={4.5} readOnly />
+            <Rating size="small" precision={0.1} value={user.averageRating} readOnly />
           </Box>
           <Box
             sx={{
