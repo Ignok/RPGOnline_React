@@ -163,3 +163,55 @@ export function createSpell({
     },
   });
 }
+
+
+export function getRandomMotivation() {
+  return makeRequest(`Character/character/motivation`, {
+    method: "GET",
+    withCredentials: false,
+  });
+}
+
+export function getRandomCharacteristics() {
+  return makeRequest(`Character/character/characteristics`, {
+    method: "GET",
+    withCredentials: false,
+  });
+}
+
+export function getRandomAttributes() {
+  return makeRequest(`Character/character/attributes`, {
+    method: "GET",
+    withCredentials: false,
+  });
+}
+
+export function createCharacter({
+  uId,
+  isPublic,
+  language,
+  name,
+  description,
+  gold,
+  jsonReq,
+  raceId,
+  professionId,
+  //+ type
+}) {
+  return makeRequest(`Character`, {
+    method: "POST",
+    withCredentials: true,
+    data: {
+      uId: uId,
+      isPublic: isPublic,
+      language: language,
+      name: name,
+      description: description,
+      gold: gold,
+      jsonReq: jsonReq,
+      raceId: raceId,
+      professionId: professionId
+      //+ type
+    },
+  });
+}
