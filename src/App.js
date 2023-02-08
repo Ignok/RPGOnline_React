@@ -33,6 +33,8 @@ import PersistLogin from "./components/PersistLogin";
 import AboutMeContents from "./components/userprofile/contents/aboutme/aboutMe";
 import FriendsContents from "./components/userprofile/contents/friends/friends";
 import MessagesContents from "./components/userprofile/contents/messages/messages";
+import Posts from "./components/post/posts";
+import PostFanartFrom from "./components/post/postForms/PostFanartForm";
 
 function App() {
   return (
@@ -44,7 +46,12 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="unauthorized" element={<Unauthorized />} />
           <Route path="/" element={<Home />} />
-          <Route path="/forum" element={<Forum />} />
+
+          <Route path="/forum" element={<Forum />}>
+              <Route index element={<Posts />} />
+              <Route path=":option" element={<Posts />} />
+              <Route path="tag/:tagName" element={<Posts />} />
+          </Route>
           {/* <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin, ROLES.Moderator]} />}>
               <Route path="/users" element={<UsersList />} />
             </Route> */}
@@ -60,6 +67,10 @@ function App() {
             <Route
               path="/post/discussion-form"
               element={<PostDiscussionForm />}
+            />
+            <Route
+              path="/post/fanart-form"
+              element={<PostFanartFrom />}
             />
 
             {/* USER'S PROFILE */}

@@ -11,11 +11,30 @@ export function getPost(postId) {
   })
 }
 
-export function createPost({ uId, title, content, postId, tag }) {
+export function createFanart({ uId, title, content, tag, picture }) {
   console.log(uId)
   console.log(title)
   console.log(content)
-  console.log(postId)
+  console.log(tag)
+  console.log(picture)
+
+  return makeRequest(`/Posts`, {
+    method: "POST",
+    withCredentials: true,
+    data: {
+      uId : uId,
+      title : title,
+      content : content,
+      tag: tag,
+      picture: picture
+     },
+  })
+}
+
+export function createPost({ uId, title, content, tag }) {
+  console.log(uId)
+  console.log(title)
+  console.log(content)
   console.log(tag)
 
   return makeRequest(`/Posts`, {

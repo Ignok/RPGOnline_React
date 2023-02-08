@@ -292,7 +292,7 @@ export default function Navigation() {
       <MenuItem onClick={handleMenuClose} component={NavLink} to={"/"}>
         Home
       </MenuItem>
-      <MenuItem onClick={handleMenuClose} component={NavLink} to={"/forum"}>
+      <MenuItem onClick={handleMenuClose} component={NavLink} to={"/forum/home"}>
         Forum
       </MenuItem>
       <MenuItem onClick={handleMenuClose} component={NavLink} to={"/assets"}>
@@ -355,7 +355,7 @@ export default function Navigation() {
             {mainNav.map((nav) => (
               <Button
                 component={NavLink}
-                to={"/" + (nav === "home" ? "" : nav)}
+                to={"/" + (nav === "home" ? "" : nav === "forum" ? "forum/home" : nav)}
                 key={nav}
                 sx={{
                   color: "white",

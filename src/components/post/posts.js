@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PostItem from "./postItem";
 
 import ForumSearch from "../forum/forumSearch";
@@ -8,6 +8,8 @@ import ForumNavbar from "../forum/forumNav";
 import src1 from "../../helpers/pictures/test-img.jpg";
 import src2 from "../../helpers/pictures/test-img-3.jpg";
 import gif1 from "../../helpers/pictures/test.gif";
+
+import { useParams, useSearchParams } from "react-router-dom";
 
 import { Card, Container, Stack, Pagination, CardContent, Typography, LinearProgress } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -20,6 +22,12 @@ import useFetchPosts from "../../helpers/functions/useFetchPosts";
 import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
 
 export default function Posts() {
+
+  // const [searchParams] = useSearchParams();
+  // const option = searchParams.get('filter') || '';
+
+  const { option, tagName } = useParams();
+
   const [params, setParams] = useState({})
   const [page, setPage] = useState(1)
 
@@ -54,36 +62,26 @@ export default function Posts() {
     })
   }
 
-  function handleTagChange(e) {
-    e.preventDefault();
-    console.log(e);
-    const param = e.target.getAttribute('name')
-    const value = e.target.value
-    console.log("--------")
-    console.log(param)
-    console.log(value)
-  }
-
-  function handlePageOptionChange(e) {
-    e.preventDefault();
-    const name = e.target.name
-    console.log(name)
-
-    name === "homePage" ?
+  useEffect(() => {
+    if(option){
+      setParams(prevParams => {
+        return { ...prevParams, ['tag']: '' }
+      });
+      option === "home" ?
     setPageOption({
       homePage: true,
       followed: false,
       favourite: false
     })
     :
-    name === "followed" ?
+    option === "followed" ?
     setPageOption({
       homePage: false,
       followed: true,
       favourite: false
     })
     :
-    name === "favourite" ?
+    option === "favorite" ?
     setPageOption({
       homePage: false,
       followed: false,
@@ -95,9 +93,60 @@ export default function Posts() {
       followed: false,
       favourite: false
     })
+    } else if( tagName ) {
+      setPageOption({
+        homePage: true,
+        followed: false,
+        favourite: false
+      })
+      setParams(prevParams => {
+        return { ...prevParams, ['tag']: tagName }
+      })
+    } else {
+      setPageOption({
+        homePage: true,
+        followed: false,
+        favourite: false
+      })
+    }
 
     setPage(1)
-  }
+  },[option, tagName])
+
+  // function handlePageOptionChange(e) {
+  //   e.preventDefault();
+  //   const name = e.target.name
+  //   console.log(name)
+
+  //   name === "homePage" ?
+  //   setPageOption({
+  //     homePage: true,
+  //     followed: false,
+  //     favourite: false
+  //   })
+  //   :
+  //   name === "followed" ?
+  //   setPageOption({
+  //     homePage: false,
+  //     followed: true,
+  //     favourite: false
+  //   })
+  //   :
+  //   name === "favorite" ?
+  //   setPageOption({
+  //     homePage: false,
+  //     followed: false,
+  //     favourite: true
+  //   })
+  //   :
+  //   setPageOption({
+  //     homePage: true,
+  //     followed: false,
+  //     favourite: false
+  //   })
+
+  //   setPage(1)
+  // }
 
   return (
     <Box>
@@ -107,7 +156,7 @@ export default function Posts() {
         display="flex"
       //sx={{ flexWrap: "wrap", alignItems: "baseline", }}
       >
-        <ForumNavbar params={params} onTagChange={handleTagChange} onPageOptionChange={handlePageOptionChange}/>
+        <ForumNavbar />
         <Container maxWidth="md" sx={{ pb: 5 }} >
           <>
             <ForumMenu />
@@ -178,7 +227,7 @@ export default function Posts() {
                       text={post.content}
                       imgSrc={post.postId === 1 ? src1 : post.picture} //tymczasowo do potestowania
                       imgAlt="picture"
-                      // tag1="fanart"
+                      tag={post.tag}
                       // tag2="NPC"
                       isLiked={post.isLiked}
                       likes={post.likes}

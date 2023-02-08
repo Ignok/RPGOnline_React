@@ -40,7 +40,7 @@ import "../../App.css";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
-export default function ForumNavbar({ params, onTagChange, onPageOptionChange }) {
+export default function ForumNavbar() {
 
   const {auth} = useAuth();
 
@@ -55,11 +55,13 @@ export default function ForumNavbar({ params, onTagChange, onPageOptionChange })
     setAnchorEl(null);
   };
 
+
+
   const tags = [
     <Button
       key="fanart"
       startIcon={<FanartIcon />}
-      onClick={onTagChange}
+      onClick={() => navigate(`tag/fanart`)}
       value="fanart"
       name="fanart"
       id="fanart"
@@ -69,7 +71,7 @@ export default function ForumNavbar({ params, onTagChange, onPageOptionChange })
     <Button
       key="cosplay"
       startIcon={<CosplayIcon />}
-      onClick={onTagChange}
+      onClick={() => navigate(`tag/cosplay`)}
       value="cosplay"
       name="cosplay"
       id="cosplay"
@@ -79,7 +81,7 @@ export default function ForumNavbar({ params, onTagChange, onPageOptionChange })
     <Button
       key="lore"
       startIcon={<HelpIcon />}
-      onClick={onTagChange}
+      onClick={() => navigate(`tag/lore`)}
       value="lore"
       name="lore"
       id="lore"
@@ -89,7 +91,7 @@ export default function ForumNavbar({ params, onTagChange, onPageOptionChange })
     <Button
       key="notice"
       startIcon={<FmdBadIcon />}
-      onClick={onTagChange}
+      onClick={() => navigate(`tag/notice`)}
       value="notice"
       name="notice"
       id="notice"
@@ -99,7 +101,7 @@ export default function ForumNavbar({ params, onTagChange, onPageOptionChange })
     <Button
       key="help"
       startIcon={<MenuBookIcon />}
-      onClick={onTagChange}
+      onClick={() => navigate(`tag/help`)}
       value="help"
       name="help"
       id="help"
@@ -143,7 +145,7 @@ export default function ForumNavbar({ params, onTagChange, onPageOptionChange })
       key="home"
       startIcon={<HomeIcon />}
       sx={{ minHeight: 50 }}
-      onClick={onPageOptionChange}
+      onClick={() => navigate('home')}
     >
       Home
     </Button>,
@@ -162,7 +164,7 @@ export default function ForumNavbar({ params, onTagChange, onPageOptionChange })
       sx={{ minHeight: 50 }}
       onClick={(e) => {
         auth.username ?
-        onPageOptionChange(e)
+        navigate('followed')
         :
         navigate('/login')
       }}
@@ -176,7 +178,7 @@ export default function ForumNavbar({ params, onTagChange, onPageOptionChange })
       sx={{ minHeight: 50 }}
       onClick={(e) => {
         auth.username ?
-        onPageOptionChange(e)
+        navigate('favorite')
         :
         navigate('/login')
       }}

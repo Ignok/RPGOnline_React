@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { SettingsAccessibility } from "@mui/icons-material";
-import { FormControl, Input, FormHelperText, InputLabel, Button, TextField, MenuItem, Link } from "@mui/material";
+import { FormControl, Input, FormHelperText, InputLabel, Button, TextField, MenuItem, Link, CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
-import axios from 'axios';
+
+import UploadIcon from '@mui/icons-material/Upload';
+
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 
@@ -11,9 +13,9 @@ import useAuth from "../../../hooks/useAuth";
 
 import { createPost } from "../../../services/posts";
 import { useAsyncFn } from "../../../hooks/useAsync";
+import { Success } from "../../../helpers/pop-ups/success";
 
 
-const BASE_URL = 'https://localhost:7251/api/Posts';
 
 const tags = [
     {
@@ -43,6 +45,8 @@ export default function PostDiscussionForm() {
     const { execute: createPostFn } = useAsyncFn(createPost);
 
     const navigate = useNavigate();
+
+    const [uploading, setUploading] = useState(false);
 
 
     const [formErrors, setFormErrors] = useState({});
@@ -85,6 +89,7 @@ export default function PostDiscussionForm() {
     function handleSubmit(event) {
         if (event) event.preventDefault();
         if (validateForm(values)) {
+            setUploading(true)
             createPostFn({
                 uId: auth.uId,
                 title: values.Title,
@@ -102,10 +107,16 @@ export default function PostDiscussionForm() {
                     imageAlt: 'success image',
                     backdrop: `rgba(0,0,123,0.4)`
                 })
+                setUploading(false)
                 navigate('/forum');
             }).catch(e => {
                 console.log("oops")
                 console.log(e)
+                Success.fire({
+                    icon: "error",
+                    title: "Something went wrong with uploading",
+                });
+                setUploading(false)
             })
         }
     }
@@ -178,7 +189,20 @@ export default function PostDiscussionForm() {
                     ))}
                 </TextField>
 
-                <Button type="submit" >Submit</Button>
+                <Button
+                    sx={{
+                        width: "100%",
+                        marginTop: 2,
+                        marginBottom: 5,
+                    }}
+                    color="secondary"
+                    disabled={uploading}
+                    type="submit"
+                    startIcon={!uploading && <UploadIcon />}
+                    variant={uploading ? "outlined" : "contained"}
+                >
+                    {uploading ? <CircularProgress size={20} /> : "Submit"}
+                </Button>
             </Box>
         </Box>
     );

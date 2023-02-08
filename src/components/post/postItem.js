@@ -167,6 +167,15 @@ export default function PostItem(props) {
                 {props.text}
               </Typography>
             )}
+            {props.isDetails && props.imgSrc && (
+              <Typography
+                noWrap={!props.isDetails}
+                variant="body2"
+                color="text.secondary"
+              >
+                {props.text}
+              </Typography>
+            )}
             {props.imgSrc && (
               <CardMedia
                 component="img"
@@ -183,14 +192,11 @@ export default function PostItem(props) {
           </CardContent>
         </Link>
       </CardActionArea>
-      {/* <CardActions sx={{ bgcolor: "var(--accent)", maxHeight: 10, pl: 2 }}>
-        {props.tag1 ? (
-          <Chip label={"#" + props.tag1} component="a" href="#" clickable />
+      <CardActions sx={{ bgcolor: "var(--accent)", maxHeight: 10, pl: 2 }}>
+        {props.tag ? (
+          <Chip label={"#" + props.tag} component="a" onClick={() => navigate(`/forum/tag/${props.tag}`)} clickable />
         ) : null}
-        {props.tag2 ? (
-          <Chip label={"#" + props.tag2} component="a" href="#" clickable />
-        ) : null}
-      </CardActions> */}
+      </CardActions>
       <CardActions
         disableSpacing
         sx={{ bgcolor: "var(--accent)", justifyContent: "right", px: 12 }}

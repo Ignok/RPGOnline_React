@@ -58,13 +58,13 @@ export function PostDetails() {
             text={post.content}
             imgSrc={post.picture === undefined ? "" : post.picture}
             imgAlt="picture"
-            // tag1="fanart"
-            // tag2="NPC"
+            tag={post.tag}
             isLiked={post.isLiked}
             likes={post.likes}
             comments={post.comments.length}
           />
         )}
+        {console.log(post)}
         <h4>Comments</h4>
         <CommentForm loading={loading} error={error} onSubmit={onCommentCreate} isResponse={false} avatar={auth.avatar}/>
         <section>
