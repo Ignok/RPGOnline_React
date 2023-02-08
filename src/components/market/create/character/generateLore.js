@@ -37,7 +37,7 @@ function getFn(type) {
   }
 }
 
-export default function GenerateLore({ type }) {
+export default function GenerateLore({ type, handleChange }) {
   const { execute: getRandomFn } = useAsyncFn(getFn(type));
   const [value, setValue] = useState("");
 
@@ -49,6 +49,7 @@ export default function GenerateLore({ type }) {
     return getRandomFn()
       .then((res) => {
         setValue(res);
+        handleChange(res);
         setChecked((prev) => !prev);
       })
       .catch((err) => {

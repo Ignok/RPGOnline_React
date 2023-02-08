@@ -222,7 +222,7 @@ export default function MarketItem({ assetName, asset }) {
                 characterAttributes,
                 asset.jsonResponse?.attributes
               )}
-            {asset.jsonResponse &&
+            {(asset.jsonResponse?.skillset !== undefined && asset.profession === undefined) &&
               valuesTable(
                 "Skillset",
                 characterSkillset,

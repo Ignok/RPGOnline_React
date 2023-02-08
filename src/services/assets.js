@@ -208,9 +208,9 @@ export function createCharacter({
       name: name,
       description: description,
       gold: gold,
-      jsonReq: jsonReq,
-      raceId: raceId,
-      professionId: professionId
+      jsonRequest: jsonReq,
+      race: raceId,
+      profession: professionId
       //+ type
     },
   });

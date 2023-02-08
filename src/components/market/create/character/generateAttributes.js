@@ -17,18 +17,24 @@ import { useAsyncFn } from "../../../../hooks/useAsync";
 import { characterAttributes } from "../../../../helpers/enums/assets";
 import { getRandomAttributes } from "../../../../services/assets";
 
-export default function GenerateAttributes() {
+export default function GenerateAttributes({handleAttributesChange}) {
   const { execute: getRandomAttributesFn } = useAsyncFn(getRandomAttributes);
   const [value, setValue] = useState("");
 
   const [checked, setChecked] = useState(false);
   const containerRef = useRef(null);
 
-  function onGeneratevalue() {
+  useEffect(() => {
+    if(value !== ""){
+      handleAttributesChange(value);
+    }
+  }, [value]);
+
+  async function onGeneratevalue() {
     setChecked((prev) => (prev === false ? prev : !prev));
-    return getRandomAttributesFn()
+    await getRandomAttributesFn()
       .then((res) => {
-        setValue({ res }.res);
+        setValue(res);
         setChecked((prev) => !prev);
       })
       .catch((err) => {

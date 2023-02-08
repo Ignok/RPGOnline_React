@@ -35,11 +35,14 @@ import ClearIcon from "@mui/icons-material/Clear";
 
 import SpellDataTable from "../equipment/selectSpell";
 import ItemDataTable from "../equipment/selectItem";
+import RaceDataTable from "./selectRace";
+import ProfessionDataTable from "./selectProfession";
 
 import { createCharacter } from "../../../../services/assets";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 
 import { attributes } from "../../../../helpers/enums/attributes";
+import { characterAttributes } from "../../../../helpers/enums/assets";
 
 import GenerateLore from "./generateLore";
 import GenerateAttributes from "./generateAttributes";
@@ -52,9 +55,14 @@ export default function CharacterForm() {
     Gold: 0,
     IsPublic: true,
     Language: "en",
-    JsonReq: "",
     RaceId: 0,
     ProfessionId: 0,
+    JsonReq: {
+      Motivation: "",
+      Characteristics: "",
+      Attributes: "",
+      Skillset: null,
+    }
   });
 
   const { execute: createCharacterFn } = useAsyncFn(createCharacter);
@@ -79,24 +87,89 @@ export default function CharacterForm() {
     }));
   };
 
+  const [keyValueRace, setKeyValueRace] = useState("-");
+  async function setMinAttr(attributes) {
+    let minKey = "";
+    let minVal = 20;
+    for (const [key, value] of Object.entries(attributes)) {
+      if (value < minVal) {
+        minVal = value;
+        minKey = key;
+      } else if (value === minVal) {
+        minKey += "-" + key;
+      }
+    }
+    console.log("min " + minKey);
+    return minKey;
+    //setKeyValueRace(minKey);
+  }
+
+  const [keyValueProfession, setKeyValueProfession] = useState("-");
+  async function setMaxAttr(attributes) {
+    let maxKey = "";
+    let maxVal = 0;
+    for (const [key, value] of Object.entries(attributes)) {
+      if (value > maxVal) {
+        maxVal = value;
+        maxKey = key;
+      } else if (value === maxVal) {
+        maxKey += "-" + key;
+      }
+    }
+    console.log("max " + maxKey);
+    return maxKey;
+  }
+
+  const handleMotivationChange = async (motivation) => {
+    values.JsonReq.Motivation = motivation;
+  }
+
+  const handleCharacteristicsChange = async (characteristics) => {
+    values.JsonReq.Characteristics = characteristics;
+  }
+
+  const handleAttributesChange = async (attributes) => {
+    await setMinAttr(attributes).then((res) => {
+      console.log(res);
+      setKeyValueRace(res);
+    });
+    await setMaxAttr(attributes).then((res) => {
+      console.log(res);
+      setKeyValueProfession(res);
+    });
+    values.JsonReq.Attributes = attributes;
+    handleRaceSelect("", 0);
+    handleProfessionSelect("", 0);
+  };
+
+  const [openRaceTable, setOpenRaceTable] = useState(false);
+  const handleRaceClose = () => {
+    setOpenRaceTable(false);
+  };
+
   const [raceName, setRaceName] = useState("");
-  function handleRaceSelect(e, raceName) {
-    setRaceName(raceName);
+  function handleRaceSelect(name, id) {
+    setRaceName(name);
     setValues((values) => ({
       ...values,
-      ["RaceId"]: e,
+      ["RaceId"]: id,
     }));
   }
 
+  const [openProfessionTable, setOpenProfessionTable] = useState(false);
+  const handleProfessionClose = () => {
+    setOpenProfessionTable(false);
+  };
+
   const [professionName, setProfessionName] = useState("");
-  function handleProfessionSelect(e, professionName) {
-    setProfessionName(professionName);
+  function handleProfessionSelect(name, id) {
+    setProfessionName(name);
     setValues((values) => ({
       ...values,
-      ["ProfessionId"]: e,
+      ["ProfessionId"]: id,
     }));
   }
-  
+
   function validateForm() {
     let errors = {};
     if (!values.Name) {
@@ -106,6 +179,15 @@ export default function CharacterForm() {
       errors.Description = "Description is required";
     } else if (values.Description.length < 5) {
       errors.Talent = "Description is too short";
+    }
+    if(!values.JsonReq.Attributes){
+      errors.Attributes = "You have to roll for attribtues!";
+    }
+    if(!values.JsonReq.Motivation){
+      errors.Motivation = "For playable characters motivation is required";
+    }
+    if(!values.JsonReq.Characteristics){
+      errors.Characteristics = "For playable characters characteristics are required";
     }
     if (values.ProfessionId === 0) {
       errors.ProfessionId = "Profession is required";
@@ -209,49 +291,77 @@ export default function CharacterForm() {
           )}
         </FormControl>
 
-        <GenerateLore type="characteristics" />
-        <GenerateLore type="motivation" />
-        <GenerateAttributes />
+        <GenerateLore type="characteristics" handleChange={handleCharacteristicsChange}/>
+        {formErrors.Characteristics && <p className="text-warning">{formErrors.Characteristics}</p>}
+
+        <GenerateLore type="motivation" handleChange={handleMotivationChange}/>
+        {formErrors.Motivation && <p className="text-warning">{formErrors.Motivation}</p>}
+
+        <GenerateAttributes handleAttributesChange={handleAttributesChange} />
+        {formErrors.Attributes && <p className="text-warning">{formErrors.Attributes}</p>}
 
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            pt: 2,
             my: 4,
             gap: 8,
           }}
         >
-          <Box>
+          <Box sx={{ width: "60%", display: "flex", flexDirection: "column" }}>
             <Button
-              variant="outlined"
+              variant="contained"
               endIcon={<AddIcon />}
               size="large"
-              sx={{fontWeight: 'bold', width: 300}}
+              sx={{ fontWeight: "bold" }}
+              onClick={() => setOpenRaceTable(true)}
             >
               Choose Race
             </Button>
+            {formErrors.RaceId && <p className="text-warning">{formErrors.RaceId}</p>}
             <FormLabel sx={{ mt: 1 }}>
-              { raceName === "" || raceName === "undefined"
+              {raceName === "" || raceName === undefined
                 ? ""
-                : `You have chosen spells: ${raceName}`}
+                : `You have chosen race: ${raceName}`}
             </FormLabel>
+            {openRaceTable && (
+              <RaceDataTable
+                uId={auth.uId}
+                handleRaceSelect={handleRaceSelect}
+                keyValue={keyValueRace}
+                open={true}
+                handleRaceClose={handleRaceClose}
+              />
+            )}
           </Box>
 
-          <Box>
+          <Box sx={{ width: "60%", display: "flex", flexDirection: "column" }}>
             <Button
-              variant="outlined"
+              variant="contained"
               endIcon={<AddIcon />}
               size="large"
-              sx={{fontWeight: 'bold', width: 300}}
+              sx={{ fontWeight: "bold" }}
+              onClick={() => setOpenProfessionTable(true)}
             >
               Choose Profession
             </Button>
+            {formErrors.ProfessionId && <p className="text-warning">{formErrors.ProfessionId}</p>}
             <FormLabel sx={{ mt: 1 }}>
-              {professionName === "" || professionName === "undefined"
+              {professionName === "" || professionName === undefined
                 ? ""
-                : `You have chosen spells: ${professionName}`}
+                : `You have chosen profession: ${professionName}`}
             </FormLabel>
+            {openProfessionTable && (
+              <ProfessionDataTable
+                uId={auth.uId}
+                handleProfessionSelect={handleProfessionSelect}
+                keyValue={keyValueProfession}
+                open={true}
+                handleProfessionClose={handleProfessionClose}
+              />
+            )}
           </Box>
         </Box>
 
