@@ -31,10 +31,8 @@ function reducer(state, action) {
     }
 }
 
-export default function useFetchAssets(params, page, assetName, prefferedLanguage, keyValue) {
+export default function useFetchAssets(params, page, assetName, prefferedLanguage, keyValue, preUrl, sort) {
     const [state, dispatch] = useReducer(reducer, { assets: [], loading: true })
-    //console.log(assetName)
-    //console.log(prefferedLanguage);
 
     useEffect(() => {
       if (assetName === "-") {
@@ -44,7 +42,7 @@ export default function useFetchAssets(params, page, assetName, prefferedLanguag
       const cancelToken = axios.CancelToken.source();
       dispatch({ type: ACTIONS.MAKE_REQUEST });
       axios
-        .get(BASE_URL + assetName.assetName, {
+        .get(BASE_URL + (preUrl ?? "") + assetName.assetName, {
           headers: { "Content-Type": "application/json" },
           cancelToken: cancelToken.token,
           withCredentials: true,
@@ -53,11 +51,14 @@ export default function useFetchAssets(params, page, assetName, prefferedLanguag
             prefferedLanguage:
               LANGUAGEOPTIONS[prefferedLanguage.prefferedLanguage],
             keyValueName: keyValue,
+            sortingByDate: sort.sortingByDate,
+            sortingByLikes: sort.sortingByLikes,
+            ifOnlyMyAssets: sort.ifOnlyMyAssets,
             ...params,
           },
         })
         .then((res) => {
-          console.log(res.data);
+          //console.log(res.data);
           dispatch({
             type: ACTIONS.GET_DATA,
             payload: {
@@ -74,7 +75,7 @@ export default function useFetchAssets(params, page, assetName, prefferedLanguag
       return () => {
         cancelToken.cancel();
       };
-    }, [params, page, assetName, prefferedLanguage, keyValue]);
+    }, [params, page, assetName, prefferedLanguage, keyValue, sort]);
 
     return state
 }

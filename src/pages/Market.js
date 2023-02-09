@@ -1,4 +1,4 @@
-import React, { Component, useState, useParams } from "react";
+import React, { Component, useState, useEffect } from "react";
 import MarketMenu from "../components/market/marketMenu";
 import MarketNavbar from "../components/market/marketNav";
 import MarketContents from "../components/market/marketContents";
@@ -6,11 +6,23 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Pagination } from "@mui/material";
 
+import { useParams } from "react-router-dom";
+
 import "../App.css";
 import useFetchAssets from "../helpers/functions/useFetchAssets";
 
 export function AssetMarket() {
+  const { option, type } = useParams();
+
   const [params, setParams] = useState({});
+
+  const [preUrl, setPreUrl] = useState();
+  const [sort, setSort] = useState({
+    sortingByDate: false,
+    sortingByLikes: false,
+    ifOnlyMyAssets: false,
+  });
+
   const [page, setPage] = useState(1);
   const [assetName, setAssetName] = useState("-");
   const [prefferedLanguage, setPrefferedLanguage] = useState("BOTH");
@@ -20,29 +32,51 @@ export function AssetMarket() {
     page,
     assetName,
     prefferedLanguage,
-    keyValue.keyValue
+    keyValue.keyValue,
+    preUrl,
+    sort
   );
 
+  useEffect(() => {
+    //console.log(option)
+    if (option) {
+      setAssetName(() => {
+        return { assetName: option };
+      });
+      setPage(1);
+      setKeyValue("");
+      setPreUrl();
+    } else if (type) {
+      //console.log(type)
+      setAssetName(() => {
+        return { assetName: type };
+      });
+      setPage(1);
+      setKeyValue("");
+      setPreUrl("character/")
+    }
+  }, [option, type, sort])
+
   function handleKeyValueChange(value) {
-    console.log(value);
+    //console.log(value);
     setKeyValue(() => {
       return { keyValue: value };
     });
   }
 
-  function handleAssetNameChange(e) {
-    e.preventDefault();
-    //console.log(e.target);
-    const param = e.target.getAttribute("name");
-    const value = e.target.value ?? e.target.getAttribute("name");
-    //console.log(param)
-    //console.log(value)
-    setPage(1);
-    setKeyValue("");
-    setAssetName(() => {
-      return { assetName: value };
-    });
-  }
+  // function handleAssetNameChange(e) {
+  //   e.preventDefault();
+  //   //console.log(e.target);
+  //   const param = e.target.getAttribute("name");
+  //   const value = e.target.value ?? e.target.getAttribute("name");
+  //   //console.log(param)
+  //   //console.log(value)
+  //   setPage(1);
+  //   setKeyValue("");
+  //   setAssetName(() => {
+  //     return { assetName: value };
+  //   });
+  // }
 
   function handleLanguageChange(checked) {
     const lang = checked.pl
@@ -50,12 +84,38 @@ export function AssetMarket() {
         ? "BOTH"
         : "POLISH"
       : checked.en
-      ? "ENGLISH"
-      : "BOTH";
+        ? "ENGLISH"
+        : "BOTH";
     setPage(1);
     setPrefferedLanguage(() => {
       return { prefferedLanguage: lang };
     });
+  }
+
+  function handleSortChange(sortVal) {
+    //console.log(sortVal)
+
+    if(sortVal === "date"){
+      setSort({
+        sortingByDate: true,
+        sortingByLikes: false,
+        ifOnlyMyAssets: false,
+      })
+    } else if(sortVal === "likes"){
+      setSort({
+        sortingByDate: false,
+        sortingByLikes: true,
+        ifOnlyMyAssets: false,
+      })
+    } else {
+      setSort({
+        sortingByDate: false,
+        sortingByLikes: false,
+        ifOnlyMyAssets: false,
+      })
+    }
+    
+
   }
 
   function handleParamChange(e) {
@@ -91,7 +151,7 @@ export function AssetMarket() {
           height: "100%",
         }}
       >
-        <MarketNavbar onAssetNameChange={handleAssetNameChange} />
+        <MarketNavbar option={option} type={type} />
       </Box>
       <Box
         sx={{
@@ -105,6 +165,7 @@ export function AssetMarket() {
           onParamChange={handleParamChange}
           onLanguageChange={handleLanguageChange}
           onKeyValueChange={handleKeyValueChange}
+          onSortChange={handleSortChange}
           assetName={assetName}
           keyValue={keyValue}
         />

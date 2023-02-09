@@ -36,7 +36,11 @@ import {
 
 function getCategory(cat) {
   switch (cat) {
-    case "character":
+    case "playable":
+      return character;
+    case "npc":
+      return character;
+    case "monster":
       return character;
     case "item":
       return item;
@@ -146,6 +150,7 @@ function valuesTable(title, array, asset) {
 
 export default function MarketItem({ assetName, asset }) {
   const category = getCategory(assetName.assetName ?? assetName);
+  
   return (
     <Box
       sx={{

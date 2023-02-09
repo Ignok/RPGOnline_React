@@ -90,14 +90,11 @@ function App() {
           </Route>
 
           {/* ASSETS */}
-          <Route
-            path="/assets"
-            element={
-              // <AssetProvider>
-              <AssetMarket />
-              // </AssetProvider>
-            }
-          />
+          <Route path="/assets" element={ <AssetMarket /> } >
+              <Route index element={<AssetMarket />} />
+              <Route path=":option" element={<AssetMarket />} />
+              <Route path="character/:type" element={<AssetMarket />} />
+          </Route>
           <Route
             element={
               <RequireAuth
@@ -109,7 +106,9 @@ function App() {
             <Route path="/assets/create/item" element={<ItemForm />} />
             <Route path="/assets/create/race" element={<RaceForm />} />
             <Route path="/assets/create/profession" element={<ProfessionForm />} />
-            <Route path="/assets/create/character" element={<CharacterForm />} />
+            <Route path="/assets/create/playable" element={<CharacterForm />} />
+            <Route path="/assets/create/npc" element={<CharacterForm />} />
+            <Route path="/assets/create/monster" element={<CharacterForm />} />
           </Route>
 
           <Route

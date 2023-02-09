@@ -20,15 +20,20 @@ import { Success } from "../../../helpers/pop-ups/success";
 const tags = [
     {
         value: 'none',
-        label: 'None of the following',
+        label: 'None of the following'
     },
     {
         value: 'lore',
-        label: 'Lore',
+        label: 'Lore'
     },
     {
         value: 'help',
-        label: 'Help',
+        label: 'Help'
+    },
+    {
+        value: 'notive',
+        label: 'Notice',
+        role: 'admin'
     },
 ];
 
@@ -182,7 +187,7 @@ export default function PostDiscussionForm() {
                     helperText="Choose the tag that best fits your post"
                     variant="standard"
                 >
-                    {tags.map((tag) => (
+                    {tags.filter((tag) => !tag.role || tag.role === auth.role).map((tag) => (
                         <MenuItem key={tag.value} value={tag.value}>
                             {tag.label}
                         </MenuItem>

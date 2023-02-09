@@ -6,7 +6,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -26,16 +26,18 @@ import { TransitionGroup } from "react-transition-group";
 import Collapse from "@mui/material/Collapse";
 
 const categories = [
-  { label: "character", icon: <CharacterIcon fontSize="small" name={"character"} />, },
-  { label: "npc", icon: <NPCIcon fontSize="small" name={"npc"} /> },
-  { label: "monster", icon: <MonsterIcon fontSize="small" name={"monster"} /> },
-  { label: "race", icon: <RaceIcon fontSize="small" name={"race"} /> },
-  { label: "profession", icon: <ProfessionIcon fontSize="small" name={"profession"} />, },
-  { label: "item", icon: <ItemIcon fontSize="small" name={"item"} /> },
-  { label: "spell", icon: <SpellIcon fontSize="small" name={"spell"} /> },
+  { url:"character/playable", label: "playable", icon: <CharacterIcon fontSize="small" name={"playable"} />, },
+  { url:"character/npc", label: "npc", icon: <NPCIcon fontSize="small" name={"npc"} /> },
+  { url:"character/monster", label: "monster", icon: <MonsterIcon fontSize="small" name={"monster"} /> },
+  { url:"race", label: "race", icon: <RaceIcon fontSize="small" name={"race"} /> },
+  { url:"profession", label: "profession", icon: <ProfessionIcon fontSize="small" name={"profession"} />, },
+  { url:"item", label: "item", icon: <ItemIcon fontSize="small" name={"item"} /> },
+  { url:"spell", label: "spell", icon: <SpellIcon fontSize="small" name={"spell"} /> },
 ];
 
-export default function MarketNavbar({ onAssetNameChange }) {
+export default function MarketNavbar({ option, type }) {
+  const navigate = useNavigate();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -70,36 +72,36 @@ export default function MarketNavbar({ onAssetNameChange }) {
     </Menu>
   );
 
-  const [activeButton, setActiveButton] = useState(null);
-  const [params, setParams] = useState({});
+  //const [activeButton, setActiveButton] = useState(null);
+  //const [params, setParams] = useState({});
 
-  function handleChange(e) {
-    setActiveButton(e.target.value);
-    e.preventDefault();
-    const param = e.target.getAttribute("name");
-    const value = e.target.value;
-    // setPage(1)
-    onAssetNameChange(e);
-    setParams((prevParams) => {
-      return { ...prevParams, [param]: value };
-    });
-  }
+  // function handleChange(e) {
+  //   setActiveButton(e.target.value);
+  //   e.preventDefault();
+  //   const param = e.target.getAttribute("name");
+  //   const value = e.target.value;
+  //   // setPage(1)
+  //   onAssetNameChange(e);
+  //   setParams((prevParams) => {
+  //     return { ...prevParams, [param]: value };
+  //   });
+  // }
 
   const assetsButtons = (
     <ButtonGroup orientation="vertical" variant="text">
-      {categories.map(({ label, icon }) => {
+      {categories.map(({url, label, icon }) => {
         return (
           <Button
             key={label}
             startIcon={
-              activeButton === label ? <ArrowRightIcon name={label} /> : icon
+              option === label || type === label ? <ArrowRightIcon name={label} /> : icon
             }
             value={label}
             name={label}
             id={label}
             sx={{ minHeight: 45 }}
-            onClick={onAssetNameChange}
-            color={activeButton === label ? "secondary" : "primary"}
+            onClick={() => navigate(url)}
+            color={option === label || type === label ? "secondary" : "primary"}
           >
             {label}
           </Button>

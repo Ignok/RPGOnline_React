@@ -46,6 +46,7 @@ import { characterAttributes } from "../../../../helpers/enums/assets";
 
 import GenerateLore from "./generateLore";
 import GenerateAttributes from "./generateAttributes";
+import { Success } from "../../../../helpers/pop-ups/success";
 
 export default function CharacterForm() {
   const { auth } = useAuth();
@@ -217,6 +218,7 @@ export default function CharacterForm() {
         jsonReq: values.JsonReq,
         raceId: values.RaceId,
         professionId: values.ProfessionId,
+        type: "playable"
         //+ type
       })
         .then((res) => {
@@ -236,6 +238,10 @@ export default function CharacterForm() {
         .catch((e) => {
           console.log("oops");
           console.log(e);
+          Success.fire({
+            icon: "error",
+            title: "Something went wrong with uploading",
+        });
         });
     }
   }

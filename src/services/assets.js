@@ -196,7 +196,7 @@ export function createCharacter({
   jsonReq,
   raceId,
   professionId,
-  //+ type
+  type
 }) {
   return makeRequest(`Character`, {
     method: "POST",
@@ -210,8 +210,8 @@ export function createCharacter({
       gold: gold,
       jsonRequest: jsonReq,
       race: raceId,
-      profession: professionId
-      //+ type
+      profession: professionId,
+      type: type
     },
   });
 }

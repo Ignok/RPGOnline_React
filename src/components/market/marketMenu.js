@@ -49,14 +49,16 @@ export default function AssetsMenu({
   onParamChange,
   onLanguageChange,
   onKeyValueChange,
+  onSortChange,
   assetName,
   keyValue,
 }) {
   const [sortType, setSortType] = useState("");
   const handleSelectSort = (e) => {
-    console.log(e);
+    e.preventDefault();
+    
     setSortType(e.target.value ?? "");
-    //pass value
+    onSortChange(e.target.value);
   };
 
   const sortingRadio = (
@@ -69,19 +71,23 @@ export default function AssetsMenu({
         }}
       >
         <FormLabel>Sort by</FormLabel>
-        <IconButton aria-label="cancel" onClick={handleSelectSort} size="small">
+        <IconButton value="cancel" aria-label="cancel" onClick={handleSelectSort} size="small">
           <ClearIcon fontSize="small" />
         </IconButton>
       </Box>
-      <RadioGroup value={sortType} row>
+      <RadioGroup
+        onChange={handleSelectSort}
+        value={sortType}
+        row
+      >
         <FormControlLabel
           value="date"
-          control={<Radio size="small" onClick={handleSelectSort} />}
+          control={<Radio size="small" />}
           label="Date"
         />
         <FormControlLabel
           value="likes"
-          control={<Radio size="small" onClick={handleSelectSort} />}
+          control={<Radio size="small" />}
           label="Likes"
         />
       </RadioGroup>
