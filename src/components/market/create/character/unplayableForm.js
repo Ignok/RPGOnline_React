@@ -35,8 +35,9 @@ import ClearIcon from "@mui/icons-material/Clear";
 
 import SpellDataTable from "../equipment/selectSpell";
 import ItemDataTable from "../equipment/selectItem";
-import RaceDataTable from "./selectRace";
-import ProfessionDataTable from "./selectProfession";
+import RaceDataTable from "./selectors/selectRace";
+import ProfessionDataTable from "./selectors/selectProfession";
+import NumberInput from "../numberInput";
 
 import { createCharacter } from "../../../../services/assets";
 import { useAsyncFn } from "../../../../hooks/useAsync";
@@ -44,11 +45,16 @@ import { useAsyncFn } from "../../../../hooks/useAsync";
 import { attributes } from "../../../../helpers/enums/attributes";
 import { characterAttributes } from "../../../../helpers/enums/assets";
 
-import GenerateLore from "./generateLore";
-import GenerateAttributes from "./generateAttributes";
+import GenerateLore from "./generators/generateLore";
+import GenerateAttributes from "./generators/generateAttributes";
 import { Success } from "../../../../helpers/pop-ups/success";
 
-export default function CharacterForm() {
+const minAttrInput = 0;
+const maxAttrInput = 20;
+const minSkillInput = -6;
+const maxSkillInput = 6;
+
+export default function UnplayableForm({ type }) {
   const { auth } = useAuth();
   const [values, setValues] = useState({
     Name: "",
@@ -59,11 +65,25 @@ export default function CharacterForm() {
     RaceId: 0,
     ProfessionId: 0,
     JsonReq: {
-      Motivation: "",
-      Characteristics: "",
-      Attributes: "",
-      Skillset: null,
-    }
+      Motivation: null,
+      Characteristics: null,
+      Attributes: {
+        Strength: 0,
+        Dexterity: 0,
+        Intelligence: 0,
+        Charisma: 0,
+        Health: 0,
+        Mana: 0,
+      },
+      Skillset: {
+        Weapon: 0,
+        Armor: 0,
+        Gadget: 0,
+        Companion: 0,
+        Psyche: 0,
+      },
+    },
+    Type: type,
   });
 
   const { execute: createCharacterFn } = useAsyncFn(createCharacter);
@@ -102,7 +122,6 @@ export default function CharacterForm() {
     }
     console.log("min " + minKey);
     return minKey;
-    //setKeyValueRace(minKey);
   }
 
   const [keyValueProfession, setKeyValueProfession] = useState("-");
@@ -123,24 +142,113 @@ export default function CharacterForm() {
 
   const handleMotivationChange = async (motivation) => {
     values.JsonReq.Motivation = motivation;
-  }
+  };
 
   const handleCharacteristicsChange = async (characteristics) => {
     values.JsonReq.Characteristics = characteristics;
-  }
+  };
 
   const handleAttributesChange = async (attributes) => {
     await setMinAttr(attributes).then((res) => {
-      console.log(res);
       setKeyValueRace(res);
     });
     await setMaxAttr(attributes).then((res) => {
-      console.log(res);
       setKeyValueProfession(res);
     });
     values.JsonReq.Attributes = attributes;
     handleRaceSelect("", 0);
     handleProfessionSelect("", 0);
+  };
+
+  function handleSkillsetChange() {
+    Object.values(values.JsonReq.Skillset).map((skill) => {
+      if (skill !== 0) {
+        console.log(skill);
+        return;
+      }
+    });
+    values.JsonReq.Skillset = null;
+  }
+
+  const [counter, setCounter] = useState({
+    Strength: 0,
+    Dexterity: 0,
+    Intelligence: 0,
+    Charisma: 0,
+    Health: 0,
+    Mana: 0,
+    Gold: 0,
+    Weapon: 0,
+    Armor: 0,
+    Gadget: 0,
+    Companion: 0,
+    Psyche: 0,
+  });
+
+  const handleIncrement = (event) => {
+    const target = event.currentTarget.id;
+    const tmp = counter[target];
+    let newCount = 0;
+    if (target === "Gold") {
+      let maxImput = 100;
+      newCount = tmp + 1 >= maxImput ? maxImput : tmp + 1;
+      values.Gold = newCount;
+    } else if (target in values.JsonReq.Attributes) {
+      newCount = tmp + 1 >= maxAttrInput ? maxAttrInput : tmp + 1;
+      values.JsonReq.Attributes[`${target}`] = newCount;
+      handleAttributesChange(values.JsonReq.Attributes);
+    } else if (target in values.JsonReq.Skillset) {
+      newCount = tmp + 1 >= maxSkillInput ? maxSkillInput : tmp + 1;
+      values.JsonReq.Skillset[`${target}`] = newCount;
+    }
+    setCounter((values) => ({
+      ...values,
+      [`${target}`]: newCount,
+    }));
+  };
+
+  const handleDecrement = (event) => {
+    const target = event.currentTarget.id;
+    const tmp = counter[target];
+    let newCount = 0;
+    if (target === "Gold") {
+      newCount = tmp - 1 <= 0 ? 0 : tmp - 1;
+      values.Gold = newCount;
+    } else if (target in values.JsonReq.Attributes) {
+      newCount = tmp - 1 <= minAttrInput ? minAttrInput : tmp - 1;
+      values.JsonReq.Attributes[`${target}`] = newCount;
+      handleAttributesChange(values.JsonReq.Attributes);
+    } else if (target in values.JsonReq.Skillset) {
+      newCount = tmp - 1 <= minSkillInput ? minSkillInput : tmp - 1;
+      values.JsonReq.Skillset[`${target}`] = newCount;
+    }
+    setCounter((values) => ({
+      ...values,
+      [`${target}`]: newCount,
+    }));
+  };
+
+  const handleNumberChange = (event) => {
+    const value = event.target.value.replace(/\D/g, "");
+    const target = event.currentTarget.id;
+    const result = Math.max(
+      minAttrInput,
+      target === "Gold"
+        ? Math.min(100, Number(value))
+        : Math.min(maxAttrInput, Number(value))
+    );
+    if (target === "Gold") {
+      values.Gold = result;
+    } else if (target in values.JsonReq.Attributes) {
+      values.JsonReq.Attributes[`${target}`] = result;
+      handleAttributesChange(values.JsonReq.Attributes);
+    } else if (target in values.JsonReq.Skillset) {
+      values.JsonReq.Skillset[`${target}`] = result;
+    }
+    setCounter((values) => ({
+      ...values,
+      [`${event.target.name}`]: result,
+    }));
   };
 
   const [openRaceTable, setOpenRaceTable] = useState(false);
@@ -181,20 +289,74 @@ export default function CharacterForm() {
     } else if (values.Description.length < 5) {
       errors.Talent = "Description is too short";
     }
-    if(!values.JsonReq.Attributes){
-      errors.Attributes = "You have to roll for attribtues!";
+    if (
+      values.JsonReq.Attributes.Strength < minAttrInput ||
+      values.JsonReq.Attributes.Strength > maxAttrInput
+    ) {
+      errors.Strength = `Allowed input: from ${minAttrInput} to ${maxAttrInput}`;
     }
-    if(!values.JsonReq.Motivation){
-      errors.Motivation = "For playable characters motivation is required";
+    if (
+      values.JsonReq.Attributes.Dexterity < minAttrInput ||
+      values.JsonReq.Attributes.Dexterity > maxAttrInput
+    ) {
+      errors.Dexterity = `Allowed input: from ${minAttrInput} to ${maxAttrInput}`;
     }
-    if(!values.JsonReq.Characteristics){
-      errors.Characteristics = "For playable characters characteristics are required";
+    if (
+      values.JsonReq.Attributes.Intelligence < minAttrInput ||
+      values.JsonReq.Attributes.Intelligence > maxAttrInput
+    ) {
+      errors.Intelligence = `Allowed input: from ${minAttrInput} to ${maxAttrInput}`;
     }
-    if (values.ProfessionId === 0) {
-      errors.ProfessionId = "Profession is required";
+    if (
+      values.JsonReq.Attributes.Charisma < minAttrInput ||
+      values.JsonReq.Attributes.Charisma > maxAttrInput
+    ) {
+      errors.Charisma = `Allowed input: from ${minAttrInput} to ${maxAttrInput}`;
     }
-    if (values.RaceId === 0) {
-      errors.RaceId = "Race is required";
+    if (
+      values.JsonReq.Attributes.Health < minAttrInput ||
+      values.JsonReq.Attributes.Health > maxAttrInput
+    ) {
+      errors.Health = `Allowed input: from ${minAttrInput} to ${maxAttrInput}`;
+    }
+    if (
+      values.JsonReq.Attributes.Mana < minAttrInput ||
+      values.JsonReq.Attributes.Mana > maxAttrInput
+    ) {
+      errors.Mana = `Allowed input: from ${minAttrInput} to ${maxAttrInput}`;
+    }
+    if (values.Gold < minAttrInput || values.Gold > 100) {
+      errors.Gold = `Allowed input: from ${minAttrInput} to 100`;
+    }
+    if (
+      values.JsonReq.Skillset.Weapon < minSkillInput ||
+      values.JsonReq.Skillset.Weapon > maxSkillInput
+    ) {
+      errors.Weapon = `Allowed input: from ${minSkillInput} to ${maxSkillInput}`;
+    }
+    if (
+      values.JsonReq.Skillset.Armor < minSkillInput ||
+      values.JsonReq.Skillset.Armor > maxSkillInput
+    ) {
+      errors.Armor = `Allowed input: from ${minSkillInput} to ${maxSkillInput}`;
+    }
+    if (
+      values.JsonReq.Skillset.Gadget < minSkillInput ||
+      values.JsonReq.Skillset.Gadget > maxSkillInput
+    ) {
+      errors.Gadget = `Allowed input: from ${minSkillInput} to ${maxSkillInput}`;
+    }
+    if (
+      values.JsonReq.Skillset.Companion < minSkillInput ||
+      values.JsonReq.Skillset.Companion > maxSkillInput
+    ) {
+      errors.Companion = `Allowed input: from ${minSkillInput} to ${maxSkillInput}`;
+    }
+    if (
+      values.JsonReq.Skillset.Psyche < minSkillInput ||
+      values.JsonReq.Skillset.Psyche > maxSkillInput
+    ) {
+      errors.Psyche = `Allowed input: from ${minSkillInput} to ${maxSkillInput}`;
     }
 
     setFormErrors(errors);
@@ -214,16 +376,15 @@ export default function CharacterForm() {
         isPublic: values.IsPublic,
         language: values.Language,
         description: values.Description,
-        gold: 0, //bo playable postać
+        gold: values.Gold,
         jsonReq: values.JsonReq,
         raceId: values.RaceId,
         professionId: values.ProfessionId,
-        type: "playable"
-        //+ type
+        type: values.Type,
       })
         .then((res) => {
           Swal.fire({
-            title: "Your new character was added successfully!",
+            title: `Your new ${values.type} was added successfully!`,
             width: 450,
             padding: "3em",
             color: "#716add",
@@ -241,7 +402,7 @@ export default function CharacterForm() {
           Success.fire({
             icon: "error",
             title: "Something went wrong with uploading",
-        });
+          });
         });
     }
   }
@@ -297,14 +458,71 @@ export default function CharacterForm() {
           )}
         </FormControl>
 
-        <GenerateLore type="characteristics" handleChange={handleCharacteristicsChange}/>
-        {formErrors.Characteristics && <p className="text-warning">{formErrors.Characteristics}</p>}
+        <GenerateLore
+          type="characteristics"
+          handleChange={handleCharacteristicsChange}
+        />
+        <GenerateLore type="motivation" handleChange={handleMotivationChange} />
 
-        <GenerateLore type="motivation" handleChange={handleMotivationChange}/>
-        {formErrors.Motivation && <p className="text-warning">{formErrors.Motivation}</p>}
-
-        <GenerateAttributes handleAttributesChange={handleAttributesChange} />
-        {formErrors.Attributes && <p className="text-warning">{formErrors.Attributes}</p>}
+        <Box sx={{ mt: 2 }}>
+          <FormLabel>Attributes:</FormLabel>
+          <Box sx={{ display: "flex", flexDirection: "row", gap: 3 }}>
+            <NumberInput
+              title={"Strength"}
+              id={"Strength"}
+              value={values?.JsonReq.Attributes.Strength}
+              formErrors={formErrors.Strength}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+            <NumberInput
+              title={"Dexterity"}
+              id={"Dexterity"}
+              value={values?.JsonReq.Attributes.Dexterity}
+              formErrors={formErrors.Dexterity}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+            <NumberInput
+              title={"Intelligence"}
+              id={"Intelligence"}
+              value={values?.JsonReq.Attributes.Intelligence}
+              formErrors={formErrors.Intelligence}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+            <NumberInput
+              title={"Charisma"}
+              id={"Charisma"}
+              value={values?.JsonReq.Attributes.Charisma}
+              formErrors={formErrors.Charisma}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+            <NumberInput
+              title={"Health"}
+              id={"Health"}
+              value={values?.JsonReq.Attributes.Health}
+              formErrors={formErrors.Health}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+            <NumberInput
+              title={"Mana"}
+              id={"Mana"}
+              value={values?.JsonReq.Attributes.Mana}
+              formErrors={formErrors.Mana}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+          </Box>
+        </Box>
 
         <Box
           sx={{
@@ -326,7 +544,9 @@ export default function CharacterForm() {
             >
               Choose Race
             </Button>
-            {formErrors.RaceId && <p className="text-warning">{formErrors.RaceId}</p>}
+            {formErrors.RaceId && (
+              <p className="text-warning">{formErrors.RaceId}</p>
+            )}
             <FormLabel sx={{ mt: 1 }}>
               {raceName === "" || raceName === undefined
                 ? ""
@@ -353,7 +573,9 @@ export default function CharacterForm() {
             >
               Choose Profession
             </Button>
-            {formErrors.ProfessionId && <p className="text-warning">{formErrors.ProfessionId}</p>}
+            {formErrors.ProfessionId && (
+              <p className="text-warning">{formErrors.ProfessionId}</p>
+            )}
             <FormLabel sx={{ mt: 1 }}>
               {professionName === "" || professionName === undefined
                 ? ""
@@ -370,6 +592,72 @@ export default function CharacterForm() {
             )}
           </Box>
         </Box>
+
+        <Box sx={{ mb: 2 }}>
+          <FormLabel>Skillset</FormLabel>
+          <Typography sx={{ fontSize: "small" }}>
+            {
+              "(caution: directly provided skillset will override skillset from profession)"
+            }
+          </Typography>
+          <Box sx={{ display: "flex", flexDirection: "row", gap: 3, mt: 1 }}>
+            <NumberInput
+              title={"Weapon"}
+              id={"Weapon"}
+              value={values?.JsonReq.Skillset.Weapon}
+              formErrors={formErrors.Weapon}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+            <NumberInput
+              title={"Armor"}
+              id={"Armor"}
+              value={values?.JsonReq.Skillset.Armor}
+              formErrors={formErrors.Armor}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+            <NumberInput
+              title={"Gadget"}
+              id={"Gadget"}
+              value={values?.JsonReq.Skillset.Gadget}
+              formErrors={formErrors.Gadget}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+            <NumberInput
+              title={"Companion"}
+              id={"Companion"}
+              value={values?.JsonReq.Skillset.Companion}
+              formErrors={formErrors.Companion}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+            <NumberInput
+              title={"Psyche"}
+              id={"Psyche"}
+              value={values?.JsonReq.Skillset.Psyche}
+              formErrors={formErrors.Psyche}
+              handleNumberChange={handleNumberChange}
+              handleIncrement={handleIncrement}
+              handleDecrement={handleDecrement}
+            />
+          </Box>
+        </Box>
+
+        <NumberInput
+          title={"Gold"}
+          id={"Gold"}
+          value={values.Gold}
+          formErrors={formErrors.Gold}
+          handleNumberChange={handleNumberChange}
+          handleIncrement={handleIncrement}
+          handleDecrement={handleDecrement}
+        />
 
         <Box sx={{ py: 1 }}>
           <FormLabel>Choose language</FormLabel>
@@ -435,6 +723,9 @@ export default function CharacterForm() {
             color="success"
             endIcon={<ArrowForwardIosIcon />}
             sx={{ width: "30%" }}
+            onClick={() => {
+              console.log(values);
+            }}
           >
             Submit
           </Button>

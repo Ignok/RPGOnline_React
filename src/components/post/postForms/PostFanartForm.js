@@ -38,7 +38,7 @@ const tags = [
         label: 'Cosplay'
     },
     {
-        value: 'notive',
+        value: 'notice',
         label: 'Notice',
         role: 'admin'
     },

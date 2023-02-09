@@ -13,7 +13,8 @@ import SpellForm from "./components/market/create/spellForm";
 import ItemForm from "./components/market/create/itemForm";
 import RaceForm from "./components/market/create/raceForm";
 import ProfessionForm from "./components/market/create/professionForm";
-import CharacterForm from "./components/market/create/character/characterForm";
+import CharacterForm from "./components/market/create/character/playableForm";
+import UnplayableForm from "./components/market/create/character/unplayableForm";
 import { PostProvider } from "./contexts/postContext";
 import { PostDetails } from "./components/post/postDetails";
 import {
@@ -107,8 +108,8 @@ function App() {
             <Route path="/assets/create/race" element={<RaceForm />} />
             <Route path="/assets/create/profession" element={<ProfessionForm />} />
             <Route path="/assets/create/playable" element={<CharacterForm />} />
-            <Route path="/assets/create/npc" element={<CharacterForm />} />
-            <Route path="/assets/create/monster" element={<CharacterForm />} />
+            <Route path="/assets/create/npc" element={<UnplayableForm type={"npc"} />} />
+            <Route path="/assets/create/monster" element={<UnplayableForm type={"monster"} />} />
           </Route>
 
           <Route

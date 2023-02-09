@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -45,6 +46,8 @@ function getCategory(cat) {
     case "item":
       return item;
     case "profession":
+      return profession;
+    case "character-profession":
       return profession;
     case "race":
       return race;
@@ -149,8 +152,11 @@ function valuesTable(title, array, asset) {
 }
 
 export default function MarketItem({ assetName, asset }) {
+  const showSkillset = (
+    assetName === "character-profession" ? false : true
+  );
   const category = getCategory(assetName.assetName ?? assetName);
-  
+
   return (
     <Box
       sx={{
@@ -213,11 +219,9 @@ export default function MarketItem({ assetName, asset }) {
             </Box>
           );
         })}
-
-        {category === profession && (
+        {category === profession && showSkillset && (
           <Box>{valuesTable("Skill modifiers", professionModifier, asset)}</Box>
         )}
-
         {category === character && (
           <Box>
             {/* {console.log(asset)} */}
@@ -227,7 +231,7 @@ export default function MarketItem({ assetName, asset }) {
                 characterAttributes,
                 asset.jsonResponse?.attributes
               )}
-            {(asset.jsonResponse?.skillset !== undefined && asset.profession === undefined) &&
+            {asset.jsonResponse?.skillset !== undefined &&
               valuesTable(
                 "Skillset",
                 characterSkillset,
@@ -245,7 +249,6 @@ export default function MarketItem({ assetName, asset }) {
               )}
           </Box>
         )}
-
         {asset.race !== undefined && asset.race !== null && (
           <Box>
             <Divider
@@ -266,7 +269,6 @@ export default function MarketItem({ assetName, asset }) {
             />
           </Box>
         )}
-
         {asset.profession !== undefined && asset.profession !== null && (
           <Box>
             <Divider
@@ -282,12 +284,11 @@ export default function MarketItem({ assetName, asset }) {
             </Divider>
             <MarketItem
               key={asset.profession}
-              assetName={"profession"}
+              assetName={"character-profession"}
               asset={asset.profession}
             />
           </Box>
         )}
-
         {asset.itemList?.length > 0 && (
           <Box>
             <Divider
@@ -324,7 +325,6 @@ export default function MarketItem({ assetName, asset }) {
             })}
           </Box>
         )}
-
         {asset.spellList?.length > 0 && (
           <Box>
             <Divider

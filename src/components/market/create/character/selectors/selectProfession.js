@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
 
-import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
+import HelperTooltip from "../../../../../helpers/pop-ups/helperTooltip";
 import ClearIcon from "@mui/icons-material/Clear";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
@@ -12,7 +12,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 
-import useFetchProfessions from "../../../../helpers/functions/useFetchProfessionForCharacter";
+import useFetchProfessions from "../../../../../helpers/functions/useFetchProfessionForCharacter";
 
 const columns = [
   {
@@ -41,11 +41,41 @@ const columns = [
     minWidth: 140,
     flex: 1,
   },
-  { field: "weaponMod", headerName: "Weapon", type: 'number', maxWidth: 65, flex: 1 },
-  { field: "armorMod", headerName: "Armor", type: 'number', maxWidth: 65, flex: 1 },
-  { field: "gadgetMod", headerName: "Gadget", type: 'number', maxWidth: 65, flex: 1 },
-  { field: "companionMod", headerName: "Companion", type: 'number', maxWidth: 90, flex: 1 },
-  { field: "psycheMod", headerName: "Psyche", type: 'number', maxWidth: 65, flex: 1 },
+  {
+    field: "weaponMod",
+    headerName: "Weapon",
+    type: "number",
+    maxWidth: 65,
+    flex: 1,
+  },
+  {
+    field: "armorMod",
+    headerName: "Armor",
+    type: "number",
+    maxWidth: 65,
+    flex: 1,
+  },
+  {
+    field: "gadgetMod",
+    headerName: "Gadget",
+    type: "number",
+    maxWidth: 65,
+    flex: 1,
+  },
+  {
+    field: "companionMod",
+    headerName: "Companion",
+    type: "number",
+    maxWidth: 90,
+    flex: 1,
+  },
+  {
+    field: "psycheMod",
+    headerName: "Psyche",
+    type: "number",
+    maxWidth: 65,
+    flex: 1,
+  },
   { field: "language", headerName: "Language", maxWidth: 90, flex: 1 },
 ];
 
@@ -68,7 +98,10 @@ export default function ProfessionDataTable({
   };
 
   const [keyValProfession, setKeyValRace] = useState(keyValue);
-  const { loading, error, initial, professions } = useFetchProfessions(keyValProfession, uId);
+  const { loading, error, initial, professions } = useFetchProfessions(
+    keyValProfession,
+    uId
+  );
 
   const [select, setSelect] = useState(0);
 
@@ -96,7 +129,9 @@ export default function ProfessionDataTable({
           }}
         >
           <Box>
-            <FormLabel sx={{ mb: 2, fontWeight: "bold" }}>Choose Profession</FormLabel>
+            <FormLabel sx={{ mb: 2, fontWeight: "bold" }}>
+              Choose Profession
+            </FormLabel>
             <HelperTooltip
               text={`Attribute with highest value will determine your character's Profession. 
               Profession defines proficiency in using various skills (weapons, gadgets etc.). 
@@ -120,7 +155,10 @@ export default function ProfessionDataTable({
               onSelectionModelChange={(e) => {
                 const id = e[0];
                 setProfessionName(findProfession(professions, e[0])?.name);
-                handleProfessionSelect(findProfession(professions, e[0])?.name, e[0]);
+                handleProfessionSelect(
+                  findProfession(professions, e[0])?.name,
+                  e[0]
+                );
                 setSelect(e[0]);
               }}
               selectionModel={select}

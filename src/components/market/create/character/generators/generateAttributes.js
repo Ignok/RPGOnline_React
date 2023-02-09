@@ -13,11 +13,11 @@ import { Stack } from "@mui/material";
 
 import Icon from "@mui/material/Icon";
 
-import { useAsyncFn } from "../../../../hooks/useAsync";
-import { characterAttributes } from "../../../../helpers/enums/assets";
-import { getRandomAttributes } from "../../../../services/assets";
+import { useAsyncFn } from "../../../../../hooks/useAsync";
+import { characterAttributes } from "../../../../../helpers/enums/assets";
+import { getRandomAttributes } from "../../../../../services/assets";
 
-export default function GenerateAttributes({handleAttributesChange}) {
+export default function GenerateAttributes({ handleAttributesChange }) {
   const { execute: getRandomAttributesFn } = useAsyncFn(getRandomAttributes);
   const [value, setValue] = useState("");
 
@@ -25,7 +25,7 @@ export default function GenerateAttributes({handleAttributesChange}) {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if(value !== ""){
+    if (value !== "") {
       handleAttributesChange(value);
     }
   }, [value]);
@@ -39,7 +39,7 @@ export default function GenerateAttributes({handleAttributesChange}) {
       })
       .catch((err) => {
         console.log(err);
-      });   
+      });
   }
 
   return (

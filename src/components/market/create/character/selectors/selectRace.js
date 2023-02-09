@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
 
-import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
+import HelperTooltip from "../../../../../helpers/pop-ups/helperTooltip";
 import ClearIcon from "@mui/icons-material/Clear";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
@@ -12,9 +12,9 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 
-import { useAsyncFn } from "../../../../hooks/useAsync";
-import { getItemsForCharacter } from "../../../../services/assets";
-import useFetchRaces from "../../../../helpers/functions/useFetchRaceForCharacter";
+import { useAsyncFn } from "../../../../../hooks/useAsync";
+import { getItemsForCharacter } from "../../../../../services/assets";
+import useFetchRaces from "../../../../../helpers/functions/useFetchRaceForCharacter";
 
 const columns = [
   {

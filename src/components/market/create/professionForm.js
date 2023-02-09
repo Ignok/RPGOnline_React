@@ -201,10 +201,7 @@ export default function ProfessionForm() {
     if (values.GadgetMod < minValueInput || values.GadgetMod > maxValueInput) {
       errors.GadgetMod = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
     }
-    if (
-      values.CompanionMod < minValueInput ||
-      values.CompanionMod > maxValueInput
-    ) {
+    if (values.CompanionMod < minValueInput || values.CompanionMod > maxValueInput) {
       errors.CompanionMod = `Allowed input: from ${minValueInput} to ${maxValueInput}`;
     }
     if (values.PsycheMod < minValueInput || values.PsycheMod > maxValueInput) {

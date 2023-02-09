@@ -9,22 +9,22 @@ import Tooltip from "@mui/material/Tooltip";
 import Slide from "@mui/material/Slide";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
-import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
+import HelperTooltip from "../../../../../helpers/pop-ups/helperTooltip";
 import ClearIcon from "@mui/icons-material/Clear";
 import CasinoIcon from "@mui/icons-material/Casino";
 
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
 
-import { useAsyncFn } from "../../../../hooks/useAsync";
+import { useAsyncFn } from "../../../../../hooks/useAsync";
 import {
   getRandomMotivation,
   getRandomCharacteristics,
-} from "../../../../services/assets";
+} from "../../../../../services/assets";
 import {
   getMotivation,
   getCharacteristics,
-} from "../../../../helpers/functions/getLore";
+} from "../../../../../helpers/functions/getLore";
 import { Casino } from "@mui/icons-material";
 import Icon from "@mui/material/Icon";
 
@@ -92,7 +92,7 @@ export default function GenerateLore({ type, handleChange }) {
           //alignItems: "baseline",
         }}
       >
-        <Box sx={{ width: "100%", mb: 2, height:"100%" }}>
+        <Box sx={{ width: "100%", mb: 2, height: "100%" }}>
           <FormLabel sx={{ mb: 1, textTransform: "capitalize" }}>
             {type}
           </FormLabel>
