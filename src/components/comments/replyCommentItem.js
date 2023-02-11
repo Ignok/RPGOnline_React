@@ -23,24 +23,45 @@ import CommentForm from "./commentForm";
 import { useAsyncFn } from "../../hooks/useAsync"
 import { createComment } from "../../services/comments"
 import { getImage } from "../../helpers/functions/getImage";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import "../../App.css";
 import useAuth from "../../hooks/useAuth";
+import {ROLES} from '../../helpers/enums/roles'
+import { deleteComment } from "../../services/comments";
 
 export default function CommentItem(props) {
 
   const { auth } = useAuth();
-  const { post, getReplies, createLocalComment } = usePost()
+  const {
+    post,
+    getReplies,
+    createLocalComment,
+    deleteLocalComment
+  } = usePost()
   const childComments = getReplies(props.commentId)
   const createCommentFn = useAsyncFn(createComment)
+  const deleteCommentFn = useAsyncFn(deleteComment)
   const [isReplying, setIsReplying] = useState(false)
 
   function onCommentReply(content) {
     return createCommentFn
-      .execute({uId: auth.uId, postId: post.postId, content, responseCommentId: props.commentId })
+      .execute({ uId: auth.uId, postId: post.postId, content, responseCommentId: props.commentId })
       .then(comment => {
         setIsReplying(false)
         createLocalComment(comment)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  function onCommentDelete() {
+    return deleteCommentFn
+      .execute({ commentId: props.commentId })
+      .then(res => {
+        console.log(res)
+        deleteLocalComment(res.comment.commentId)
       })
       .catch(err => {
         console.log(err)
@@ -119,7 +140,29 @@ export default function CommentItem(props) {
             </Box>
           </Stack>
         </Box>
-        <CardActions
+
+        {(
+          (auth.uId === props.userResponse.uId)
+          ||
+          (auth.role === ROLES.Admin || auth.role === ROLES.Moderator)
+        )
+          &&
+          <CardActions
+            disableSpacing
+            sx={{
+              bgcolor: "transparent",
+              justifyContent: "right",
+              height: 10,
+              pb: 3,
+            }}
+          >
+            <IconButton onClick={onCommentDelete} aria-label="comment" sx={{ color: "var(--accent-light)" }}>
+              <DeleteIcon />
+            </IconButton>
+
+          </CardActions>
+        }
+        {/* <CardActions
           disableSpacing
           sx={{
             bgcolor: "transparent",
@@ -139,7 +182,7 @@ export default function CommentItem(props) {
             <CommentIcon />
           </IconButton>
           <div>{props.comments}</div>
-        </CardActions>
+        </CardActions> */}
       </Card>
 
       {isReplying && (
@@ -147,7 +190,9 @@ export default function CommentItem(props) {
           autoFocus
           onSubmit={onCommentReply}
           loading={createCommentFn.loading}
-          error={createCommentFn.error} />
+          error={createCommentFn.error}
+          avatar={auth.avatar}
+        />
       )
       }
 

@@ -219,6 +219,8 @@ export default function ProfessionForm() {
   function handleSubmit(event) {
     if (event) event.preventDefault();
     if (validateForm(values)) {
+      console.log(auth)
+      console.log(values)
       createProfessionFn({
         uId: auth.uId,
         name: values.Name,
@@ -228,7 +230,7 @@ export default function ProfessionForm() {
         talent: values.Talent,
         hiddenTalent: values.HiddenTalent,
         keyAttribute: values.KeyAttribute,
-        keyAttribute: values.KeyAttribute,
+        //keyAttribute: values.KeyAttribute,
         weaponMod: values.WeaponMod,
         armorMod: values.ArmorMod,
         gadgetMod: values.GadgetMod,

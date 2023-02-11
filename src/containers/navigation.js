@@ -95,7 +95,7 @@ export default function Navigation() {
 
   // LOGIN & LOGOUT OPTIONS
 
-  const mainNav = ["home", "forum", "assets", "secret"];
+  const mainNav = ["home", "forum", "assets"];
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);

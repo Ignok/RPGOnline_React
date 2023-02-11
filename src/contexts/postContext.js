@@ -52,6 +52,19 @@ export function PostProvider({ children }) {
     })
   }
 
+  function deleteLocalComment(id) {
+    setComments(prevComments => {
+      return prevComments.map(comment => {
+        if(comment.responseCommentId === id){
+          console.log(comment)
+          return {...comment, responseCommentId: null}
+        } else {
+          return comment
+        }
+      }).filter(comment => comment.commentId !== id)
+    })
+  }
+
   return (
     <Context.Provider
       value={{
@@ -60,7 +73,7 @@ export function PostProvider({ children }) {
         rootComments: commentsByParentId[null],
         createLocalComment,
         // updateLocalComment,
-        // deleteLocalComment,
+        deleteLocalComment,
         // toggleLocalCommentLike,
       }}
     >

@@ -25,8 +25,9 @@ export function createComment({ uId, postId, content, responseCommentId }) {
 //   })
 // }
 
-// export function deleteComment({ postId, id }) {
-//   return makeRequest(`posts/${postId}/comments/${id}`, {
-//     method: "DELETE",
-//   })
-// }
+export function deleteComment({ commentId}) {
+  return makeRequest(`Posts/delete/comment/${commentId}`, {
+    method: "DELETE",
+    withCredentials: true,
+  })
+}

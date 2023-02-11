@@ -24,6 +24,9 @@ import { useAsyncFn } from "../../hooks/useAsync";
 import { Fail } from "../../helpers/pop-ups/failed";
 import { Success } from "../../helpers/pop-ups/success";
 import { likePost, unlikePost } from "../../services/posts";
+import DeleteIcon from '@mui/icons-material/Delete';
+import {ROLES} from '../../helpers/enums/roles'
+import Swal from "sweetalert2";
 
 import "../../App.css";
 import { getImage } from "../../helpers/functions/getImage";
@@ -102,6 +105,25 @@ export default function PostItem(props) {
     }
   }
 
+  function handleDeletePost(e){
+    e.preventDefault();
+    console.log("handling deletion");
+    Swal.fire({
+      title: "Are you sure you want to delete this post?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, do it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("confirmed")
+        props.onPostDelete({postId: props.id});
+        //onManageFriendship(options[buttonAction])
+      }
+    })
+  }
+
 
   const handleClickFollow = () => {
     setFlagFollow(!flagFollow);
@@ -128,6 +150,7 @@ export default function PostItem(props) {
           />
         }
         action={
+          auth.uId !== props.authorId &&
           <FollowButton
             variant="contained"
             disableElevation
@@ -142,6 +165,7 @@ export default function PostItem(props) {
         title={props.username}
         subheader={props.date}
       />
+      
       <CardActionArea>
         <Link to={`/post/${props.id}`} style={{ textDecoration: "none" }}>
           <CardContent
@@ -207,12 +231,30 @@ export default function PostItem(props) {
             selected ? onUnlikePost() : onLikePost();
           }}
           //selected={selected}
-          disabled={waiting}
+          disabled={waiting || props.deletingPost}
           sx={{ color: !selected ? "#572348" : "#b50c3b" }}
         >
           <FavoriteIcon />
         </IconButton>
         <div>{likes}</div>
+
+        {(
+          (auth.uId === props.authorId)
+        ||
+        (auth.role === ROLES.Admin || auth.role === ROLES.Moderator)
+        )
+        &&
+          <IconButton
+          aria-label="delete post"
+          sx={{ ml: "auto" }}
+          onClick={handleDeletePost}
+          //selected={selected}
+          disabled={waiting || props.deletingPost}
+        >
+          <DeleteIcon sx={{ fontSize: 40 }} />
+        </IconButton>
+        }
+
         <IconButton
           aria-label="comment"
           sx={{ ml: "auto" }}

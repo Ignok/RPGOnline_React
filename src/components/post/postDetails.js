@@ -12,7 +12,8 @@ import { useState } from "react";
 import { Fail } from "../../helpers/pop-ups/failed";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-
+import { deletePost } from "../../services/posts";
+import { Success } from "../../helpers/pop-ups/success";
 
 export function PostDetails() {
   const navigate = useNavigate();
@@ -20,6 +21,13 @@ export function PostDetails() {
 
   const { post, rootComments, createLocalComment } = usePost()
   const { loading, error, execute: createCommentFn } = useAsyncFn(createComment)
+
+  
+  const {execute: deletePostFn } = useAsyncFn(deletePost)
+
+  const [ postDeleteFlag, setPostDeleteFlag ] = useState(false);
+
+  const [ deletingPost, setDeletingPost] = useState(false)
 
   function onCommentCreate(content) {
     return createCommentFn({uId: auth.uId, postId: post.postId, content })
@@ -33,6 +41,25 @@ export function PostDetails() {
         }
       });
     })
+  }
+
+  function handlePostDelete({postId}) {
+    setDeletingPost(true);
+    console.log(postId);
+    return deletePostFn({postId})
+        .then((res) => {
+          console.log(res)
+          setPostDeleteFlag(!postDeleteFlag);
+          Success.fire({
+            icon: "success",
+            title: "Post deleted successfully",
+          })
+          navigate('/forum')
+          setDeletingPost(false)
+        }).catch((err) =>{
+          console.log(err)
+          setDeletingPost(false)
+        })
   }
 
   return (
@@ -50,6 +77,7 @@ export function PostDetails() {
           <PostItem isDetails={true}
             key={post.postId}
             id={post.postId}
+            authorId={post.creatorNavigation.uId}
             avatarSrc={post.creatorNavigation.picture}
             avatarAlt="avatar"
             username={post.creatorNavigation.username}
@@ -62,9 +90,10 @@ export function PostDetails() {
             isLiked={post.isLiked}
             likes={post.likes}
             comments={post.comments.length}
+            onPostDelete={handlePostDelete}
+            deletingPost={deletingPost}
           />
         )}
-        {console.log(post)}
         <h4>Comments</h4>
         <CommentForm loading={loading} error={error} onSubmit={onCommentCreate} isResponse={false} avatar={auth.avatar}/>
         <section>

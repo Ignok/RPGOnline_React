@@ -68,3 +68,10 @@ export function unlikePost({
     withCredentials: true,
   });
 }
+
+export function deletePost({ postId }) {
+  return makeRequest(`Posts/delete/${postId}`, {
+    method: "DELETE",
+    withCredentials: true,
+  })
+}

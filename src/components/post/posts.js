@@ -16,10 +16,13 @@ import Box from "@mui/material/Box";
 import { height, styled } from "@mui/system";
 
 import useFetchPosts from "../../helpers/functions/useFetchPosts";
+import { Success } from "../../helpers/pop-ups/success";
 
 
 
 import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
+import { deletePost } from "../../services/posts";
+import { useAsyncFn } from "../../hooks/useAsync";
 
 export default function Posts() {
 
@@ -31,13 +34,19 @@ export default function Posts() {
   const [params, setParams] = useState({})
   const [page, setPage] = useState(1)
 
+  const {execute: deletePostFn } = useAsyncFn(deletePost)
+
+  const [ postDeleteFlag, setPostDeleteFlag ] = useState(false);
+
+  const [ deletingPost, setDeletingPost] = useState(false)
+
   const [pageOption, setPageOption] = useState({
     homePage: true,
     followed: false,
     favourite: false
   })
 
-  const { posts, loading, error, pageCount } = useFetchPosts(params, page, pageOption);
+  const { posts, loading, error, pageCount } = useFetchPosts(params, page, pageOption, postDeleteFlag);
 
   const ResponsiveBox = styled(Box)(({ theme }) => ({
     [theme.breakpoints.up("md")]: {
@@ -47,6 +56,24 @@ export default function Posts() {
       flexWrap: "wrap",
     },
   }));
+
+  function handlePostDelete({postId}) {
+    setDeletingPost(true);
+    console.log(postId);
+    return deletePostFn({postId})
+        .then((res) => {
+          console.log(res)
+          setPostDeleteFlag(!postDeleteFlag);
+          Success.fire({
+            icon: "success",
+            title: "Post deleted successfully",
+          })
+          setDeletingPost(false)
+        }).catch((err) =>{
+          console.log(err)
+          setDeletingPost(false)
+        })
+  }
 
   function handleParamChange(e) {
     e.preventDefault();
@@ -113,40 +140,6 @@ export default function Posts() {
     setPage(1)
   },[option, tagName])
 
-  // function handlePageOptionChange(e) {
-  //   e.preventDefault();
-  //   const name = e.target.name
-  //   console.log(name)
-
-  //   name === "homePage" ?
-  //   setPageOption({
-  //     homePage: true,
-  //     followed: false,
-  //     favourite: false
-  //   })
-  //   :
-  //   name === "followed" ?
-  //   setPageOption({
-  //     homePage: false,
-  //     followed: true,
-  //     favourite: false
-  //   })
-  //   :
-  //   name === "favorite" ?
-  //   setPageOption({
-  //     homePage: false,
-  //     followed: false,
-  //     favourite: true
-  //   })
-  //   :
-  //   setPageOption({
-  //     homePage: true,
-  //     followed: false,
-  //     favourite: false
-  //   })
-
-  //   setPage(1)
-  // }
 
   return (
     <Box>
@@ -219,6 +212,7 @@ export default function Posts() {
                       isDetails={false}
                       key={post.postId}
                       id={post.postId}
+                      authorId={post.creatorNavigation.uId}
                       avatarSrc={post.creatorNavigation.picture}
                       avatarAlt="avatar"
                       username={post.creatorNavigation.username}
@@ -232,6 +226,8 @@ export default function Posts() {
                       isLiked={post.isLiked}
                       likes={post.likes}
                       comments={post.comments}
+                      onPostDelete={handlePostDelete}
+                      deletingPost={deletingPost}
                     />
                   );
                 })}

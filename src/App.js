@@ -25,7 +25,6 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { UserProvider } from "./contexts/userContext";
-import AdminPage from "./pages/AdminPage";
 import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth";
 import Unauthorized from "./pages/Unauthorized";
@@ -120,9 +119,6 @@ function App() {
               </PostProvider>
             }
           />
-          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-            <Route path="/secret" element={<AdminPage />} />
-          </Route>
           {/* <Route path='/post/:postId' element={<PostDetails />} /> */}
           {/* <Route path="/post/discussion-form" element={<PostDiscussionForm />} /> */}
         </Route>
