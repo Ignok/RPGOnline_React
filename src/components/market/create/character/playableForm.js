@@ -5,45 +5,26 @@ import {
   InputLabel,
   Button,
   TextField,
-  MenuItem,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Stack from "@mui/material/Stack";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
-
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import AddIcon from "@mui/icons-material/Add";
-
 import successfulGif from "../../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../../hooks/useAuth";
-import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
-
-import ClearIcon from "@mui/icons-material/Clear";
-
-import SpellDataTable from "../equipment/selectSpell";
-import ItemDataTable from "../equipment/selectItem";
 import RaceDataTable from "./selectors/selectRace";
 import ProfessionDataTable from "./selectors/selectProfession";
-
 import { createCharacter } from "../../../../services/assets";
 import { useAsyncFn } from "../../../../hooks/useAsync";
-
-import { attributes } from "../../../../helpers/enums/attributes";
-import { characterAttributes } from "../../../../helpers/enums/assets";
-
 import GenerateLore from "./generators/generateLore";
 import GenerateAttributes from "./generators/generateAttributes";
 import { Success } from "../../../../helpers/pop-ups/success";
@@ -81,7 +62,6 @@ export default function CharacterForm() {
 
   const handleCheck = (event) => {
     const value = event.target.checked;
-    console.log(event.target.checked);
     setValues((values) => ({
       ...values,
       [event.target.name]: value,
@@ -100,9 +80,7 @@ export default function CharacterForm() {
         minKey += "-" + key;
       }
     }
-    console.log("min " + minKey);
     return minKey;
-    //setKeyValueRace(minKey);
   }
 
   const [keyValueProfession, setKeyValueProfession] = useState("-");
@@ -117,7 +95,6 @@ export default function CharacterForm() {
         maxKey += "-" + key;
       }
     }
-    console.log("max " + maxKey);
     return maxKey;
   }
 
@@ -131,11 +108,9 @@ export default function CharacterForm() {
 
   const handleAttributesChange = async (attributes) => {
     await setMinAttr(attributes).then((res) => {
-      console.log(res);
       setKeyValueRace(res);
     });
     await setMaxAttr(attributes).then((res) => {
-      console.log(res);
       setKeyValueProfession(res);
     });
     values.JsonReq.Attributes = attributes;
@@ -236,8 +211,6 @@ export default function CharacterForm() {
           navigate("/assets");
         })
         .catch((e) => {
-          console.log("oops");
-          console.log(e);
           Success.fire({
             icon: "error",
             title: "Something went wrong with uploading",

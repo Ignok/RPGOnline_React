@@ -1,41 +1,24 @@
 import * as React from "react";
 import { styled, Stack } from "@mui/system";
-import Button, { ButtonProps } from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { useState, useEffect } from "react";
-
 import "../../../../App.css";
-import { useAsync, useAsyncFn } from "../../../../hooks/useAsync";
+import { useAsyncFn } from "../../../../hooks/useAsync";
 import { editProfile } from "../../../../services/users";
-
 import { attitudes } from "../../../../helpers/enums/attitudes";
 import { countries } from "../../../../helpers/enums/countries";
-import Modal from "@mui/material/Modal";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import Badge from "@mui/material/Badge";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { AvatarForm } from "./avatarForm";
-
-import { avatars } from "../../../../helpers/enums/avatars";
-import { useParams, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { Success } from "../../../../helpers/pop-ups/success";
 import useAuth from "../../../../hooks/useAuth";
 import OtherAboutMe from "./otherAboutMe";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
+
 const ColorButton = styled(Button)(() => ({
   color: "white",
   "&:hover": {
@@ -69,8 +52,6 @@ export default function AboutMeContents() {
   });
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-
     setValues((values) => ({
       ...values,
       [e.target.name]: e.target.value,
@@ -99,7 +80,6 @@ export default function AboutMeContents() {
         attitude: attitude,
         aboutMe: aboutMe,
       }).then((res) => {
-        console.log(res);
         updateLocalUser({
           country: values.country,
           city: values.city,
@@ -157,8 +137,6 @@ export default function AboutMeContents() {
 
             <ColorButton
               onClick={() => {
-                console.log(user.uId)
-                console.log(user)
                 onProfileEdit({
                   country: values.country,
                   city: values.city,
@@ -167,8 +145,6 @@ export default function AboutMeContents() {
                 });
               }}
               sx={{ flexGrow: 2, fontWeight: "bold" }}
-            // loading={updateAboutmeFn.loading}
-            // error={updateAboutmeFn.error}
             >
               SAVE CHANGES
             </ColorButton>
@@ -249,7 +225,6 @@ export default function AboutMeContents() {
           margin="dense"
           sx={{ mb: 3 }}
           multiline
-        // maxRows={4}
         />
         <Typography sx={{ mx: 0.5, fontWeight: 500, color: "text.secondary" }}>
           Attitude

@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Stack from "@mui/material/Stack";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -19,16 +18,12 @@ import Typography from "@mui/material/Typography";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
-
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../hooks/useAuth";
-
 import { createRace } from "../../../services/assets";
 import { useAsyncFn } from "../../../hooks/useAsync";
-
 import { attributes } from "../../../helpers/enums/attributes";
 
 

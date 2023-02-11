@@ -1,17 +1,13 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
 import { NavLink, useNavigate } from "react-router-dom";
-
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Typography from "@mui/material/Typography";
-
 import CharacterIcon from "@mui/icons-material/PsychologyAlt";
 import NPCIcon from "@mui/icons-material/Boy";
 import MonsterIcon from "@mui/icons-material/SmartToy";
@@ -21,9 +17,6 @@ import ItemIcon from "@mui/icons-material/LocalMall";
 import SpellIcon from "@mui/icons-material/AutoFixNormal";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-
-import { TransitionGroup } from "react-transition-group";
-import Collapse from "@mui/material/Collapse";
 
 const categories = [
   { url:"character/playable", label: "playable", icon: <CharacterIcon fontSize="small" name={"playable"} />, },
@@ -71,21 +64,6 @@ export default function MarketNavbar({ option, type }) {
       })}
     </Menu>
   );
-
-  //const [activeButton, setActiveButton] = useState(null);
-  //const [params, setParams] = useState({});
-
-  // function handleChange(e) {
-  //   setActiveButton(e.target.value);
-  //   e.preventDefault();
-  //   const param = e.target.getAttribute("name");
-  //   const value = e.target.value;
-  //   // setPage(1)
-  //   onAssetNameChange(e);
-  //   setParams((prevParams) => {
-  //     return { ...prevParams, [param]: value };
-  //   });
-  // }
 
   const assetsButtons = (
     <ButtonGroup orientation="vertical" variant="text">

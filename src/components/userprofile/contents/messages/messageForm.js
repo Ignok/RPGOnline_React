@@ -1,9 +1,7 @@
 import Card from "@mui/material/Card";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { styled, Stack, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 
@@ -17,8 +15,6 @@ export default function MessageForm({
   initialReceiver = "",
   isReplying = false,
   isInFriendsList = false,
-  receiverId = "",
-  isResponse = false,
 }) {
   const [errorUsername, setErrorUsername] = useState(false);
   const [errorUsernameHelperText, setErrorUsernameHelperText] = useState("");
@@ -31,7 +27,6 @@ export default function MessageForm({
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(values);
 
     onSubmit({
       title: values.title,
@@ -58,8 +53,6 @@ export default function MessageForm({
   }
 
   const handleChange = (event) => {
-    console.log(event.target.value);
-
     setValues((values) => ({
       ...values,
       [event.target.name]: event.target.value,
@@ -148,7 +141,7 @@ export default function MessageForm({
           </Stack>
         </Box>
       </Card>
-      <div className="error-msg">{error && console.log(error)}</div>
+      <div className="error-msg">{error}</div>
     </Box>
   );
 }

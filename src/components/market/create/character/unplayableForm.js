@@ -5,48 +5,28 @@ import {
   InputLabel,
   Button,
   TextField,
-  MenuItem,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Stack from "@mui/material/Stack";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
-
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import AddIcon from "@mui/icons-material/Add";
-
 import successfulGif from "../../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../../hooks/useAuth";
-import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
-
-import ClearIcon from "@mui/icons-material/Clear";
-
-import SpellDataTable from "../equipment/selectSpell";
-import ItemDataTable from "../equipment/selectItem";
 import RaceDataTable from "./selectors/selectRace";
 import ProfessionDataTable from "./selectors/selectProfession";
 import NumberInput from "../numberInput";
-
 import { createCharacter } from "../../../../services/assets";
 import { useAsyncFn } from "../../../../hooks/useAsync";
-
-import { attributes } from "../../../../helpers/enums/attributes";
-import { characterAttributes } from "../../../../helpers/enums/assets";
-
 import GenerateLore from "./generators/generateLore";
-import GenerateAttributes from "./generators/generateAttributes";
 import { Success } from "../../../../helpers/pop-ups/success";
 
 const minAttrInput = 0;
@@ -101,7 +81,6 @@ export default function UnplayableForm({ type }) {
 
   const handleCheck = (event) => {
     const value = event.target.checked;
-    console.log(event.target.checked);
     setValues((values) => ({
       ...values,
       [event.target.name]: value,
@@ -120,7 +99,6 @@ export default function UnplayableForm({ type }) {
         minKey += "-" + key;
       }
     }
-    console.log("min " + minKey);
     return minKey;
   }
 
@@ -136,7 +114,6 @@ export default function UnplayableForm({ type }) {
         maxKey += "-" + key;
       }
     }
-    console.log("max " + maxKey);
     return maxKey;
   }
 
@@ -159,16 +136,6 @@ export default function UnplayableForm({ type }) {
     handleRaceSelect("", 0);
     handleProfessionSelect("", 0);
   };
-
-  function handleSkillsetChange() {
-    Object.values(values.JsonReq.Skillset).map((skill) => {
-      if (skill !== 0) {
-        console.log(skill);
-        return;
-      }
-    });
-    values.JsonReq.Skillset = null;
-  }
 
   const [counter, setCounter] = useState({
     Strength: 0,
@@ -397,8 +364,6 @@ export default function UnplayableForm({ type }) {
           navigate("/assets");
         })
         .catch((e) => {
-          console.log("oops");
-          console.log(e);
           Success.fire({
             icon: "error",
             title: "Something went wrong with uploading",

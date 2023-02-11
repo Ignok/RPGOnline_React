@@ -8,10 +8,8 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Badge from "@mui/material/Badge";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-
 import { avatars } from "../../../../helpers/enums/avatars";
-import { Button, Stack, Divider } from "@mui/material";
-
+import { Button, Stack } from "@mui/material";
 import { editAvatar } from "../../../../services/users";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { Success } from "../../../../helpers/pop-ups/success";
@@ -32,12 +30,10 @@ export function AvatarForm({ uId, handleClose, open, initialVal, updateLocalAvat
 
   function onAvatarEdit({ picture }) {
     if (chosen !== initialVal) {
-      console.log(`chosen:${chosen}`);
       return editAvatarFn({
         uId: uId,
         picture: picture,
-      }).then((res) => {
-        console.log(`Succes! chosen:${chosen}`);
+      }).then(() => {
         updateLocalAvatar(picture);
         Success.fire({
           icon: "success",

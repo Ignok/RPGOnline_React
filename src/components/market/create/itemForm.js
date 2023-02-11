@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Stack from "@mui/material/Stack";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -20,18 +19,14 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
-
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../hooks/useAuth";
-
 import { createItem } from "../../../services/assets";
 import { useAsyncFn } from "../../../hooks/useAsync";
-
 import { skills } from "../../../helpers/enums/skills";
 
 const minValueInput = 0;

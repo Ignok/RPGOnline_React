@@ -9,6 +9,7 @@ export function getUsers() {
 export function getUser(uId) {
   return makeRequest(`Users/${uId}`, {
     method: "GET",
+    withCredentials: true,
   });
 }
 
@@ -41,9 +42,6 @@ export function getUserFriends(uId) {
 }
 
 export function manageFriendship({uId, targetUId, option}) {
-  console.log(uId)
-  console.log(targetUId)
-  console.log(option)
   return makeRequest(`Friendship/Manage`, {
     method: "POST",
     data: {
@@ -61,9 +59,6 @@ export function getFriendship({uId, targetUId}) {
 }
 
 export function rateFriend({uId, targetUId, rating}) {
-  console.log(uId)
-  console.log(targetUId)
-  console.log(rating)
   return makeRequest(`Friendship/Rate`, {
     method: "POST",
     data: {

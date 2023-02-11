@@ -67,7 +67,6 @@ export default function UserItem({ user }) {
               </Typography>
             </Box>
             <Button size="small" sx={{ width: "100%", mt: 1 }} onClick={() => {
-              console.log(user)
               user.hasBlockedMe ?
               Swal.fire({
                 icon: 'error',

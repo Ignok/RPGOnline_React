@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import MarketMenu from "../components/market/marketMenu";
 import MarketNavbar from "../components/market/marketNav";
 import MarketContents from "../components/market/marketContents";
@@ -38,7 +38,6 @@ export function AssetMarket() {
   );
 
   useEffect(() => {
-    //console.log(option)
     if (option) {
       setAssetName(() => {
         return { assetName: option };
@@ -47,7 +46,6 @@ export function AssetMarket() {
       setKeyValue("");
       setPreUrl();
     } else if (type) {
-      //console.log(type)
       setAssetName(() => {
         return { assetName: type };
       });
@@ -58,25 +56,11 @@ export function AssetMarket() {
   }, [option, type, sort])
 
   function handleKeyValueChange(value) {
-    //console.log(value);
     setKeyValue(() => {
       return { keyValue: value };
     });
   }
 
-  // function handleAssetNameChange(e) {
-  //   e.preventDefault();
-  //   //console.log(e.target);
-  //   const param = e.target.getAttribute("name");
-  //   const value = e.target.value ?? e.target.getAttribute("name");
-  //   //console.log(param)
-  //   //console.log(value)
-  //   setPage(1);
-  //   setKeyValue("");
-  //   setAssetName(() => {
-  //     return { assetName: value };
-  //   });
-  // }
 
   function handleLanguageChange(checked) {
     const lang = checked.pl
@@ -93,7 +77,6 @@ export function AssetMarket() {
   }
 
   function handleSortChange(sortVal) {
-    //console.log(sortVal)
 
     if(sortVal === "date"){
       setSort({
@@ -120,12 +103,8 @@ export function AssetMarket() {
 
   function handleParamChange(e) {
     e.preventDefault();
-    console.log(e);
     const param = e.target.getAttribute("name");
     const value = e.target.value;
-    console.log("--------");
-    console.log(param);
-    console.log(value);
     setPage(1);
     setParams((prevParams) => {
       return { ...prevParams, [param]: value };

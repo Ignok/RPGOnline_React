@@ -23,8 +23,6 @@ export function register({ username, pswd, email }) {
 }
 
 export function refreshToken() {
-    console.log("Refreshing token...")
-
     return makeRequest(`Account/refresh`,  {
         method: "POST",
         withCredentials: true
@@ -32,8 +30,6 @@ export function refreshToken() {
 }
 
 export function logout(){
-    console.log("Logging out...")
-
     return makeRequest(`Account/logout`, {
         method: "POST",
         withCredentials: true

@@ -1,33 +1,25 @@
 import * as React from "react";
-
 import Card from "@mui/material/Card";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { Stack } from "@mui/material";
-
 import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import CommentIcon from "@mui/icons-material/Comment";
-
 import ReplyIcon from "@mui/icons-material/Reply";
-
 import { useState } from "react";
-
 import DeleteIcon from '@mui/icons-material/Delete';
-
 import "../../App.css";
 import { usePost } from "../../contexts/postContext";
 import { CommentList } from "../comments/commentList"
 import CommentForm from "./commentForm";
-
 import { useAsyncFn } from "../../hooks/useAsync"
 import { createComment, deleteComment } from "../../services/comments"
 import useAuth from "../../hooks/useAuth";
 import { getImage } from "../../helpers/functions/getImage";
 import {ROLES} from '../../helpers/enums/roles'
+import { Success } from "../../helpers/pop-ups/success";
 
 
 
@@ -53,7 +45,10 @@ export default function CommentItem(props) {
         createLocalComment(comment)
       })
       .catch(err => {
-        console.log(err)
+        Success.fire({
+          icon: "error",
+          title: "Something went wrong with uploading",
+        });
       })
   }
 
@@ -61,11 +56,13 @@ export default function CommentItem(props) {
     return deleteCommentFn
       .execute({ commentId: props.commentId })
       .then(res => {
-        console.log(res)
         deleteLocalComment(res.comment.commentId)
       })
       .catch(err => {
-        console.log(err)
+        Success.fire({
+          icon: "error",
+          title: "Something went wrong with uploading",
+        });
       })
   }
 

@@ -7,7 +7,7 @@ const ACTIONS = {
     ERROR: 'error'
 }
 
-const BASE_URL = 'https://localhost:7251/api/Users'
+const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Users'
 
 function reducer(state, action) {
     switch (action.type) {
@@ -22,7 +22,7 @@ function reducer(state, action) {
     }
 }
 
-export default function useFetchUsers(params, attitude, rating) {
+export default function useFetchUsers(params, attitude) {
     const [state, dispatch] = useReducer(reducer, { users: [], loading: true })
 
     useEffect(() => {
@@ -34,11 +34,9 @@ export default function useFetchUsers(params, attitude, rating) {
             withCredentials: true,
             params: {
                 Attitude: attitude === "" ? null : attitude,
-                Rating: rating,
                 ...params
             }
         }).then(res => {
-            // console.log(res.data)
             dispatch({
                 type: ACTIONS.GET_DATA,
                 payload: {
@@ -53,7 +51,7 @@ export default function useFetchUsers(params, attitude, rating) {
             cancelToken.cancel()
         }
 
-    }, [params, attitude, rating])
+    }, [params, attitude])
 
     return state
 }

@@ -2,18 +2,14 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ToggleButton from "@mui/material/ToggleButton";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -21,16 +17,13 @@ import Tooltip from "@mui/material/Tooltip";
 import { Fail } from "../../helpers/pop-ups/failed";
 import { useAsyncFn } from "../../hooks/useAsync";
 import { useNavigate } from "react-router-dom";
-
 import { getImage } from "../../helpers/functions/getImage";
 import MarketItem from "./marketItem";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import { saveAsset, unsaveAsset } from "../../services/assets";
 import { Success } from "../../helpers/pop-ups/success";
-
 import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
-import App from "../../App.css";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -68,7 +61,6 @@ export default function MarketContents({ assetName, asset }) {
   const [likes, setLikes] = useState(asset.timesSaved);
 
   function onSaveAsset() {
-    console.log("save")
     if(!auth.username){
       return Fail.fire()
       .then(result =>{
@@ -80,7 +72,6 @@ export default function MarketContents({ assetName, asset }) {
       setWaiting(true);
       return saveAssetFn({ uId: auth.uId, assetId: asset.assetId })
         .then(res => {
-          console.log(res);
           setSelected(true);
           setWaiting(false);
           Success.fire({
@@ -90,14 +81,12 @@ export default function MarketContents({ assetName, asset }) {
           setLikes(likes + 1);
         })
         .catch(err => {
-          console.log(err);
           setWaiting(false);
         });
     }
   }
 
   function onUnsaveAsset() {
-    console.log("unsave")
     if(!auth.username){
       return Fail.fire()
       .then(result =>{
@@ -109,7 +98,6 @@ export default function MarketContents({ assetName, asset }) {
       setWaiting(true);
       return unsaveAssetFn({uId: auth.uId, assetId: asset.assetId })
       .then(res => {
-        console.log(res);
         setSelected(false);
         setWaiting(false);
         Success.fire({
@@ -119,7 +107,6 @@ export default function MarketContents({ assetName, asset }) {
         setLikes(likes - 1);
       })
       .catch(err => {
-        console.log(err);
         setWaiting(false);
       })
     }

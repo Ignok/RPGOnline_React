@@ -29,11 +29,11 @@ export function FooterContainer() {
                     </Footer.Column>
                     <Footer.Column>
                         <Footer.Title>Julia Akahori</Footer.Title>
-                        <Footer.Link href="#">@s20936</Footer.Link>
+                        <Footer.Link href="https://github.com/szezlong" rel="noreferrer" target="_blank">@s20936</Footer.Link>
                     </Footer.Column>
                     <Footer.Column>
                         <Footer.Title>Ignacy Bok</Footer.Title>
-                        <Footer.Link href="#">@s20833</Footer.Link>
+                        <Footer.Link href="https://github.com/Ignok" rel="noreferrer" target="_blank">@s20833</Footer.Link>
                     </Footer.Column>
                 </Footer.Row>
             </Footer.Wrapper>

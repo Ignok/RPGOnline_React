@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -9,9 +9,7 @@ import Typography from "@mui/material/Typography";
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import Stack from '@mui/material/Stack';
-
 import { attitudes } from "../../helpers/enums/attitudes";
-
 import SearchBar from "../forum/forumSearch";
 import "../../App.css";
 
@@ -20,24 +18,6 @@ function valuetext(value) {
 }
 
 export default function UserNav({ params, attitude, rating, onParamChange, onAttitudeChange, onRatingChange }) {
-  //const [attitude, setAttitude] = useState("");
-  //const [params, setParams] = useState({});
-
-  // const handleChange = (e) => {
-  //   setAttitude(e.target.value);
-  // };
-
-  // function handleParamChange(e) {
-  //   e.preventDefault();
-  //   console.log(e);
-  //   const param = e.target.getAttribute("name");
-  //   const value = e.target.value;
-  //   // setPage(1)
-  //   setParams(prevParams => {
-  //     return { ...prevParams, [param]: value }
-  //   })
-  // }
-
   return (
     <Box
       sx={{
@@ -89,6 +69,7 @@ export default function UserNav({ params, attitude, rating, onParamChange, onAtt
             min={0}
             max={5}
             size="small"
+            onChange={onRatingChange}
           />
         </Box>
 

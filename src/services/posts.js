@@ -1,8 +1,5 @@
 import { makeRequest } from "./makeRequest"
 
-// export function getPosts() {
-//   return makeRequest("/posts")
-// }
 
 export function getPost(postId) {
   return makeRequest(`/Posts/${postId}`,{
@@ -12,12 +9,6 @@ export function getPost(postId) {
 }
 
 export function createFanart({ uId, title, content, tag, picture }) {
-  console.log(uId)
-  console.log(title)
-  console.log(content)
-  console.log(tag)
-  console.log(picture)
-
   return makeRequest(`/Posts`, {
     method: "POST",
     withCredentials: true,
@@ -32,11 +23,6 @@ export function createFanart({ uId, title, content, tag, picture }) {
 }
 
 export function createPost({ uId, title, content, tag }) {
-  console.log(uId)
-  console.log(title)
-  console.log(content)
-  console.log(tag)
-
   return makeRequest(`/Posts`, {
     method: "POST",
     withCredentials: true,

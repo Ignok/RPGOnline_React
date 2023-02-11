@@ -8,7 +8,7 @@ const ACTIONS = {
     INITIAL: 'initial'
 }
 
-const BASE_URL = 'https://localhost:7251/api/Race/character/'
+const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Race/character/'
 
 
 
@@ -30,8 +30,6 @@ function reducer(state, action) {
 export default function useFetchRaces(keyValue, uId) {
     const [state, dispatch] = useReducer(reducer, { races: [], loading: true })
 
-
-    //console.log(keyValue);
     useEffect( () => {
       if (keyValue === "-") {
         dispatch({ type: ACTIONS.INITIAL });
@@ -49,8 +47,6 @@ export default function useFetchRaces(keyValue, uId) {
           },
         })
         .then((res) => {
-          //console.log("RES:")
-          //console.log(res.data);
           dispatch({
             type: ACTIONS.GET_DATA,
             payload: {

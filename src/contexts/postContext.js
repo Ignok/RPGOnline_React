@@ -56,7 +56,6 @@ export function PostProvider({ children }) {
     setComments(prevComments => {
       return prevComments.map(comment => {
         if(comment.responseCommentId === id){
-          console.log(comment)
           return {...comment, responseCommentId: null}
         } else {
           return comment
@@ -72,9 +71,7 @@ export function PostProvider({ children }) {
         getReplies,
         rootComments: commentsByParentId[null],
         createLocalComment,
-        // updateLocalComment,
         deleteLocalComment,
-        // toggleLocalCommentLike,
       }}
     >
       {loading ? (

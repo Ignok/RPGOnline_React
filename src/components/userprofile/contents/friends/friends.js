@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useUser } from "../../../../contexts/userContext";
 import { getUserFriends } from "../../../../services/users";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import FriendItem from "./friendItem";
@@ -7,7 +6,7 @@ import List from "@mui/material/List";
 import { Box } from "@mui/material";
 import { styled, Stack } from "@mui/system";
 import Typography from "@mui/material/Typography";
-import Button, { ButtonProps } from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { useOutletContext } from "react-router-dom";
 
@@ -32,7 +31,7 @@ export default function FriendsContents() {
 
   const [friends, setFriends] = useState();
 
-  const [user, friendship] = useOutletContext();
+  const [user] = useOutletContext();
   
 
   const {
@@ -46,11 +45,8 @@ export default function FriendsContents() {
   }
 
   useEffect(() => {
-    console.log(user)
-    console.log(friendship)
     getUserFriendsFn(user.uId)
     .then((data) => {
-      console.log(data);
       setFriends(data);
     });
   }, [statusChanged]);
@@ -86,7 +82,7 @@ export default function FriendsContents() {
           >
             FRIENDS
           </Typography>
-          {/* dodac FRIEND LIST kiedy sie jest w widoku requests/blocked */}
+          
           <ColorButton
             onClick={() => {
               handleContentsChange("requests")
@@ -153,7 +149,7 @@ export default function FriendsContents() {
                 senderId={user.uId}
                 username={friend.username}
                 friendUId={friend.uId}
-                country={friend.country}
+                country={friend.country ?? ""}
                 attitude={friend.attitude}
                 picture={friend.picture}
                 contents={contents}

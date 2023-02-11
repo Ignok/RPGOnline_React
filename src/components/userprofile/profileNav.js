@@ -1,12 +1,8 @@
 import UserProfile from ".";
 import Icon from "../icons";
 import { Stack } from "@mui/system";
-import { Button } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { styled } from "@mui/material/styles";
 import "../../App.css";
 
 

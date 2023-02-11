@@ -1,21 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import React, { useState, useRef } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Slide from "@mui/material/Slide";
 import FormControlLabel from "@mui/material/FormControlLabel";
-
-import HelperTooltip from "../../../../../helpers/pop-ups/helperTooltip";
-import ClearIcon from "@mui/icons-material/Clear";
-import CasinoIcon from "@mui/icons-material/Casino";
-
-import Snackbar from "@mui/material/Snackbar";
-import { Alert } from "@mui/material";
-
 import { useAsyncFn } from "../../../../../hooks/useAsync";
 import {
   getRandomMotivation,
@@ -25,8 +15,8 @@ import {
   getMotivation,
   getCharacteristics,
 } from "../../../../../helpers/functions/getLore";
-import { Casino } from "@mui/icons-material";
 import Icon from "@mui/material/Icon";
+import { Success } from "../../../../../helpers/pop-ups/success";
 
 function getFn(type) {
   switch (type) {
@@ -53,7 +43,10 @@ export default function GenerateLore({ type, handleChange }) {
         setChecked((prev) => !prev);
       })
       .catch((err) => {
-        console.log(err);
+        Success.fire({
+          icon: "error",
+          title: "Something went wrong with uploading",
+        });
       });
   }
 
@@ -89,7 +82,6 @@ export default function GenerateLore({ type, handleChange }) {
           width: "100%",
           display: "flex",
           flexDirection: "row",
-          //alignItems: "baseline",
         }}
       >
         <Box sx={{ width: "100%", mb: 2, height: "100%" }}>

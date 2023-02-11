@@ -7,7 +7,7 @@ const ACTIONS = {
     ERROR: 'error'
 }
 
-const BASE_URL = 'https://localhost:7251/api/Posts'
+const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Posts'
 
 function reducer(state, action) {
     switch (action.type) {
@@ -34,7 +34,6 @@ export default function useFetchPosts(params, page, pageOption, postDeleteFlag) 
             withCredentials: true,
             params: {page: page, category: params.tag, onlyFollowed: pageOption.followed, onlyFavourite: pageOption.favourite, ...params }
         }).then(res => {
-            console.log(res)
             dispatch({type: ACTIONS.GET_DATA, payload: {posts: res.data.item1, pageCount: res.data.pageCount}})
         }).catch(e => {
             if (axios.isCancel(e)) return

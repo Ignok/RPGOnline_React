@@ -8,7 +8,7 @@ const ACTIONS = {
     INITIAL: 'initial'
 }
 
-const BASE_URL = 'https://localhost:7251/api/'
+const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/'
 
 const LANGUAGEOPTIONS = {
     POLISH: 'pl',
@@ -58,7 +58,6 @@ export default function useFetchAssets(params, page, assetName, prefferedLanguag
           },
         })
         .then((res) => {
-          //console.log(res.data);
           dispatch({
             type: ACTIONS.GET_DATA,
             payload: {

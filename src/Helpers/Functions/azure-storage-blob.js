@@ -10,11 +10,8 @@ async function getSasToken(uId) {
 
 
 async function createBlobInContainer (file, uId) {
-  console.log(file)
-  console.log(uId)
 
   return await getSasToken(uId).then(async (res) => {
-    console.log(res);
     const uploadUrl = `https://${res.storageAccountName}.blob.core.windows.net/?${res.sasToken}`;
     const blobService = new BlobServiceClient(uploadUrl);
     const containerClient = blobService.getContainerClient(res.containerName);

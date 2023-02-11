@@ -28,23 +28,3 @@ export function CommentList({ comments, isRoot }) {
         </div>
     ))
 }
-
-// {isRoot ? (
-//     <CommentItem
-//         username={comment.userResponse.username}
-//         creationDate={DatetimeToLocaleDateString(
-//             comment.creationDate
-//         )}
-//         content={comment.content}
-//         avatar={comment.userResponse.picture}
-//     />
-// ) : (
-//     <ReplyCommentItem
-//         username={comment.userResponse.username}
-//         creationDate={DatetimeToLocaleDateString(
-//             comment.creationDate
-//         )}
-//         content={comment.content}
-//         responseUsername={comment.respondingUserResponse.username}
-//     />
-// )}

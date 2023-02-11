@@ -166,8 +166,6 @@ export default function MarketItem({ assetName, asset }) {
         //ml: 2,
       }}
     >
-      {/* {console.log(asset.jsonResponse?.attributes)} */}
-      {/* {console.log(asset)} */}
 
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         {category?.map(({ label, column }) => {
@@ -224,7 +222,6 @@ export default function MarketItem({ assetName, asset }) {
         )}
         {category === character && (
           <Box>
-            {/* {console.log(asset)} */}
             {asset.jsonResponse &&
               valuesTable(
                 "Attributes",

@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
-
 import HelperTooltip from "../../../../helpers/pop-ups/helperTooltip";
 import ClearIcon from "@mui/icons-material/Clear";
 import Snackbar from "@mui/material/Snackbar";
 import { Alert } from "@mui/material";
-
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { getSpellsForCharacter } from "../../../../services/assets";
 
 const columns = [
-  // { field: "assetId", headerName: "ID", type: "number", maxWidth: 40, flex: 1 },
   { field: "prefferedLanguage", headerName: "Language", maxWidth: 90, flex: 1 },
   {
     field: "name",
@@ -72,12 +69,9 @@ export default function SpellDataTable({ uId, handleSpellSelect }) {
     execute: getSpellsForCharacterFn,
   } = useAsyncFn(getSpellsForCharacter);
 
-  //const [select, setSelection] = useState([]);
-
   useEffect(() => {
     getSpellsForCharacterFn({ uId })
       .then((data) => {
-        //console.log(data);
         setData(data);
       })
       .catch((error) => {

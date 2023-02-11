@@ -1,27 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { SettingsAccessibility } from "@mui/icons-material";
-import { FormControl, Input, FormHelperText, InputLabel, Button, TextField, MenuItem, Link, CardMedia, CircularProgress } from "@mui/material";
+import React, { useState } from "react";
+import { FormControl, Input, InputLabel, Button, TextField, MenuItem, CardMedia, CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
-
 import UploadIcon from '@mui/icons-material/Upload';
-
-import PhotoSizeSelectActualOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActualOutlined';
-
-
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
-
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../hooks/useAuth";
-
-import { createFanart, createPost } from "../../../services/posts";
+import { createFanart } from "../../../services/posts";
 import { useAsyncFn } from "../../../hooks/useAsync";
-
 import uploadFileToBlob from "../../../helpers/functions/azure-storage-blob";
-import { getBlobsInContainer } from "../../../helpers/functions/azure-storage-blob";
 import { Success } from "../../../helpers/pop-ups/success";
-
-
 
 
 const tags = [
@@ -76,8 +64,6 @@ export default function PostFanartFrom() {
 
 
     function validateForm() {
-        console.log("Validate the form....");
-
         let errors = {};
 
         //title field
@@ -112,11 +98,9 @@ export default function PostFanartFrom() {
         const res = await uploadFileToBlob(file, auth.uId).then((res) => {
             return res._response.request.url;
         }).catch((err) => {
-            console.log(err)
             Promise.reject(err)
         });
 
-        console.log(res)
         return res;
 
     };
@@ -133,7 +117,6 @@ export default function PostFanartFrom() {
         })
 
         if (file) {
-            //console.log(file);
             reader.onload = (e) => {
                 setImageURL(e.target.result);
             }
@@ -154,7 +137,6 @@ export default function PostFanartFrom() {
                     tag: values.Tag,
                     picture: url
                 }).then(res => {
-                    console.log(res.data);
                     Swal.fire({
                         title: 'Your post was added successfully!',
                         width: 450,
@@ -169,8 +151,6 @@ export default function PostFanartFrom() {
                     setUploading(false)
                     navigate('/forum');
                 }).catch(e => {
-                    console.log("oops")
-                    console.log(e)
                     Success.fire({
                         icon: "error",
                         title: "Something went wrong with uploading",

@@ -1,30 +1,21 @@
 import React, { useState } from "react";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import ProfileNav from "../components/userprofile/profileNav";
-import { getUsersAbout } from "../Api_RPGOnline";
-import { DatetimeToLocaleDateString } from "../helpers/functions/DateTimeConverter";
-import ReactDOM from "react-dom";
+import { DateToLocaleDateString } from "../helpers/functions/DateTimeConverter";
 import Box from "@mui/material/Box";
 import { Stack, Rating, Button } from "@mui/material";
 import UserHeading from "../components/userprofile/userHeading";
-import AboutMeContents from "../components/userprofile/contents/aboutme/aboutMe";
-
 import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Unstable_Grid2";
-
 import "../App.css";
 import { useAsyncFn } from "../hooks/useAsync";
-import { editProfile, rateFriend } from "../services/users";
+import { rateFriend } from "../services/users";
 import { useUser } from "../contexts/userContext";
-import FriendsContents from "../components/userprofile/contents/friends/friends";
-import MessagesContents from "../components/userprofile/contents/messages/messages";
 import { Success } from "../helpers/pop-ups/success";
-
 import { getImage } from "../helpers/functions/getImage";
 import { getFlag } from "../helpers/functions/getFlag";
-import { useEffect } from "react";
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 50,
@@ -73,15 +64,12 @@ export function Profile() {
   function handleRate(e, value){
     e.preventDefault();
 
-    console.log(e)
-    console.log(value)
     if(value){
       return rateFriendFn({
         uId: uId,
         targetUId: user.uId,
         rating: value
       }).then((res) => {
-        console.log(res)
         setMyRatingValue(value);
         setRatingPrecision(0.1);
         setDisableRating(true);
@@ -91,7 +79,6 @@ export function Profile() {
           title: `Successfully rated ${value}`,
         })
       }).catch((err) => {
-        console.log(err)
         setMyRatingValue(0);
         setRatingPrecision(0.1);
         setDisableRating(true);
@@ -117,7 +104,6 @@ export function Profile() {
     e.preventDefault();
 
     const eventName = e.target.name;
-    console.log(eventName);
 
     if(eventName === "allow rating") {
       setRatingPrecision(1);
@@ -220,7 +206,7 @@ export function Profile() {
       <GridBox sx={{ backgroundColor: "transparent" }}>
         <UserHeading
           username={user.username}
-          date={DatetimeToLocaleDateString(user.creationDate)}
+          date={DateToLocaleDateString(user.creationDate)}
         />
         <Outlet context={[user, friendship, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar, isOwner]} />
       </GridBox>

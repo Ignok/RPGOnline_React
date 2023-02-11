@@ -1,13 +1,10 @@
 import * as React from "react";
 import { styled, Stack } from "@mui/system";
-import Button, { ButtonProps } from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import AppBar from "@mui/material/AppBar";
 import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
-
-
 import "../../App.css";
 
 const pages = [

@@ -2,11 +2,9 @@ import * as React from "react";
 import { Stack } from "@mui/system";
 import Box from "@mui/material/Box";
 import { useState } from "react";
-
 import "../../../../App.css";
 import { useAsyncFn } from "../../../../hooks/useAsync";
 import { Success } from "../../../../helpers/pop-ups/success";
-
 import IconButton from "@mui/material/IconButton";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import DoNotDisturbOffIcon from "@mui/icons-material/DoNotDisturbOff";
@@ -15,12 +13,10 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import PersonAddDisabledIcon from '@mui/icons-material/PersonAddDisabled';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-
 import { manageFriendship } from "../../../../services/users";
 import Tooltip from "@mui/material/Tooltip";
 import { ListItemIcon } from "@mui/material";
 import Swal from "sweetalert2";
-
 
 
 const options = {
@@ -47,8 +43,6 @@ const optionMessage = {
   cancel: "Are you sure you want to cancel friend request?"
 }
 
-
-
 export default function OtherAboutMe({ uId, targetUId, friendship }) {
 
   const [values, setValues] = useState(friendship)
@@ -71,22 +65,19 @@ export default function OtherAboutMe({ uId, targetUId, friendship }) {
 
   const {loading, error, execute: manageFriendshipFn } = useAsyncFn(manageFriendship);
   function onManageFriendship(option) {
-    console.log(option)
     return manageFriendshipFn({
       uId: uId,
       targetUId: targetUId,
       option: option
     }).then((res) => {
       if(res){
-        console.log(res)
         Success.fire({
           icon: "success",
           title: "Managed friendship status successfully",
         });
         setValues(res)
       }
-    }).catch((err) => {
-      console.log(err)
+    }).catch(() => {
       Success.fire({
         icon: "error",
         title: "Something went wrong",
@@ -191,8 +182,6 @@ export default function OtherAboutMe({ uId, targetUId, friendship }) {
                 </IconButton>
               </Tooltip>
             }
-
-
 
             {/* Block status */}
             {values.isBlocked ?

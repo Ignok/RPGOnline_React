@@ -1,9 +1,4 @@
-import React, {
-  Component,
-  useEffect,
-  useState,
-  componentDidUpdate,
-} from "react";
+import React, { useEffect,  useState } from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -11,17 +6,11 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Checkbox from "@mui/material/Checkbox";
-import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-
 import SearchBar from "../forum/forumSearch";
-import InputLabel from "@mui/material/InputLabel";
 import ClearIcon from "@mui/icons-material/Clear";
-import SearchIcon from "@mui/icons-material/Search";
 import { FormGroup } from "@mui/material";
 
 import { attributes } from "../../helpers/enums/attributes";

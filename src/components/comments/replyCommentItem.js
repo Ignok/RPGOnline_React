@@ -1,34 +1,26 @@
 import * as React from "react";
-// import { Link } from "react-router-dom";
-
 import Card from "@mui/material/Card";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { Stack } from "@mui/material";
-
 import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import CommentIcon from "@mui/icons-material/Comment";
-
 import ReplyIcon from "@mui/icons-material/Reply";
-
 import { useState } from "react";
 import { usePost } from "../../contexts/postContext";
 import { CommentList } from "../comments/commentList"
-
 import CommentForm from "./commentForm";
 import { useAsyncFn } from "../../hooks/useAsync"
 import { createComment } from "../../services/comments"
 import { getImage } from "../../helpers/functions/getImage";
 import DeleteIcon from '@mui/icons-material/Delete';
-
 import "../../App.css";
 import useAuth from "../../hooks/useAuth";
 import {ROLES} from '../../helpers/enums/roles'
 import { deleteComment } from "../../services/comments";
+import { Success } from "../../helpers/pop-ups/success";
 
 export default function CommentItem(props) {
 
@@ -52,7 +44,10 @@ export default function CommentItem(props) {
         createLocalComment(comment)
       })
       .catch(err => {
-        console.log(err)
+        Success.fire({
+          icon: "error",
+          title: "Something went wrong with uploading",
+        });
       })
   }
 
@@ -60,11 +55,13 @@ export default function CommentItem(props) {
     return deleteCommentFn
       .execute({ commentId: props.commentId })
       .then(res => {
-        console.log(res)
         deleteLocalComment(res.comment.commentId)
       })
       .catch(err => {
-        console.log(err)
+        Success.fire({
+          icon: "error",
+          title: "Something went wrong with uploading",
+        });
       })
   }
 
@@ -162,27 +159,6 @@ export default function CommentItem(props) {
 
           </CardActions>
         }
-        {/* <CardActions
-          disableSpacing
-          sx={{
-            bgcolor: "transparent",
-            justifyContent: "right",
-            height: 10,
-            pb: 3,
-          }}
-        >
-          <IconButton
-            aria-label="add to favorites"
-            sx={{ color: "var(--accent-light)" }}
-          >
-            <FavoriteIcon />
-          </IconButton>
-          <div>{props.likes}</div>
-          <IconButton aria-label="comment" sx={{ color: "var(--accent-light)" }}>
-            <CommentIcon />
-          </IconButton>
-          <div>{props.comments}</div>
-        </CardActions> */}
       </Card>
 
       {isReplying && (

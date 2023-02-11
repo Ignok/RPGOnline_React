@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { getUsers } from "../../services/users";
-import { useAsyncFn } from "../../hooks/useAsync";
-import { Link } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
-import useRefreshToken from "../../hooks/useRefreshToken";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import { getImage } from "../../helpers/functions/getImage";
 import Grid from "@mui/material/Unstable_Grid2";
 import UserItem from "./userItem";
 import UserNav from "./usersNav";
@@ -16,8 +10,8 @@ export default function UsersList() {
   const [params, setParams] = useState({})
   const [attitude, setAttitude] = useState("");
   const [rating, setRating] = useState(0)
-  //const [page, setPage] = useState(1)
-  const { users, loading, error } = useFetchUsers(params, attitude, rating);
+  
+  const { users, loading } = useFetchUsers(params, attitude);
 
 
 
@@ -25,8 +19,7 @@ export default function UsersList() {
 
   function handleRatingChange(e) {
     e.preventDefault();
-    console.log(e)
-    //setRating
+    setRating(e.target.value);
   }
   function handleAttitudeChange(e) {
     e.preventDefault();
@@ -36,25 +29,14 @@ export default function UsersList() {
 
   function handleParamChange(e) {
     e.preventDefault();
-    console.log(e)
     const param = e.target.name
     const value = e.target.value
-    console.log("--------")
-    console.log(param)
-    console.log(value)
-    //setPage(1)
+    
     setParams(prevParams => {
       return { ...prevParams, [param]: value }
     })
   }
 
-  // const { loading, error, execute: getUsersFn } = useAsyncFn(getUsers);
-
-  // useEffect(() => {
-  //   getUsersFn().then((data) => {
-  //     setUsers(data);
-  //   });
-  // }, []);
 
   return (
     <Box
@@ -80,8 +62,9 @@ export default function UsersList() {
           columns={{ md: 4, lg: 12 }}
           justifyContent="center"
         >
-          {/* .filter((user) => user.uId != auth.uId) */}
-          {users.map((user) => (
+          {users
+            .filter((user) => user.averageRating >= rating)
+            .map((user) => (
             <UserItem key={user.uId} user={user} />
           ))}
         </Grid>

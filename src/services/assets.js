@@ -1,12 +1,5 @@
 import { makeRequest } from "./makeRequest";
 
-// export function getAssets({ assetName }) {
-//   console.log({ assetName });
-//   return makeRequest(`Race`, {
-//     method: "GET",
-//     //signal: controller.signal
-//   });
-// }
 
 export function saveAsset({
   uId,
@@ -209,8 +202,8 @@ export function createCharacter({
       description: description,
       gold: gold,
       jsonRequest: jsonReq,
-      race: raceId,
-      profession: professionId,
+      race: raceId === 0 ? null : raceId,
+      profession: professionId === 0 ? null : professionId,
       type: type
     },
   });

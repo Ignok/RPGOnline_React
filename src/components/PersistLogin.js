@@ -17,7 +17,6 @@ const PersistLogin = () => {
             }
             catch (err) {
                 localStorage.removeItem("isLoggedIn");
-                console.log(err);
             }
             finally {
                 isMounted && setIsLoading(false);
@@ -30,8 +29,7 @@ const PersistLogin = () => {
     }, [])
 
     useEffect(() => {
-        // console.log(`isLoading: ${isLoading}`)
-        // console.log(`username: ${JSON.stringify(auth?.username)}`)
+        
     }, [isLoading])
 
     return (

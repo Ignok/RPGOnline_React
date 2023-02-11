@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
@@ -8,14 +6,11 @@ import Slide from "@mui/material/Slide";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import { Stack } from "@mui/material";
-
 import Icon from "@mui/material/Icon";
-
 import { useAsyncFn } from "../../../../../hooks/useAsync";
 import { characterAttributes } from "../../../../../helpers/enums/assets";
 import { getRandomAttributes } from "../../../../../services/assets";
+import { Success } from "../../../../../helpers/pop-ups/success";
 
 export default function GenerateAttributes({ handleAttributesChange }) {
   const { execute: getRandomAttributesFn } = useAsyncFn(getRandomAttributes);
@@ -38,7 +33,10 @@ export default function GenerateAttributes({ handleAttributesChange }) {
         setChecked((prev) => !prev);
       })
       .catch((err) => {
-        console.log(err);
+        Success.fire({
+          icon: "error",
+          title: "Something went wrong with uploading",
+        });
       });
   }
 

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAsync, useAsyncFn } from "../hooks/useAsync";
+import { useAsyncFn } from "../hooks/useAsync";
 import useAuth from "../hooks/useAuth";
-import { getUser, getFriendship } from "../services/users";
+import { getUser } from "../services/users";
 import Swal from "sweetalert2";
 
 const Context = React.createContext();
@@ -32,13 +32,13 @@ export function UserProvider({ children }) {
     setFetching(true)
     getUserFn(uId)
       .then((res) => {
-        console.log(res)
         setIsOwner(auth.uId == uId)
         setUser(res);
         setFriendship(res.friendshipStatus)
         setFetching(false)
       })
       .catch((err) => {
+        setFetching(false)
         err.response?.data === "Blocked"
           &&
           Swal.fire({
@@ -60,7 +60,6 @@ export function UserProvider({ children }) {
 
 
   function updateLocalAvatar(avatar) {
-    console.log(avatar);
     setAvatar(avatar);
   }
 

@@ -1,16 +1,14 @@
 import { usePost } from "../../contexts/postContext"
 import { useAsyncFn } from "../../hooks/useAsync"
 import { createComment } from "../../services/comments"
-//import { CommentForm } from "./CommentForm"
 import { CommentList } from "../comments/commentList"
-
 import CommentForm from "../comments/commentForm";
-import { Box, Container, Stack } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import PostItem from "./postItem";
 import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
 import { useState } from "react";
 import { Fail } from "../../helpers/pop-ups/failed";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { deletePost } from "../../services/posts";
 import { Success } from "../../helpers/pop-ups/success";
@@ -22,7 +20,6 @@ export function PostDetails() {
   const { post, rootComments, createLocalComment } = usePost()
   const { loading, error, execute: createCommentFn } = useAsyncFn(createComment)
 
-  
   const {execute: deletePostFn } = useAsyncFn(deletePost)
 
   const [ postDeleteFlag, setPostDeleteFlag ] = useState(false);
@@ -33,7 +30,6 @@ export function PostDetails() {
     return createCommentFn({uId: auth.uId, postId: post.postId, content })
     .then(createLocalComment)
     .catch(err => {
-      console.log(err)
       Fail.fire()
       .then(result =>{
         if(result.isConfirmed){
@@ -45,10 +41,8 @@ export function PostDetails() {
 
   function handlePostDelete({postId}) {
     setDeletingPost(true);
-    console.log(postId);
     return deletePostFn({postId})
         .then((res) => {
-          console.log(res)
           setPostDeleteFlag(!postDeleteFlag);
           Success.fire({
             icon: "success",
@@ -56,8 +50,7 @@ export function PostDetails() {
           })
           navigate('/forum')
           setDeletingPost(false)
-        }).catch((err) =>{
-          console.log(err)
+        }).catch(() =>{
           setDeletingPost(false)
         })
   }
@@ -72,7 +65,7 @@ export function PostDetails() {
     >
       <Container maxWidth="md" sx={{ pb: 5 }}>
         {post.creatorNavigation === undefined ? (
-          console.log("loading")
+          <h1>Loading...</h1>
         ) : (
           <PostItem isDetails={true}
             key={post.postId}

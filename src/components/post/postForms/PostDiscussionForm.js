@@ -1,20 +1,14 @@
 import React, { useState } from "react";
-import { SettingsAccessibility } from "@mui/icons-material";
-import { FormControl, Input, FormHelperText, InputLabel, Button, TextField, MenuItem, Link, CircularProgress } from "@mui/material";
-import { Box } from "@mui/system";
-
+import { FormControl, Input, InputLabel, Button, TextField, MenuItem, CircularProgress } from "@mui/material";
+import { Box } from "@mui/system"
 import UploadIcon from '@mui/icons-material/Upload';
-
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
-
 import successfulGif from "../../../helpers/pictures/post_added_successfully.gif";
 import useAuth from "../../../hooks/useAuth";
-
 import { createPost } from "../../../services/posts";
 import { useAsyncFn } from "../../../hooks/useAsync";
 import { Success } from "../../../helpers/pop-ups/success";
-
 
 
 const tags = [
@@ -66,8 +60,6 @@ export default function PostDiscussionForm() {
 
 
     function validateForm() {
-        console.log("Validate the form....");
-
         let errors = {};
 
         //title field
@@ -79,8 +71,6 @@ export default function PostDiscussionForm() {
         if (!values.Content) {
             errors.Content = "Content is required";
         }
-
-        //censor bad words
 
         setFormErrors(errors);
 
@@ -100,7 +90,6 @@ export default function PostDiscussionForm() {
                 title: values.Title,
                 content: values.Content
             }).then(res => {
-                console.log(res.data);
                 Swal.fire({
                     title: 'Your post was added successfully!',
                     width: 450,
@@ -115,8 +104,6 @@ export default function PostDiscussionForm() {
                 setUploading(false)
                 navigate('/forum');
             }).catch(e => {
-                console.log("oops")
-                console.log(e)
                 Success.fire({
                     icon: "error",
                     title: "Something went wrong with uploading",

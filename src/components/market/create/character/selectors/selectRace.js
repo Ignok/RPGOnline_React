@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
-
 import HelperTooltip from "../../../../../helpers/pop-ups/helperTooltip";
-import ClearIcon from "@mui/icons-material/Clear";
-import Snackbar from "@mui/material/Snackbar";
-import { Alert } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-
-import { useAsyncFn } from "../../../../../hooks/useAsync";
-import { getItemsForCharacter } from "../../../../../services/assets";
 import useFetchRaces from "../../../../../helpers/functions/useFetchRaceForCharacter";
 
 const columns = [
@@ -65,21 +57,11 @@ export default function RaceDataTable({
   };
 
   const [keyValRace, setKeyValRace] = useState(keyValue);
-  const { loading, error, initial, races } = useFetchRaces(keyValRace, uId);
+  const { loading, initial, races } = useFetchRaces(keyValRace, uId);
 
   const [select, setSelect] = useState(0);
 
   const [raceName, setRaceName] = useState("");
-
-  //const [records, setRecords] = useState([]);
-
-  // useEffect(() => {
-  //   if(races.length > 0){
-  //     setRecords(races);
-  //   } else {
-  //     setRecords([]);
-  //   }
-  // }, [select]);
 
   useEffect((e) => {
     setSelect(e);
@@ -124,7 +106,6 @@ export default function RaceDataTable({
               pageSize={10}
               rowsPerPageOptions={[10]}
               onSelectionModelChange={(e) => {
-                const id = e[0];
                 setRaceName(findRace(races, e[0])?.name);
                 handleRaceSelect(findRace(races, e[0])?.name, e[0]);
                 setSelect(e[0]);

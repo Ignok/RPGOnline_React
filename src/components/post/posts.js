@@ -1,36 +1,20 @@
 import React, { useState, useEffect } from "react";
 import PostItem from "./postItem";
-
 import ForumSearch from "../forum/forumSearch";
 import ForumMenu from "../forum/forumMenu";
 import ForumNavbar from "../forum/forumNav";
-
-import src1 from "../../helpers/pictures/test-img.jpg";
-import src2 from "../../helpers/pictures/test-img-3.jpg";
-import gif1 from "../../helpers/pictures/test.gif";
-
-import { useParams, useSearchParams } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 import { Card, Container, Stack, Pagination, CardContent, Typography, LinearProgress } from "@mui/material";
 import Box from "@mui/material/Box";
-import { height, styled } from "@mui/system";
-
+import { styled } from "@mui/system";
 import useFetchPosts from "../../helpers/functions/useFetchPosts";
 import { Success } from "../../helpers/pop-ups/success";
-
-
-
 import { DatetimeToLocaleDateString } from "../../helpers/functions/DateTimeConverter";
 import { deletePost } from "../../services/posts";
 import { useAsyncFn } from "../../hooks/useAsync";
 
 export default function Posts() {
-
-  // const [searchParams] = useSearchParams();
-  // const option = searchParams.get('filter') || '';
-
   const { option, tagName } = useParams();
-
   const [params, setParams] = useState({})
   const [page, setPage] = useState(1)
 
@@ -59,30 +43,23 @@ export default function Posts() {
 
   function handlePostDelete({postId}) {
     setDeletingPost(true);
-    console.log(postId);
     return deletePostFn({postId})
         .then((res) => {
-          console.log(res)
           setPostDeleteFlag(!postDeleteFlag);
           Success.fire({
             icon: "success",
             title: "Post deleted successfully",
           })
           setDeletingPost(false)
-        }).catch((err) =>{
-          console.log(err)
+        }).catch(() =>{
           setDeletingPost(false)
         })
   }
 
   function handleParamChange(e) {
     e.preventDefault();
-    console.log(e)
     const param = e.target.getAttribute('name')
     const value = e.target.value
-    console.log("--------")
-    console.log(param)
-    console.log(value)
     setPage(1)
     setParams(prevParams => {
       return { ...prevParams, [param]: value }
@@ -145,15 +122,12 @@ export default function Posts() {
     <Box>
       <ForumSearch params={params} onParamChange={handleParamChange} />
       <ResponsiveBox
-        //maxWidth="100%"
         display="flex"
-      //sx={{ flexWrap: "wrap", alignItems: "baseline", }}
       >
         <ForumNavbar />
         <Container maxWidth="md" sx={{ pb: 5 }} >
           <>
             <ForumMenu />
-            {/* inside we pass the actual post component */}
 
             {loading &&
               <Card sx={{ maxWidth: "auto", maxHeight: "md", mb: 3 }}>
@@ -219,10 +193,9 @@ export default function Posts() {
                       date={DatetimeToLocaleDateString(post.creationDate)}
                       title={post.title}
                       text={post.content}
-                      imgSrc={post.postId === 1 ? src1 : post.picture} //tymczasowo do potestowania
+                      imgSrc={post.picture}
                       imgAlt="picture"
                       tag={post.tag}
-                      // tag2="NPC"
                       isLiked={post.isLiked}
                       likes={post.likes}
                       comments={post.comments}

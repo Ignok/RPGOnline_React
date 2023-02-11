@@ -23,12 +23,11 @@ export default function Register() {
 
     const [formErrors, setFormErrors] = useState({});
 
-    const { loading, error, execute: registerFn } = useAsyncFn(register)
+    const { loading, execute: registerFn } = useAsyncFn(register)
     function onRegister(username, email, pswd) {
         return registerFn({ username, email, pswd })
             .then((res) => {
                 if (res) {
-                    console.log(res)
                     setValues({ Username: "", Email: "", Pswd: "" });
                     Success.fire({
                         icon: "success",
@@ -42,7 +41,6 @@ export default function Register() {
                 }
 
             }).catch((error) => {
-                console.log(error)
                 let errors = {};
                 if (Object.keys(error.response.data).includes("Username")) {
                     errors.Username = error.response.data.Username;
@@ -58,10 +56,9 @@ export default function Register() {
     }
 
     const handleChange = (event) => {
-        // console.log(
-        //     "handleChange -> " + event.target.name + " : " + event.target.value
-        // );
-
+        setFormErrors(prevErrors => {
+            return {...prevErrors, [event.target.name]: ""}
+        })
         setValues((values) => ({
             ...values,
             [event.target.name]: event.target.value,
@@ -69,8 +66,6 @@ export default function Register() {
     };
 
     function validateForm() {
-        console.log("Validate the form....");
-
         let errors = {};
 
         //username field
@@ -104,7 +99,6 @@ export default function Register() {
     function handleSubmit(event) {
         if (event) event.preventDefault();
         if (validateForm(values)) {
-            console.log(values)
             onRegister(values.Username, values.Email, values.Pswd)
         }
     }

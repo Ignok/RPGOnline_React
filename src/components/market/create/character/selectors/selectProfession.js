@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
-
 import HelperTooltip from "../../../../../helpers/pop-ups/helperTooltip";
-import ClearIcon from "@mui/icons-material/Clear";
-import Snackbar from "@mui/material/Snackbar";
-import { Alert } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-
 import useFetchProfessions from "../../../../../helpers/functions/useFetchProfessionForCharacter";
 
 const columns = [
@@ -98,7 +92,7 @@ export default function ProfessionDataTable({
   };
 
   const [keyValProfession, setKeyValRace] = useState(keyValue);
-  const { loading, error, initial, professions } = useFetchProfessions(
+  const { loading, initial, professions } = useFetchProfessions(
     keyValProfession,
     uId
   );

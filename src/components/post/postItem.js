@@ -1,23 +1,18 @@
 import * as React from "react";
-// import { Link } from "react-router-dom";
-
 import { styled } from "@mui/material/styles";
-import ButtonBase from "@mui/material/ButtonBase";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
-import { PersonAddAlt1 } from "@mui/icons-material";
 import { Chip, CardActionArea } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { useAsyncFn } from "../../hooks/useAsync";
@@ -27,13 +22,10 @@ import { likePost, unlikePost } from "../../services/posts";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {ROLES} from '../../helpers/enums/roles'
 import Swal from "sweetalert2";
-
 import "../../App.css";
 import { getImage } from "../../helpers/functions/getImage";
 
 export default function PostItem(props) {
-  
-  const [flag, setFlag] = useState(true);
   const [flagFollow, setFlagFollow] = useState(true);
 
   const [selected, setSelected] = useState(props.isLiked);
@@ -48,7 +40,6 @@ export default function PostItem(props) {
   const [likes, setLikes] = useState(props.likes);
 
   function onLikePost() {
-    console.log("like")
     if(!auth.username){
       return Fail.fire()
       .then(result =>{
@@ -60,7 +51,6 @@ export default function PostItem(props) {
       setWaiting(true);
       return likePostFn({ uId: auth.uId, postId: props.id })
         .then(res => {
-          console.log(res);
           setSelected(true);
           setWaiting(false);
           Success.fire({
@@ -70,14 +60,12 @@ export default function PostItem(props) {
           setLikes(likes + 1);
         })
         .catch(err => {
-          console.log(err);
           setWaiting(false);
         });
     }
   }
 
   function onUnlikePost() {
-    console.log("unlike")
     if(!auth.username){
       return Fail.fire()
       .then(result =>{
@@ -89,7 +77,6 @@ export default function PostItem(props) {
       setWaiting(true);
       return unlikePosttFn({uId: auth.uId, postId: props.id })
       .then(res => {
-        console.log(res);
         setSelected(false);
         setWaiting(false);
         Success.fire({
@@ -98,8 +85,7 @@ export default function PostItem(props) {
         })
         setLikes(likes - 1);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(() => {
         setWaiting(false);
       })
     }
@@ -107,7 +93,6 @@ export default function PostItem(props) {
 
   function handleDeletePost(e){
     e.preventDefault();
-    console.log("handling deletion");
     Swal.fire({
       title: "Are you sure you want to delete this post?",
       icon: 'warning',
@@ -117,9 +102,7 @@ export default function PostItem(props) {
       confirmButtonText: 'Yes, do it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log("confirmed")
         props.onPostDelete({postId: props.id});
-        //onManageFriendship(options[buttonAction])
       }
     })
   }
@@ -161,7 +144,6 @@ export default function PostItem(props) {
             {flagFollow ? "FOLLOW" : "FOLLOWED"}
           </FollowButton>
         }
-        // titleTypographyProps={{ variant: "h6" }}
         title={props.username}
         subheader={props.date}
       />
@@ -207,7 +189,6 @@ export default function PostItem(props) {
                 alt={props.imgAlt}
                 sx={{
                   bgcolor: "var(--accent-bg)",
-                  // padding: "1em 1em 1em 1em",
                   objectFit: "contain",
                   maxHeight: 270,
                 }}

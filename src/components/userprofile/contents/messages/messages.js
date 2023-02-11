@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useUser } from "../../../../contexts/userContext";
 import {
   getUserMessages,
   createMessage,
@@ -7,17 +6,11 @@ import {
   openMessage,
 } from "../../../../services/messages";
 import { useAsyncFn } from "../../../../hooks/useAsync";
-import { DatetimeToLocaleDateString } from "../../../../helpers/functions/DateTimeConverter";
 import {
   Button,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   List,
-  ButtonBase,
   IconButton,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import MessageItem from "./messageItem";
 import SendIcon from "@mui/icons-material/Send";
 import MessageForm from "./messageForm";
@@ -25,7 +18,6 @@ import { Success } from "../../../../helpers/pop-ups/success";
 import { Box } from "@mui/material";
 import { styled, Stack } from "@mui/system";
 import Typography from "@mui/material/Typography";
-import { ButtonProps } from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Tooltip from "@mui/material/Tooltip";
@@ -79,7 +71,6 @@ export default function MessagesContents() {
       title: title,
       content: content,
     }).then((res) => {
-      console.log(res);
       setCreating({
         isCreating: false,
         isReplying: false,
@@ -98,7 +89,6 @@ export default function MessagesContents() {
       receiverId: user.uId,
       messageId: messageId,
     }).then((res) => {
-      console.log(res);
       setMessages((prevMessages) => {
         return prevMessages.filter(
           (message) => message.messageId !== messageId
@@ -116,7 +106,6 @@ export default function MessagesContents() {
       navigate(`/Profile/${auth.uId}/messages`)
     }else{
       return getUserMessagesFn({uId: user.uId, page }).then((data) => {
-        //console.log(data);
         setPageCount(data.pageCount);
         isMounted && setMessages(data.item1);
       });
@@ -140,7 +129,6 @@ export default function MessagesContents() {
       uId: user.uId,
       messageId: messageId,
     }).then((res) => {
-      console.log(res);
       const newMessages = messages.map((message) => {
         if(message.messageId === messageId){
           const updatedMessage = {
@@ -169,13 +157,11 @@ export default function MessagesContents() {
 
   useEffect(() => {
     let isMounted = true;
-    //const controller = new AbortController();
     setPage(1);
     onGetMessages({ isMounted, page: 1 });
 
     return () => {
       isMounted = false;
-      //controller.abort();
     };
   }, []);
 
@@ -233,9 +219,6 @@ export default function MessagesContents() {
             alignItems="center"
             spacing={4}
           >
-            <ColorButton>INBOX</ColorButton>
-            <Divider orientation="vertical" color="white" flexItem />
-            <ColorButton>OUTBOX</ColorButton>
             <Divider orientation="vertical" color="white" flexItem />
             <Tooltip title="Refresh">
               <IconButton

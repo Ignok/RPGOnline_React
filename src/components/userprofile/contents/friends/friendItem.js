@@ -1,7 +1,5 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -26,7 +24,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { Collapse } from "@mui/material";
-
 import { getImage } from "../../../../helpers/functions/getImage";
 import MessageForm from "../messages/messageForm";
 import { useAsyncFn } from "../../../../hooks/useAsync";
@@ -79,7 +76,6 @@ export default function FriendItem(props) {
       content: content,
     }).then((res) => {
       setOpenMessageForm(false);
-      console.log(res);
       Success.fire({
         icon: "success",
         title: "Message sent successfully",
@@ -89,20 +85,17 @@ export default function FriendItem(props) {
 
   const { execute: manageFriendshipFn } = useAsyncFn(manageFriendship);
   function onManageFriendship(option) {
-    console.log(option)
     return manageFriendshipFn({
       uId: props.senderId,
       targetUId: props.friendUId,
       option: option
     }).then((res) => {
-      console.log(res)
       Success.fire({
         icon: "success",
         title: "Managed friendship status successfully",
       });
       props.reload()
     }).catch((err) => {
-      console.log(err)
       Success.fire({
         icon: "error",
         title: "Something went wrong",

@@ -1,12 +1,9 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Navbar, Nav } from "react-bootstrap";
 import { useAsyncFn } from "../hooks/useAsync";
 import { Success } from "../helpers/pop-ups/success";
 import { logout } from "../services/account";
-import { ROLES } from "../helpers/enums/roles";
 import useAuth from "../hooks/useAuth";
-import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -25,11 +22,7 @@ import Logout from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import Collapse from "@mui/material/Collapse";
-import Slide from "@mui/material/Slide";
-import { TransitionGroup } from "react-transition-group";
 import { getImage } from "../helpers/functions/getImage";
 
 import { getNewMessages } from "../services/messages";
@@ -37,7 +30,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Navigation() {
   // LOGIN & LOGOUT OPTIONS
-  const { loading, error, execute: logoutFn } = useAsyncFn(logout);
+  const { execute: logoutFn } = useAsyncFn(logout);
   const { auth, setAuth } = useAuth();
 
   const navigate = useNavigate();
@@ -52,18 +45,17 @@ export default function Navigation() {
       .then((res) => {
         setNewMessagesCount(res.newMessagesCount ?? 0);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
       });
   }
 
-  // getting new messages count every second
+  // getting new messages count every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       if (isLoggedIn()) {
         onNewMessagesGet({ uId: auth.uId });
       }
-    }, 1000);
+    }, 3000);
     return () => clearInterval(interval);
   }, [auth]);
 
@@ -75,13 +67,11 @@ export default function Navigation() {
           title: "Logout successfully",
         });
         handleMenuClose();
-        console.log(res);
         setAuth({});
         setNewMessagesCount(0);
         localStorage.removeItem("isLoggedIn");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
       });
   }
 
@@ -100,8 +90,6 @@ export default function Navigation() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
   const [anchorEl3, setAnchorEl3] = React.useState(null);
-
-  //   const isMenuOpen = Boolean(anchorEl);
 
   const handleMenu1Open = (event) => {
     setAnchorEl(event.currentTarget);

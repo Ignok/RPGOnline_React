@@ -1,33 +1,19 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import EmailIcon from "@mui/icons-material/Email";
 import DraftsIcon from "@mui/icons-material/Drafts";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
 import Tooltip from "@mui/material/Tooltip";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
 import { ListItemButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DatetimeToLocaleDateString } from "../../../../helpers/functions/DateTimeConverter";
 import { Collapse } from "@mui/material";
 import ReplyIcon from "@mui/icons-material/Reply";
-import { useAsync } from "../../../../hooks/useAsync";
 import Swal from "sweetalert2";
 import { getImage } from "../../../../helpers/functions/getImage";
 
@@ -62,7 +48,6 @@ export default function MessageItem({ message, onDelete, onReply, onOpen }) {
             Swal.fire("Deleted!", "Message has been deleted.", "success");
           })
           .catch((e) => {
-            console.log(e);
             if (e.status === 400) {
               Swal.fire(
                 "Error",

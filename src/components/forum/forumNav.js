@@ -2,40 +2,16 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Box from "@mui/material/Box";
-
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-
-import ListSubheader from "@mui/material/ListSubheader";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-
 import HomeIcon from "@mui/icons-material/Home";
 import TagIcon from "@mui/icons-material/Tag";
 import EyeIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-
 import FanartIcon from "@mui/icons-material/Palette";
 import CosplayIcon from "@mui/icons-material/FaceRetouchingNatural";
-import NoviceLoreHelpIcon from "@mui/icons-material/PsychologyAltOutlined";
-import CharacterIcon from "@mui/icons-material/PsychologyAlt";
-import NPCIcon from "@mui/icons-material/Boy";
-import MonsterIcon from "@mui/icons-material/SmartToy";
-import RaceIcon from "@mui/icons-material/Diversity1";
-import ProfessionIcon from "@mui/icons-material/Diversity3";
-import ItemIcon from "@mui/icons-material/LocalMall";
-import SpellIcon from "@mui/icons-material/AutoFixNormal";
 import HelpIcon from "@mui/icons-material/Help";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-
-import { styled } from "@mui/system";
 import "../../App.css";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";

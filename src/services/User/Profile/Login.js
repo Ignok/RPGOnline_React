@@ -25,9 +25,6 @@ export default function Login() {
         return loginFn({ username, pswd })
             .then(res => {
                 if (res) {
-                    console.log(location)
-                    console.log(res)
-
                     const uId = res?.uId;
                     const username = res?.username;
                     const role = res?.userRole;
@@ -44,8 +41,7 @@ export default function Login() {
                     setFormErrors(errors);
                 }
 
-            }).catch(error => {
-                console.log(error)
+            }).catch(() => {
                 let errors = {};
                 errors.Pswd = "Invalid username or password";
                 setFormErrors(errors);
@@ -69,8 +65,6 @@ export default function Login() {
     };
 
     function validateForm() {
-        console.log("Validate the form....");
-
         let errors = {};
 
         //username field

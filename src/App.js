@@ -1,6 +1,5 @@
-//import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
-import React, { Component } from "react";
+import React from "react";
 import { Home } from "./pages/Home";
 import UsersList from "./components/users/users";
 import { Forum } from "./pages/Forum";
@@ -17,13 +16,7 @@ import CharacterForm from "./components/market/create/character/playableForm";
 import UnplayableForm from "./components/market/create/character/unplayableForm";
 import { PostProvider } from "./contexts/postContext";
 import { PostDetails } from "./components/post/postDetails";
-import {
-  Link,
-  BrowserRouter,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { UserProvider } from "./contexts/userContext";
 import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth";
@@ -41,7 +34,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route element={<PersistLogin />}>
-          {/* Route do persist loginu*/}
+          
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="unauthorized" element={<Unauthorized />} />
@@ -52,10 +45,7 @@ function App() {
               <Route path=":option" element={<Posts />} />
               <Route path="tag/:tagName" element={<Posts />} />
           </Route>
-          {/* <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin, ROLES.Moderator]} />}>
-              <Route path="/users" element={<UsersList />} />
-            </Route> */}
-          {/* <Route element={<PersistLogin />}> */}
+
           <Route
             element={
               <RequireAuth
@@ -119,8 +109,7 @@ function App() {
               </PostProvider>
             }
           />
-          {/* <Route path='/post/:postId' element={<PostDetails />} /> */}
-          {/* <Route path="/post/discussion-form" element={<PostDiscussionForm />} /> */}
+          
         </Route>
       </Route>
     </Routes>

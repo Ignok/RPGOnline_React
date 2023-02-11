@@ -1,17 +1,12 @@
 import * as React from "react";
-// import { Link } from "react-router-dom";
-
 import Card from "@mui/material/Card";
 import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { styled, Stack, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
-
 import { getImage } from "../../helpers/functions/getImage";
-
 import "../../App.css";
 
 export default function CommentForm({
@@ -25,14 +20,11 @@ export default function CommentForm({
   const [value, setValue] = useState(initialValue);
 
   const handleChange = (e) => {
-    console.log(`Typed => ${e.target.value}`);
-    console.log(avatar)
     setValue(e.target.value);
   };
 
   function handleSubmit(e) {
     e.preventDefault()
-    console.log(value)
     onSubmit(value).then(() => setValue(""))
   }
 
@@ -81,7 +73,7 @@ export default function CommentForm({
         </Box>
       </Card>
       <div className="error-msg">
-        {error && console.log(error)}
+        {error}
       </div>
     </>
   );
