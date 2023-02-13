@@ -8,7 +8,9 @@ const ACTIONS = {
     INITIAL: 'initial'
 }
 
-const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/'
+//const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/'
+const BASE_URL = 'https://localhost:7251/api/'
+
 
 const LANGUAGEOPTIONS = {
     POLISH: 'pl',
@@ -74,7 +76,7 @@ export default function useFetchAssets(params, page, assetName, prefferedLanguag
       return () => {
         cancelToken.cancel();
       };
-    }, [params, page, assetName, prefferedLanguage, keyValue, sort]);
+    }, [params, page, assetName, prefferedLanguage, keyValue, sort, preUrl]);
 
     return state
 }

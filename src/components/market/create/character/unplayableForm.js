@@ -351,7 +351,7 @@ export default function UnplayableForm({ type }) {
       })
         .then((res) => {
           Swal.fire({
-            title: `Your new ${values.type} was added successfully!`,
+            title: `Your new ${values.Type} was added successfully!`,
             width: 450,
             padding: "3em",
             color: "#716add",

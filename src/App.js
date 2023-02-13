@@ -28,6 +28,7 @@ import FriendsContents from "./components/userprofile/contents/friends/friends";
 import MessagesContents from "./components/userprofile/contents/messages/messages";
 import Posts from "./components/post/posts";
 import PostFanartFrom from "./components/post/postForms/PostFanartForm";
+import WorkInProgressContents from "./components/userprofile/contents/inprogress/workInProgress";
 
 function App() {
   return (
@@ -76,6 +77,9 @@ function App() {
               <Route path="about" element={<AboutMeContents />} />
               <Route path="messages" element={<MessagesContents />} />
               <Route path="friends" element={<FriendsContents />} />
+              <Route path="achievements" element={<WorkInProgressContents />} />
+              <Route path="statistics" element={<WorkInProgressContents />} />
+              <Route path="settings" element={<WorkInProgressContents />} />
             </Route>
           </Route>
 

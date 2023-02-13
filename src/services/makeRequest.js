@@ -3,7 +3,8 @@ import { refreshToken } from "./account";
 
 
 export const api = axios.create({
-    baseURL: "https://nicediceapi.azurewebsites.net/api/",
+    //baseURL: "https://nicediceapi.azurewebsites.net/api/",
+    baseURL: "https://localhost:7251/api/",
     withCredentials: true
 })
 

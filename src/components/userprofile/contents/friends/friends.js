@@ -31,8 +31,8 @@ export default function FriendsContents() {
 
   const [friends, setFriends] = useState();
 
-  const [user] = useOutletContext();
-  
+  const [user, isOwner] = useOutletContext();
+
 
   const {
     loading,
@@ -46,9 +46,9 @@ export default function FriendsContents() {
 
   useEffect(() => {
     getUserFriendsFn(user.uId)
-    .then((data) => {
-      setFriends(data);
-    });
+      .then((data) => {
+        setFriends(data);
+      });
   }, [statusChanged]);
 
 
@@ -82,86 +82,94 @@ export default function FriendsContents() {
           >
             FRIENDS
           </Typography>
-          
-          <ColorButton
-            onClick={() => {
-              handleContentsChange("requests")
-              setWhatToDisplay("isRequestReceived")
-            }}
-            sx={{
-              color: contents === "requests" ? "var(--accent-light)" : "white",
-            }}
-          >
-            FRIEND REQUESTS
-          </ColorButton>
 
-          <Divider orientation="vertical" color="white" flexItem />
+          {isOwner ?
+            <>
+              <ColorButton
+                onClick={() => {
+                  handleContentsChange("requests")
+                  setWhatToDisplay("isRequestReceived")
+                }}
+                sx={{
+                  color: contents === "requests" ? "var(--accent-light)" : "white",
+                }}
+              >
+                FRIEND REQUESTS
+              </ColorButton>
 
-          <ColorButton
-            onClick={() => {
-              handleContentsChange("friends")
-              setWhatToDisplay("isFriend")
-            }}
-            sx={{
-              color: contents === "friends" ? "var(--accent-light)" : "white",
-            }}
-          >
-            FRIENDS LIST
-          </ColorButton>
+              <Divider orientation="vertical" color="white" flexItem />
 
-          <Divider orientation="vertical" color="white" flexItem />
+              <ColorButton
+                onClick={() => {
+                  handleContentsChange("friends")
+                  setWhatToDisplay("isFriend")
+                }}
+                sx={{
+                  color: contents === "friends" ? "var(--accent-light)" : "white",
+                }}
+              >
+                FRIENDS LIST
+              </ColorButton>
 
-          <ColorButton
-            onClick={() => {
-              handleContentsChange("blocked")
-              setWhatToDisplay("isBlocked")
-            }}
-            sx={{
-              color: contents === "blocked" ? "var(--accent-light)" : "white",
-            }}
-          >
-            BLOCKED
-          </ColorButton>
+              <Divider orientation="vertical" color="white" flexItem />
+
+              <ColorButton
+                onClick={() => {
+                  handleContentsChange("blocked")
+                  setWhatToDisplay("isBlocked")
+                }}
+                sx={{
+                  color: contents === "blocked" ? "var(--accent-light)" : "white",
+                }}
+              >
+                BLOCKED
+              </ColorButton>
+            </>
+            :
+            <>
+            </>
+          }
 
         </Stack>
       </Box>
       {loading ?
-      <h1>Loading . . .</h1>
-      :
-      (friends?.length ? (
-        <List
-          sx={{
-            border: 1,
-            borderRadius: 0,
-            borderColor: "var(--accent)",
-            backgroundColor: "var(--accent-opaque)",
-            my: 2,
-            display: "flex",
-            flexDirection: "column",
-            py: 3,
-            px: 10,
-          }}
-        >
-          {friends.filter(friend => friend[whatToDisplay]).map((friend) => {
-            return (
-              <FriendItem
-               key={friend.uId}
-                senderId={user.uId}
-                username={friend.username}
-                friendUId={friend.uId}
-                country={friend.country ?? ""}
-                attitude={friend.attitude}
-                picture={friend.picture}
-                contents={contents}
-                reload={reload}
-                isFollowed={friend.isFollowed}
-              />
-            );
-          })}
-        </List>
-      ) : (
-        <h4>No friends to display</h4>
-      ))}
+        <h1>Loading . . .</h1>
+        :
+        (friends?.length ? (
+          <List
+            sx={{
+              border: 1,
+              borderRadius: 0,
+              borderColor: "var(--accent)",
+              backgroundColor: "var(--accent-opaque)",
+              my: 2,
+              display: "flex",
+              flexDirection: "column",
+              py: 3,
+              px: 10,
+            }}
+          >
+            {friends.filter(friend => friend[whatToDisplay]).map((friend) => {
+              return (
+                <FriendItem
+                  key={friend.uId}
+                  senderId={user.uId}
+                  username={friend.username}
+                  friendUId={friend.uId}
+                  country={friend.country ?? ""}
+                  attitude={friend.attitude}
+                  picture={friend.picture}
+                  contents={contents}
+                  reload={reload}
+                  isFollowed={friend.isFollowed}
+                  isOwner={isOwner}
+                />
+              );
+            })}
+          </List>
+        ) : (
+          <h4>No friends to display</h4>
+        ))}
     </Box>
   );
 }

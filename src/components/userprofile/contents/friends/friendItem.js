@@ -117,99 +117,105 @@ export default function FriendItem(props) {
           primary={props.username}
           secondary={`${props.country} ${props.country===""?"":"/"} ${props.attitude}`}
         />
-        {props.contents === "blocked" ? (
-          <ListItemIcon>
-            <Tooltip title="Unblock">
-              <IconButton
-                aria-label="unblock"
-                onClick={() => handleButtonClose("unblock")}
-              >
-                <DoNotDisturbOffIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Add friend">
-              <IconButton
-                aria-label="add"
-                onClick={() => handleButtonClose("add")}
-              >
-                <PersonAddAlt1Icon />
-              </IconButton>
-            </Tooltip>
-          </ListItemIcon>
-        ) : props.contents === "requests" ? (
-          <ListItemIcon>
-            <Tooltip title="Decline">
-              <IconButton
-                aria-label="decline"
-                onClick={() => handleButtonClose("decline")}
-              >
-                <HighlightOffIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Accept">
-              <IconButton
-                aria-label="accept"
-                onClick={() => handleButtonClose("accept")}
-              >
-                <CheckCircleIcon />
-              </IconButton>
-            </Tooltip>
-          </ListItemIcon>
-        ) : (
-          <div>
+        {
+          props.isOwner ?
+          props.contents === "blocked" ? (
             <ListItemIcon>
-              <Tooltip title="Message">
+              <Tooltip title="Unblock">
                 <IconButton
-                  aria-label="message"
-                  onClick={() => setOpenMessageForm(!openMessageForm)}
+                  aria-label="unblock"
+                  onClick={() => handleButtonClose("unblock")}
                 >
-                  <EmailIcon />
+                  <DoNotDisturbOffIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Follow">
+              <Tooltip title="Add friend">
                 <IconButton
-                  color={props.isFollowed ? "primary" : "default"}
-                  aria-label="follow"
-                  onClick={() => onManageFriendship(options[props.isFollowed ? "unfollow" : "follow"])}
+                  aria-label="add"
+                  onClick={() => handleButtonClose("add")}
                 >
-                  <BookmarkIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Manage friend">
-                <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-                  <PersonRemoveIcon />
+                  <PersonAddAlt1Icon />
                 </IconButton>
               </Tooltip>
             </ListItemIcon>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={() => handleClose(setting)}>
-                  <Typography
-                    textAlign="center"
-                    sx={{ textTransform: "capitalize" }}
+          ) : props.contents === "requests" ? (
+            <ListItemIcon>
+              <Tooltip title="Decline">
+                <IconButton
+                  aria-label="decline"
+                  onClick={() => handleButtonClose("decline")}
+                >
+                  <HighlightOffIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Accept">
+                <IconButton
+                  aria-label="accept"
+                  onClick={() => handleButtonClose("accept")}
+                >
+                  <CheckCircleIcon />
+                </IconButton>
+              </Tooltip>
+            </ListItemIcon>
+          ) : (
+            <div>
+              <ListItemIcon>
+                <Tooltip title="Message">
+                  <IconButton
+                    aria-label="message"
+                    onClick={() => setOpenMessageForm(!openMessageForm)}
                   >
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </div>
-        )}
+                    <EmailIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Follow">
+                  <IconButton
+                    color={props.isFollowed ? "primary" : "default"}
+                    aria-label="follow"
+                    onClick={() => onManageFriendship(options[props.isFollowed ? "unfollow" : "follow"])}
+                  >
+                    <BookmarkIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Manage friend">
+                  <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+                    <PersonRemoveIcon />
+                  </IconButton>
+                </Tooltip>
+              </ListItemIcon>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={() => handleClose(setting)}>
+                    <Typography
+                      textAlign="center"
+                      sx={{ textTransform: "capitalize" }}
+                    >
+                      {setting}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </div>
+          )
+          :
+          <></>
+        }
+        
         <Dialog open={open} onClose={() => setOpen(false)}>
           <DialogTitle id="alert-dialog-title">
             Are you sure you want to {action} this user?

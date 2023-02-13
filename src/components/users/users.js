@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import UserItem from "./userItem";
 import UserNav from "./usersNav";
-import useAuth from "../../hooks/useAuth";
 import useFetchUsers from "../../helpers/functions/useFetchUsers";
 
 export default function UsersList() {
@@ -12,10 +11,6 @@ export default function UsersList() {
   const [rating, setRating] = useState(0)
   
   const { users, loading } = useFetchUsers(params, attitude);
-
-
-
-  const { auth } = useAuth();
 
   function handleRatingChange(e) {
     e.preventDefault();

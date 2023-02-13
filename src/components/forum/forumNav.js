@@ -16,7 +16,7 @@ import "../../App.css";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
-export default function ForumNavbar() {
+export default function ForumNavbar({option, tagName}) {
 
   const {auth} = useAuth();
 
@@ -41,6 +41,7 @@ export default function ForumNavbar() {
       value="fanart"
       name="fanart"
       id="fanart"
+      variant={tagName === "fanart" ? "outlined" : "contained"}
     >
       Fanart
     </Button>,
@@ -51,6 +52,7 @@ export default function ForumNavbar() {
       value="cosplay"
       name="cosplay"
       id="cosplay"
+      variant={tagName === "cosplay" ? "outlined" : "contained"}
     >
       Cosplay
     </Button>,
@@ -61,6 +63,7 @@ export default function ForumNavbar() {
       value="lore"
       name="lore"
       id="lore"
+      variant={tagName === "lore" ? "outlined" : "contained"}
     >
       Lore
     </Button>,
@@ -71,6 +74,7 @@ export default function ForumNavbar() {
       value="notice"
       name="notice"
       id="notice"
+      variant={tagName === "notice" ? "outlined" : "contained"}
     >
       Notice
     </Button>,
@@ -81,6 +85,7 @@ export default function ForumNavbar() {
       value="help"
       name="help"
       id="help"
+      variant={tagName === "help" ? "outlined" : "contained"}
     >
       Help
     </Button>,
@@ -121,6 +126,7 @@ export default function ForumNavbar() {
       key="home"
       startIcon={<HomeIcon />}
       sx={{ minHeight: 50 }}
+      variant={(option === "home" || option === undefined && tagName === undefined) ? "outlined" : "contained"}
       onClick={() => navigate('home')}
     >
       Home
@@ -130,6 +136,7 @@ export default function ForumNavbar() {
       startIcon={<TagIcon />}
       sx={{ minHeight: 50 }}
       onClick={handleMenuOpen}
+      variant={tagName ? "outlined" : "contained"}
     >
       Tags
     </Button>,
@@ -138,6 +145,7 @@ export default function ForumNavbar() {
       key="followed"
       startIcon={<EyeIcon />}
       sx={{ minHeight: 50 }}
+      variant={option === "followed" ? "outlined" : "contained"}
       onClick={(e) => {
         auth.username ?
         navigate('followed')
@@ -152,6 +160,7 @@ export default function ForumNavbar() {
       key="favorite"
       startIcon={<FavoriteIcon />}
       sx={{ minHeight: 50 }}
+      variant={option === "favorite" ? "outlined" : "contained"}
       onClick={(e) => {
         auth.username ?
         navigate('favorite')

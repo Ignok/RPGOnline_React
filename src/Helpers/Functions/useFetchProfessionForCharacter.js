@@ -8,7 +8,8 @@ const ACTIONS = {
     INITIAL: 'initial'
 }
 
-const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Profession/character/'
+//const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Profession/character/'
+const BASE_URL = 'https://localhost:7251/api/Profession/character/'
 
 
 
@@ -62,7 +63,7 @@ export default function useFetchProfessions(keyValue, uId) {
       return () => {
         cancelToken.cancel();
       };
-    }, [keyValue]);
+    }, [keyValue, uId]);
 
     return state
 }

@@ -24,9 +24,10 @@ import {ROLES} from '../../helpers/enums/roles'
 import Swal from "sweetalert2";
 import "../../App.css";
 import { getImage } from "../../helpers/functions/getImage";
+import { manageFriendship } from "../../services/users";
 
 export default function PostItem(props) {
-  const [flagFollow, setFlagFollow] = useState(true);
+  const [isFollowed, setIsFollowed] = useState(props.isFollowed);
 
   const [selected, setSelected] = useState(props.isLiked);
   const [waiting, setWaiting] = useState(false);
@@ -36,6 +37,7 @@ export default function PostItem(props) {
 
   const {execute: likePostFn } = useAsyncFn(likePost)
   const {execute: unlikePosttFn } = useAsyncFn(unlikePost)
+  const {execute: manageFriendshipFn} = useAsyncFn(manageFriendship)
 
   const [likes, setLikes] = useState(props.likes);
 
@@ -109,15 +111,36 @@ export default function PostItem(props) {
 
 
   const handleClickFollow = () => {
-    setFlagFollow(!flagFollow);
+    if(!auth.username){
+      return Fail.fire()
+      .then(result =>{
+        if(result.isConfirmed){
+          navigate('/login', { replace: true });
+        }
+      });
+    }else{
+      setWaiting(true);
+      return manageFriendshipFn({ uId: auth.uId, targetUId: props.authorId, option: isFollowed ? "unfollow" : "follow" })
+        .then(res => {
+          setIsFollowed(!isFollowed);
+          setWaiting(false);
+          Success.fire({
+            icon: "success",
+            title: "Managed friendship status successfully",
+          })
+        })
+        .catch(err => {
+          setWaiting(false);
+        });
+    }
   };
 
   const FollowButton = styled(Button)(() => ({
     color: "var(--accent-bg)",
-    backgroundColor: flagFollow ? "#572348" : "#b74a97",
+    backgroundColor: isFollowed ? "#b74a97" : "#572348",
     borderRadius: 20,
     "&:hover": {
-      backgroundColor: flagFollow ? "#572348" : "#b74a97",
+      backgroundColor: isFollowed ? "#b74a97" : "#572348",
     },
   }));
 
@@ -135,13 +158,14 @@ export default function PostItem(props) {
         action={
           auth.uId !== props.authorId &&
           <FollowButton
+            disabled={waiting || props.deletingPost}
             variant="contained"
             disableElevation
             onClick={handleClickFollow}
             key={props.id}
             sx={{ mt: 0.5, mx: 2, width: 110 }}
           >
-            {flagFollow ? "FOLLOW" : "FOLLOWED"}
+            {isFollowed ? "FOLLOWED" : "FOLLOW" }
           </FollowButton>
         }
         title={props.username}

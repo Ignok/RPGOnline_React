@@ -8,8 +8,8 @@ const ACTIONS = {
     INITIAL: 'initial'
 }
 
-const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Race/character/'
-
+//const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Race/character/'
+const BASE_URL = 'https://localhost:7251/api/Race/character/'
 
 
 function reducer(state, action) {
@@ -62,7 +62,7 @@ export default function useFetchRaces(keyValue, uId) {
       return () => {
         cancelToken.cancel();
       };
-    }, [keyValue]);
+    }, [keyValue, uId]);
 
     return state
 }

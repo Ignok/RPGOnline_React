@@ -208,7 +208,7 @@ export function Profile() {
           username={user.username}
           date={DateToLocaleDateString(user.creationDate)}
         />
-        <Outlet context={[user, friendship, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar, isOwner]} />
+        <Outlet context={[user, isOwner, friendship, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar]} />
       </GridBox>
     </Grid>
   );

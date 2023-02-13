@@ -6,8 +6,6 @@ import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
-import Button from '@mui/material/Button';
-import SearchIcon from '@mui/icons-material/Search';
 import Stack from '@mui/material/Stack';
 import { attitudes } from "../../helpers/enums/attitudes";
 import SearchBar from "../forum/forumSearch";
@@ -60,7 +58,7 @@ export default function UserNav({ params, attitude, rating, onParamChange, onAtt
           <Slider
             aria-label="Rating"
             track="inverted"
-            defaultValue={4}
+            defaultValue={rating}
             getAriaValueText={valuetext}
             valueLabelFormat={valuetext}
             valueLabelDisplay="auto"
@@ -74,9 +72,6 @@ export default function UserNav({ params, attitude, rating, onParamChange, onAtt
         </Box>
 
       </Stack>
-      <Button variant="contained" endIcon={<SearchIcon />} sx={{ ml: {xs: 2, sm: 5}, minWidth: 120}}>
-        Search
-      </Button>
       </Box>
       
     </Box>

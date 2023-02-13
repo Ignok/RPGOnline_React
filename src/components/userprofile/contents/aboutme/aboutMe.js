@@ -42,7 +42,7 @@ export default function AboutMeContents() {
 
   const { auth } = useAuth();
 
-  const [user, friendship, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar, isOwner ] = useOutletContext();
+  const [user, isOwner, friendship, updateLocalUser, updateLocalAvatar, country, city, aboutMe, attitude, avatar ] = useOutletContext();
 
   const [values, setValues] = useState({
     country: country,

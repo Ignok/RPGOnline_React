@@ -124,7 +124,7 @@ export default function Posts() {
       <ResponsiveBox
         display="flex"
       >
-        <ForumNavbar />
+        <ForumNavbar option={option} tagName={tagName} />
         <Container maxWidth="md" sx={{ pb: 5 }} >
           <>
             <ForumMenu />
@@ -190,6 +190,7 @@ export default function Posts() {
                       avatarSrc={post.creatorNavigation.picture}
                       avatarAlt="avatar"
                       username={post.creatorNavigation.username}
+                      isFollowed={post.creatorNavigation.isFollowed}
                       date={DatetimeToLocaleDateString(post.creationDate)}
                       title={post.title}
                       text={post.content}
