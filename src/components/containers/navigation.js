@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useAsyncFn } from "../hooks/useAsync";
-import { Success } from "../helpers/pop-ups/success";
-import { logout } from "../services/account";
-import useAuth from "../hooks/useAuth";
+import { useAsyncFn } from "../../hooks/useAsync";
+import { Success } from "../../helpers/pop-ups/success";
+import { logout } from "../../services/account";
+import useAuth from "../../hooks/useAuth";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -23,10 +23,10 @@ import LoginIcon from "@mui/icons-material/Login";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import Stack from "@mui/material/Stack";
-import { getImage } from "../helpers/functions/getImage";
-
-import { getNewMessages } from "../services/messages";
+import { getImage } from "../../helpers/functions/getImage";
+import { getNewMessages } from "../../services/messages";
 import { useNavigate } from "react-router-dom";
+
 
 export default function Navigation() {
   // LOGIN & LOGOUT OPTIONS

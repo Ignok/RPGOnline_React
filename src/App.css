@@ -1,41 +1,3 @@
-/* .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
 @font-face {
   font-family: 'quinque';
   src: url(helpers/fonts/QuinqueFive.ttf);
@@ -212,13 +174,8 @@ header {
   border-bottom: 1px solid var(--border);
   text-align: center;
   padding: 2rem 0.5rem;
-  /* width: 100vw; */
   position: relative;
   box-sizing: border-box;
-  /* left: 50%;
-  right: 50%; */
-  /* margin-left: -50vw;
-  margin-right: -50vw; */
 }
 
 /* Remove margins for header text */
@@ -231,14 +188,8 @@ header p {
   font-family: 'quinque';
   font-size: 20px;
   font-weight: bold;
-  /* margin-left: 50px; */
 }
 
-/* .subheader {
-  text-align: right;
-  font-family: 'quinque';
-  font-size: 12px;
-} */
 
 /* Add a little padding to ensure spacing is correct between content and nav */
 main {
@@ -326,11 +277,6 @@ h6 {
   margin-top: calc(var(--line-height) * 1.5rem);
 }
 
-/* Format links & buttons */
-/* a,
-a:visited {
-  color: var(--accent);
-} */
 
 a:hover {
   text-decoration: none;
@@ -358,7 +304,6 @@ button[disabled],
 input[type="submit"][disabled],
 input[type="reset"][disabled],
 input[type="button"][disabled],
-/* input[type="checkbox"][disabled], */
 input[type="radio"][disabled],
 select[disabled] {
   cursor: default;
@@ -407,8 +352,6 @@ input[type="reset"]:focus,
 input[type="reset"]:enabled:hover,
 input[type="button"]:focus,
 input[type="button"]:enabled:hover,
-/* input[type="checkbox"]:focus,
-input[type="checkbox"]:enabled:hover, */
 input[type="radio"]:focus,
 input[type="radio"]:enabled:hover {
   filter: brightness(1.4);
@@ -511,36 +454,16 @@ select[multiple] {
 }
 
 /* checkbox and radio button style */
-/* input[type="checkbox"],
-input[type="radio"] {
-  vertical-align: bottom;
-  position: relative;
-} */
 
 input[type="radio"] {
   border-radius: 100%;
 }
 
-/* input[type="checkbox"]:checked, */
 input[type="radio"]:checked {
   background: var(--accent);
 }
 
-/* input[type="checkbox"]:checked::after { */
-  /* Creates a rectangle with colored right and bottom borders which is rotated to look like a check mark */
-  /* content: " ";
-  width: 0.1em;
-  height: 0.25em;
-  border-radius: 0;
-  position: absolute;
-  top: 0.05em;
-  left: 0.18em;
-  background: transparent;
-  border-right: solid var(--bg) 0.08em;
-  border-bottom: solid var(--bg) 0.08em;
-  font-size: 1.8em;
-  transform: rotate(45deg);
-} */
+
 
 input[type="radio"]:checked::after {
   /* creates a colored circle for the checked radio button  */
@@ -571,7 +494,6 @@ textarea {
 }
 
 /* Ensures the checkbox and radio inputs do not have a set width like other input fields */
-/* input[type="checkbox"], */
 input[type="radio"] {
   width: auto;
 }

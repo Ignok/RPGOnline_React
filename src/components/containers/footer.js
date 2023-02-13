@@ -1,6 +1,6 @@
 import React from 'react'
-import Footer from '../components/footer'
-import Icon from '../components/icons'
+import Footer from '../footer'
+import Icon from '../icons'
 
 //właściwe tworzenie stopki
 export function FooterContainer() {
