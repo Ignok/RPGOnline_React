@@ -134,7 +134,7 @@ export default function PostFanartFrom() {
                     uId: auth.uId,
                     title: values.Title,
                     content: values.Content,
-                    tag: values.Tag,
+                    tag: values.Tag === 'none' ? null : values.Tag,
                     picture: url
                 }).then(res => {
                     Swal.fire({

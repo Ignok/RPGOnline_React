@@ -88,7 +88,8 @@ export default function PostDiscussionForm() {
             createPostFn({
                 uId: auth.uId,
                 title: values.Title,
-                content: values.Content
+                content: values.Content,
+                tag: values.Tag === 'none' ? null : values.Tag,
             }).then(res => {
                 Swal.fire({
                     title: 'Your post was added successfully!',

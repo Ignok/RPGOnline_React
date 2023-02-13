@@ -9,6 +9,7 @@ export function getPost(postId) {
 }
 
 export function createFanart({ uId, title, content, tag, picture }) {
+  console.log(tag)
   return makeRequest(`/Posts`, {
     method: "POST",
     withCredentials: true,
@@ -23,6 +24,7 @@ export function createFanart({ uId, title, content, tag, picture }) {
 }
 
 export function createPost({ uId, title, content, tag }) {
+  console.log(tag)
   return makeRequest(`/Posts`, {
     method: "POST",
     withCredentials: true,
