@@ -1,0 +1,43 @@
+{
+    "navigation": {
+        "home": "HOME",
+        "forum": "FORUM",
+        "assets": "ASSETS",
+        "community": "COMMUNITY",
+        "register": "REGISTER",
+        "login": "LOGIN",
+        "profile": {
+            "name": "Profile",
+            "logout": "Logout",
+            "your_profile": "Your Profile",
+            "find_friends": "Find Friends",
+            "your_profile_caps": "YOUR PROFILE",
+            "find_friends_caps": "FIND FRIENDS"
+        }
+    },
+    "footer": {
+        "about": {
+            "title": "About",
+            "our_story" : "Our story",
+            "plans_for_the_future" : "Our story"
+        },
+        "contact": {
+            "title": "Contact",
+            "Support": "Support",
+            "FAQ": "FAQ"
+        }
+    },
+    "home": {
+        "title": "WELCOME!",
+        "content": "Make yourself comfortable and listen to the bard's singsing..."
+    },
+    "profile": {
+        "about": "about",
+        "friends": "friends",
+        "achievements": "achievements",
+        "statistics": "statistics",
+        "messages": "messages",
+        "saved": "saved",
+        "settings": "settings"
+    }
+}

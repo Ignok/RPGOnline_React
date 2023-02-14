@@ -1,16 +1,12 @@
 import { Box } from "@mui/material";
 import EngineeringIcon from '@mui/icons-material/Engineering';
-import {Stack, Typography} from "@mui/material";
-
+import { Stack, Typography } from "@mui/material";
 
 export default function WorkInProgressContents() {
-
-
     return (
         <Box>
             <Box
                 position="static"
-                alignItems="center"
                 sx={{
                     bgcolor: "var(--accent)",
                     boxShadow: 1,
@@ -39,7 +35,19 @@ export default function WorkInProgressContents() {
                     </Typography>
                 </Stack>
             </Box>
-            <EngineeringIcon sx={{fontSize: "200px"}} />
+            <Box sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    border: 1,
+                    borderRadius: 0,
+                    borderColor: "var(--accent)",
+                    backgroundColor: "var(--accent-opaque)",
+                    my: 2,
+                    py: 3,
+                    px: 10,
+                }}>
+            <EngineeringIcon sx={{fontSize: "200px", color: "#da57b3"}} />
+            </Box>
         </Box>
     );
 }

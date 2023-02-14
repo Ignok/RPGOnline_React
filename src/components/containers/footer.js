@@ -1,9 +1,10 @@
 import React from 'react'
 import Footer from '../footer'
 import Icon from '../icons'
+import { useTranslation } from "react-i18next";
 
-//właściwe tworzenie stopki
 export function FooterContainer() {
+    const { t } = useTranslation();
     return(
         <Footer>
             <Footer.Wrapper>
@@ -12,14 +13,14 @@ export function FooterContainer() {
                         <Footer.Title>&copy; NICE DICE</Footer.Title>
                     </Footer.Column>
                     <Footer.Column>
-                        <Footer.Title>About</Footer.Title>
-                        <Footer.Link href="#">Our story</Footer.Link>
-                        <Footer.Link href="#">Plans for the future</Footer.Link>
+                        <Footer.Title>{t('footer.about.title')}</Footer.Title>
+                        <Footer.Link href="#">{t('footer.about.our_story')}</Footer.Link>
+                        <Footer.Link href="#">{t('footer.about.plans_for_the_future')}</Footer.Link>
                     </Footer.Column>
                     <Footer.Column>
-                        <Footer.Title>Contact</Footer.Title>
-                        <Footer.Link href="#">Support</Footer.Link>
-                        <Footer.Link href="#">FAQ</Footer.Link>
+                        <Footer.Title>{t('footer.contact.title')}</Footer.Title>
+                        <Footer.Link href="#">{t('footer.contact.Support')}</Footer.Link>
+                        <Footer.Link href="#">{t('footer.contact.FAQ')}</Footer.Link>
                     </Footer.Column>
                     <Footer.Column>
                         <Footer.Title>Social</Footer.Title>

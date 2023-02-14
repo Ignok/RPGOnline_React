@@ -1,0 +1,43 @@
+{
+    "navigation": {
+        "home": "STRONA GŁÓWNA",
+        "forum": "FORUM",
+        "assets": "ASSETY",
+        "community": "SPOŁECZNOŚĆ",
+        "register": "REJESTRACJA",
+        "login": "LOGOWANIE",
+        "profile": {
+            "name": "Profil",
+            "logout": "Wyloguj",
+            "your_profile": "Twój profil",
+            "find_friends": "Szukaj znajomych",
+            "your_profile_caps": "TWÓJ PROFIL",
+            "find_friends_caps": "SZUKAJ ZNAJOMYCH"
+        }
+    },
+    "footer": {
+        "about": {
+            "title": "O nas",
+            "our_story" : "Nasza historia",
+            "plans_for_the_future" : "Plany na przyszłość"
+        },
+        "contact": {
+            "title": "Kontakt",
+            "Support": "Wsparcie",
+            "FAQ": "FAQ"
+        }
+    },
+    "home": {
+        "title": "WITAMY!",
+        "content": "Odprez sie i wsłuchaj w piesni Barda..."
+    },
+    "profile": {
+        "about": "o mnie",
+        "friends": "znajomi",
+        "achievements": "osiagniecia",
+        "statistics": "statystyki",
+        "messages": "wiadomosci",
+        "saved": "zapisane",
+        "settings": "ustawienia"
+    }
+}

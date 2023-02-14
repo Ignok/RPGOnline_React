@@ -8,8 +8,8 @@ const ACTIONS = {
     INITIAL: 'initial'
 }
 
-//const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Race/character/'
-const BASE_URL = 'https://localhost:7251/api/Race/character/'
+const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Race/character/'
+//const BASE_URL = 'https://localhost:7251/api/Race/character/'
 
 
 function reducer(state, action) {

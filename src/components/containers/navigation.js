@@ -26,6 +26,7 @@ import Stack from "@mui/material/Stack";
 import { getImage } from "../../helpers/functions/getImage";
 import { getNewMessages } from "../../services/messages";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 
 export default function Navigation() {
@@ -34,6 +35,12 @@ export default function Navigation() {
   const { auth, setAuth } = useAuth();
 
   const navigate = useNavigate();
+
+  const { t, i18n } = useTranslation();
+  const handleLanguageChange = (lng) => {
+    localStorage.setItem("language", `${lng}`)
+    i18n.changeLanguage(lng);
+  }
 
   const [newMessagesCount, setNewMessagesCount] = useState(0);
   const { execute: getNewMessagesFn } = useAsyncFn(getNewMessages);
@@ -85,11 +92,25 @@ export default function Navigation() {
 
   // LOGIN & LOGOUT OPTIONS
 
-  const mainNav = ["home", "forum", "assets"];
+  const mainNav = [
+    {
+      "name": "home",
+      "label": t('navigation.home')
+    },
+    {
+      "name": "forum",
+      "label": t('navigation.forum')
+    },
+    {
+      "name": "assets",
+      "label": t('navigation.assets')
+    }
+  ];
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
   const [anchorEl3, setAnchorEl3] = React.useState(null);
+  const [anchorEl4, setAnchorEl4] = React.useState(null);
 
   const handleMenu1Open = (event) => {
     setAnchorEl(event.currentTarget);
@@ -100,12 +121,18 @@ export default function Navigation() {
   const handleMenu3Open = (event) => {
     setAnchorEl3(event.currentTarget);
   };
+  const handleMenu4Open = (event) => {
+    setAnchorEl4(event.currentTarget);
+  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
     setAnchorEl2(null);
     setAnchorEl3(null);
+    setAnchorEl4(null);
   };
+
+
 
   const profileMenu = (
     <Menu
@@ -144,11 +171,11 @@ export default function Navigation() {
             to={"/profile/" + auth.uId}
           >
             <ManageAccountsIcon sx={{ mr: 1, color: "text.secondary" }} />
-            Profile
+            {t('navigation.profile.name')}
           </MenuItem>
           <MenuItem onClick={() => onLogout()} component={NavLink} to={"/"}>
             <Logout fontSize="small" sx={{ mr: 1, color: "text.secondary" }} />
-            Logout
+            {t('navigation.profile.logout')}
           </MenuItem>
         </div>
       ) : (
@@ -160,7 +187,7 @@ export default function Navigation() {
             sx={{ justifyContent: "flex-end" }}
           >
             <LoginIcon sx={{ mr: 1, color: "text.secondary" }} />
-            Login
+            {t('navigation.login')}
           </MenuItem>
           <MenuItem
             onClick={handleMenuClose}
@@ -169,7 +196,7 @@ export default function Navigation() {
             sx={{ justifyContent: "flex-end" }}
           >
             <VpnKeyIcon sx={{ mr: 1, color: "text.secondary" }} />
-            Register
+            {t('navigation.register')}
           </MenuItem>
         </div>
       )}
@@ -212,10 +239,10 @@ export default function Navigation() {
             component={NavLink}
             to={"/profile/" + auth.uId}
           >
-            Your Profile
+            {t('navigation.profile.your_profile')}
           </MenuItem>
           <MenuItem onClick={handleMenuClose} component={NavLink} to={"/users"}>
-            Find Friends
+            {t('navigation.profile.find_friends')}
           </MenuItem>
         </div>
       ) : (
@@ -227,7 +254,7 @@ export default function Navigation() {
             sx={{ justifyContent: "flex-end" }}
           >
             <LoginIcon sx={{ mr: 1, color: "text.secondary" }} />
-            Login
+            {t('navigation.login')}
           </MenuItem>
           <MenuItem
             onClick={handleMenuClose}
@@ -236,7 +263,7 @@ export default function Navigation() {
             sx={{ justifyContent: "flex-end" }}
           >
             <VpnKeyIcon sx={{ mr: 1, color: "text.secondary" }} />
-            Register
+            {t('navigation.register')}
           </MenuItem>
         </div>
       )}
@@ -278,13 +305,13 @@ export default function Navigation() {
       }}
     >
       <MenuItem onClick={handleMenuClose} component={NavLink} to={"/"}>
-        Home
+        {t('navigation.home')}
       </MenuItem>
       <MenuItem onClick={handleMenuClose} component={NavLink} to={"/forum/home"}>
-        Forum
+        {t('navigation.forum')}
       </MenuItem>
       <MenuItem onClick={handleMenuClose} component={NavLink} to={"/assets"}>
-        Assets
+        {t('navigation.assets')}
       </MenuItem>
       {isLoggedIn() ? (
         <div>
@@ -293,10 +320,10 @@ export default function Navigation() {
             component={NavLink}
             to={"/profile/" + auth.uId}
           >
-            Your Profile
+            {t('navigation.profile.your_profile_caps')}
           </MenuItem>
           <MenuItem onClick={handleMenuClose} component={NavLink} to={"/users"}>
-            Find Friends
+            {t('navigation.profile.find_friends_caps')}
           </MenuItem>
         </div>
       ) : (
@@ -304,6 +331,52 @@ export default function Navigation() {
       )}
     </Menu>
   );
+
+  const languageMenu = (
+    <Menu
+      anchorEl={anchorEl4}
+      id="account-menu"
+      keepMounted
+      anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+      transformOrigin={{ horizontal: "center", vertical: "top" }}
+      open={Boolean(anchorEl4)}
+      onClose={handleMenuClose}
+      PaperProps={{
+        elevation: 0,
+        sx: {
+          overflow: "visible",
+          filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+          mt: 0.5,
+          "&:before": {
+            content: '""',
+            display: "block",
+            position: "absolute",
+            top: 0,
+            left: "45%",
+            width: 10,
+            height: 10,
+            bgcolor: "background.paper",
+            transform: "translateY(-50%) rotate(45deg)",
+          },
+        },
+      }}
+    >
+      <MenuItem onClick={() => {
+        handleLanguageChange('pl')
+        handleMenuClose();
+      }} component={NavLink}>
+        Polish
+      </MenuItem>
+      <MenuItem onClick={() => {
+        handleLanguageChange('en')
+        handleMenuClose();
+      }} component={NavLink}>
+        English
+      </MenuItem>
+    </Menu>
+  );
+
+
 
   return (
     <Box>
@@ -343,8 +416,8 @@ export default function Navigation() {
             {mainNav.map((nav) => (
               <Button
                 component={NavLink}
-                to={"/" + (nav === "home" ? "" : nav === "forum" ? "forum/home" : nav)}
-                key={nav}
+                to={"/" + (nav.name === "home" ? "" : nav.name === "forum" ? "forum/home" : nav.name)}
+                key={nav.name}
                 sx={{
                   color: "white",
                   display: "block",
@@ -352,7 +425,7 @@ export default function Navigation() {
                   fontSize: "medium",
                 }}
               >
-                {nav}
+                {nav.label}
               </Button>
             ))}
             <Button
@@ -364,7 +437,7 @@ export default function Navigation() {
               }}
               onClick={handleMenu2Open}
             >
-              Community
+              {t('navigation.community')}
             </Button>
           </Box>
           <Stack
@@ -400,7 +473,7 @@ export default function Navigation() {
               </IconButton>
             )}
 
-            <IconButton size="large" aria-label="language" color="inherit">
+            <IconButton onClick={handleMenu4Open} size="large" aria-label="language" color="inherit">
               <TranslateIcon />
             </IconButton>
             {isLoggedIn() ? (
@@ -422,7 +495,7 @@ export default function Navigation() {
                   size="small"
                   sx={{ color: "white" }}
                 >
-                  Register
+                  {t('navigation.register')}
                 </Button>
                 <Button
                   component={NavLink}
@@ -430,7 +503,7 @@ export default function Navigation() {
                   size="small"
                   sx={{ color: "white" }}
                 >
-                  Login
+                  {t('navigation.login')}
                 </Button>
               </Box>
             )}
@@ -438,6 +511,7 @@ export default function Navigation() {
         </Toolbar>
       </AppBar>
       {profileMenu}
+      {languageMenu}
       {communityMenu}
       {compactMenu}
     </Box>

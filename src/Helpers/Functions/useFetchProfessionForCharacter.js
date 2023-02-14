@@ -8,8 +8,8 @@ const ACTIONS = {
     INITIAL: 'initial'
 }
 
-//const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Profession/character/'
-const BASE_URL = 'https://localhost:7251/api/Profession/character/'
+const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Profession/character/'
+//const BASE_URL = 'https://localhost:7251/api/Profession/character/'
 
 
 

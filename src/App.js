@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { Home } from "./pages/Home";
+import Home from "./pages/Home";
 import UsersList from "./components/users/users";
 import { Forum } from "./pages/Forum";
 import { Profile } from "./pages/Profile";

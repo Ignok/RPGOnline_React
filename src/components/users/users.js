@@ -58,7 +58,7 @@ export default function UsersList() {
           justifyContent="center"
         >
           {users
-            .filter((user) => user.averageRating >= rating)
+            .filter((user) => user.averageRating >= rating-0.5)
             .map((user) => (
             <UserItem key={user.uId} user={user} />
           ))}

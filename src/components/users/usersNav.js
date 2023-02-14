@@ -58,7 +58,7 @@ export default function UserNav({ params, attitude, rating, onParamChange, onAtt
           <Slider
             aria-label="Rating"
             track="inverted"
-            defaultValue={rating}
+            value={rating}
             getAriaValueText={valuetext}
             valueLabelFormat={valuetext}
             valueLabelDisplay="auto"

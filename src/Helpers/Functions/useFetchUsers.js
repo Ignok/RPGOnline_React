@@ -7,8 +7,8 @@ const ACTIONS = {
     ERROR: 'error'
 }
 
-//const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Users'
-const BASE_URL = 'https://localhost:7251/api/Users'
+const BASE_URL = 'https://nicediceapi.azurewebsites.net/api/Users'
+//const BASE_URL = 'https://localhost:7251/api/Users'
 
 function reducer(state, action) {
     switch (action.type) {

@@ -98,7 +98,7 @@ export default function ItemDataTable({ uId, handleItemSelect }) {
       >
         <Box>
           <FormLabel sx={{ mb: 2 }}>
-            Choose starting up to {maxItems} for this profession
+            Choose up to {maxItems} starting items for this profession
           </FormLabel>
           <HelperTooltip
             text={`If you want to, you can choose up to ${maxItems} starting items for profession`}

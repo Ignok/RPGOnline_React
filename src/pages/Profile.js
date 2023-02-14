@@ -53,6 +53,7 @@ export function Profile() {
     isOwner
   } = useUser();
 
+
   const [ ratingPrecision, setRatingPrecision ] = useState(0.1);
   const [ disableRating, setDisableRating ] = useState(true);
 
